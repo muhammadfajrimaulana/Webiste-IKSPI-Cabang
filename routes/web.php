@@ -1,40 +1,89 @@
 <?php
 
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\RantingController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\GerbangController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dashboard\BerandaController;
+use App\Http\Controllers\Administrasi\InputDataController;
+use App\Http\Controllers\Administrasi\VerifikasiController;
+use App\Http\Controllers\Administrasi\OutputController;
 
-// 1. Halaman Publik (Tanpa Login)
-Route::get('/', function () {
-    return view('welcome');
-});
+// Halaman Publik (Tanpa Login)
+// Route::get('/', function () { return view('welcome'); });
 
-// 2. Rute yang Membutuhkan Login (Auth)
-Route::middleware('auth')->group(function () {
-    
-    // Dashboard Utama (Akan diarahkan oleh MemberController@index)
-    Route::get('/dashboard', [MemberController::class, 'index'])->name('dashboard');
+// Alur Proteksi Awal (Gerbang Utama)
+Route::get('/', [GerbangController::class, 'showGerbangForm'])->name('gerbang.form');
+Route::post('/', [GerbangController::class, 'checkGerbangPassword'])->name('gerbang.check');
 
-    // Manajemen Profil (Bawaan Breeze)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// Alur Login Admin
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
-    // --- FITUR IKSPI (Berdasarkan Diagram) ---
+// ================================================== //
+// DASHBOARD ADMINISTRATOR IKSPI CABANG JAKARTA PUSAT //
+// ================================================== //
 
-    // Alur A: Input Data & Dashboard Anggota (Akses Level 2)
-    Route::prefix('anggota')->group(function () {
-        Route::get('/', [MemberController::class, 'index'])->name('member.index');
-        Route::get('/tambah', [MemberController::class, 'create'])->name('member.create');
-        Route::post('/simpan', [MemberController::class, 'store'])->name('member.store');
-    });
 
-    // Alur B: Verifikasi & Ranting (Akses Level 1 - Admin)
-    Route::get('/ranting', [RantingController::class, 'index'])->name('ranting.index');
-    // Nanti kamu bisa tambah Route::post('/verifikasi/{id}', ...) di sini
-});
+// Rute Tampilan Menu 2 - 8 (Navigasi)
+Route::get('/tentang', function () {
+    return view('navigasi.tentang', ['title' => '2. Tentang IKSPI']);
+})->name('menu.tentang');
+Route::get('/legalitas', function () {
+    return view('navigasi.legalitas', ['title' => '3. Tata Kelola & Legalitas']);
+})->name('menu.legalitas');
+Route::get('/ranting', function () {
+    return view('navigasi.ranting', ['title' => '4. Data Ranting']);
+})->name('menu.ranting');
+Route::get('/struktur', function () {
+    return view('navigasi.struktur', ['title' => '5. Struktur Organisasi']);
+})->name('menu.struktur');
+Route::get('/media', function () {
+    return view('navigasi.media', ['title' => '6. Ruang Media']);
+})->name('menu.media');
+Route::get('/pengesahan', function () {
+    return view('navigasi.pengesahan', ['title' => '7. Data Pengesahan']);
+})->name('menu.pengesahan');
+Route::get('/kontak', function () {
+    return view('navigasi.kontak', ['title' => '8. Kontak Cabang']);
+})->name('menu.kontak');
 
-Route::patch('/anggota/{id}/verifikasi', [MemberController::class, 'verify'])->name('member.verify');
+// Panel Alur Administrasi (Dashboard)
+Route::get('/dashboard', [BerandaController::class, 'index'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::get('/administrasi/pendaftaran', [InputDataController::class, 'create'])->name('pendaftaran.create');
+Route::get('/administrasi/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
+Route::get('/administrasi/output', [OutputController::class, 'index'])->name('output.index');
+
+Route::get('/administrasi/pendaftaran', function () {
+    return view('administrasi.pendaftaran', ['title' => 'Flow A: Pendaftaran Baru']);
+})->name('pendaftaran.index');
+
+Route::get('/administrasi/verifikasi', function () {
+    return view('administrasi.verifikasi', ['title' => 'Flow B: Verifikasi Pengurus']);
+})->name('verifikasi.index');
+
+Route::get('/administrasi/output', function () {
+    return view('administrasi.output', ['title' => 'Flow C: Output Data']);
+})->name('output.index');
+
+// Rute untuk Grup Manajemen Internal
+Route::get('/internal/keanggotaan', function () {
+    return view('internal.keanggotaan', [
+        'title' => '1. Manajemen Keanggotaan',
+        'icon' => 'fa-users'
+    ]);
+})->name('internal.keanggotaan');
+
+Route::get('/internal/operasional', function () {
+    return view('internal.operasional', [
+        'title' => '2. Operasional Ranting',
+        'icon' => 'fa-building-shield'
+    ]);
+})->name('internal.operasional');
+
+Route::get('/internal/keuangan-logistik', function () {
+    return view('internal.keuangan', [
+        'title' => '3. Keuangan & Logistik',
+        'icon' => 'fa-wallet'
+    ]);
+})->name('internal.keuangan');
