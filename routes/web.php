@@ -1,89 +1,109 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\GerbangController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Dashboard\BerandaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
 use App\Http\Controllers\Administrasi\OutputController;
+use App\Http\Controllers\Internal\KeanggotaanController;
+use App\Http\Controllers\Internal\OperasionalController;
+use App\Http\Controllers\Internal\KeuanganController;
 
-// Halaman Publik (Tanpa Login)
-// Route::get('/', function () { return view('welcome'); });
+/*
+|--------------------------------------------------------------------------
+| 1. ALUR PROTEKSI & AUTENTIKASI (Pintu Masuk Awal)
+|--------------------------------------------------------------------------
+*/
 
-// Alur Proteksi Awal (Gerbang Utama)
+// Gerbang Utama (Halaman pertama kali dibuka wajib input password pengaman)
 Route::get('/', [GerbangController::class, 'showGerbangForm'])->name('gerbang.form');
 Route::post('/', [GerbangController::class, 'checkGerbangPassword'])->name('gerbang.check');
 
-// Alur Login Admin
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-
-// ================================================== //
-// DASHBOARD ADMINISTRATOR IKSPI CABANG JAKARTA PUSAT //
-// ================================================== //
+// Alur Login Admin Resmi
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-// Rute Tampilan Menu 2 - 8 (Navigasi)
-Route::get('/tentang', function () {
-    return view('navigasi.tentang', ['title' => '2. Tentang IKSPI']);
-})->name('menu.tentang');
-Route::get('/legalitas', function () {
-    return view('navigasi.legalitas', ['title' => '3. Tata Kelola & Legalitas']);
-})->name('menu.legalitas');
-Route::get('/ranting', function () {
-    return view('navigasi.ranting', ['title' => '4. Data Ranting']);
-})->name('menu.ranting');
-Route::get('/struktur', function () {
-    return view('navigasi.struktur', ['title' => '5. Struktur Organisasi']);
-})->name('menu.struktur');
-Route::get('/media', function () {
-    return view('navigasi.media', ['title' => '6. Ruang Media']);
-})->name('menu.media');
-Route::get('/pengesahan', function () {
-    return view('navigasi.pengesahan', ['title' => '7. Data Pengesahan']);
-})->name('menu.pengesahan');
-Route::get('/kontak', function () {
-    return view('navigasi.kontak', ['title' => '8. Kontak Cabang']);
-})->name('menu.kontak');
+Route::middleware(['auth'])->group(
+    function () {
+        /*
+|--------------------------------------------------------------------------
+| 2. DASHBOARD UTAMA (Pusat Navigasi & Statistik)
+|--------------------------------------------------------------------------
+*/
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Panel Alur Administrasi (Dashboard)
-Route::get('/dashboard', [BerandaController::class, 'index'])->name('dashboard');
 
-Route::get('/administrasi/pendaftaran', [InputDataController::class, 'create'])->name('pendaftaran.create');
-Route::get('/administrasi/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
-Route::get('/administrasi/output', [OutputController::class, 'index'])->name('output.index');
+        /*
+|--------------------------------------------------------------------------
+| 3. PANEL ALUR ADMINISTRASI (Flow A, B, C - Melewati Controller Resmi)
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/administrasi/pendaftaran', function () {
-    return view('administrasi.pendaftaran', ['title' => 'Flow A: Pendaftaran Baru']);
-})->name('pendaftaran.index');
+        // Flow A: Input Pendaftaran Anggota Baru
+        Route::get('/administrasi/pendaftaran', [InputDataController::class, 'create'])->name('pendaftaran.index');
+        Route::post('/administrasi/pendaftaran', [InputDataController::class, 'store'])->name('pendaftaran.store');
 
-Route::get('/administrasi/verifikasi', function () {
-    return view('administrasi.verifikasi', ['title' => 'Flow B: Verifikasi Pengurus']);
-})->name('verifikasi.index');
+        // Flow B: Validasi & Verifikasi Berkas oleh Pengurus
+        Route::get('/administrasi/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
+        Route::post('/administrasi/verifikasi/{id}', [VerifikasiController::class, 'proses'])->name('verifikasi.proses');
 
-Route::get('/administrasi/output', function () {
-    return view('administrasi.output', ['title' => 'Flow C: Output Data']);
-})->name('output.index');
+        // Flow C: Cetak Output Laporan Kelulusan & Set Tgl Awasul
+        Route::get('/administrasi/output', [OutputController::class, 'index'])->name('output.index');
+        Route::get('/administrasi/output/cetak', [\App\Http\Controllers\Administrasi\OutputController::class, 'cetakLaporan'])->name('output.cetak');
+        Route::patch('/administrasi/output/{id}', [OutputController::class, 'updatePengesahan'])->name('output.update');
 
-// Rute untuk Grup Manajemen Internal
-Route::get('/internal/keanggotaan', function () {
-    return view('internal.keanggotaan', [
-        'title' => '1. Manajemen Keanggotaan',
-        'icon' => 'fa-users'
-    ]);
-})->name('internal.keanggotaan');
+        /*
+|--------------------------------------------------------------------------
+| 4. MANAJEMEN INTERNAL (Data Master Organisasi)
+|--------------------------------------------------------------------------
+*/
+        Route::get('/internal/keanggotaan', [KeanggotaanController::class, 'index'])->name('internal.keanggotaan');
 
-Route::get('/internal/operasional', function () {
-    return view('internal.operasional', [
-        'title' => '2. Operasional Ranting',
-        'icon' => 'fa-building-shield'
-    ]);
-})->name('internal.operasional');
+        Route::get('/internal/operasional', [OperasionalController::class, 'index'])->name('internal.operasional');
+        Route::post('/internal/operasional', [OperasionalController::class, 'store'])->name('internal.operasional.store');
+        Route::put('/internal/operasional/{id}', [OperasionalController::class, 'update'])->name('internal.operasional.update');
 
-Route::get('/internal/keuangan-logistik', function () {
-    return view('internal.keuangan', [
-        'title' => '3. Keuangan & Logistik',
-        'icon' => 'fa-wallet'
-    ]);
-})->name('internal.keuangan');
+        Route::get('/internal/keuangan-logistik', [KeuanganController::class, 'index'])->name('internal.keuangan');
+        Route::post('/internal/keuangan-logistik', [KeuanganController::class, 'store'])->name('internal.keuangan.store');
+        Route::put('/internal/keuangan-logistik/{id}', [KeuanganController::class, 'update'])->name('internal.keuangan.update');
+        Route::delete('/internal/keuangan-logistik/{id}', [KeuanganController::class, 'destroy'])->name('internal.keuangan.destroy');
+
+        /*
+|--------------------------------------------------------------------------
+| 5. RUTE TAMPILAN INFORMASI (Menu Navigasi 2 - 8)
+|--------------------------------------------------------------------------
+*/
+        Route::get('/tentang', function () {
+            return view('navigasi.tentang', ['title' => '2. Tentang IKSPI', 'icon' => 'fa-clock-rotate-left']);
+        })->name('menu.tentang');
+
+        Route::get('/legalitas', function () {
+            return view('navigasi.legalitas', ['title' => '3. Tata Kelola & Legalitas', 'icon' => 'fa-file-shield']);
+        })->name('menu.legalitas');
+
+        Route::get('/ranting', function () {
+            return view('navigasi.ranting', ['title' => '4. Data Ranting', 'icon' => 'fa-map-location-dot']);
+        })->name('menu.ranting');
+
+        Route::get('/struktur', function () {
+            return view('navigasi.struktur', ['title' => '5. Struktur Organisasi', 'icon' => 'fa-sitemap']);
+        })->name('menu.struktur');
+
+        Route::get('/media', function () {
+            return view('navigasi.media', ['title' => '6. Ruang Media', 'icon' => 'fa-images']);
+        })->name('menu.media');
+
+        Route::get('/pengesahan', function () {
+            return view('navigasi.pengesahan', ['title' => '7. Data Pengesahan', 'icon' => 'fa-id-card-clip']);
+        })->name('menu.pengesahan');
+
+        Route::get('/kontak', function () {
+            return view('navigasi.kontak', ['title' => '8. Kontak Cabang', 'icon' => 'fa-headset']);
+        })->name('menu.kontak');
+    }
+);

@@ -1,119 +1,91 @@
 <x-dashboard-layout>
-    @slot('icon', 'fa-solid fa-user-check')
-    @slot('title', 'Flow B: Verifikasi Pengurus Cabang')
+    @slot('icon', 'fa-solid fa-building-shield')
+    @slot('title', 'Flow B: Verifikasi Pengurus')
 
-    <div class="space-y-6">
-        <div class="flex items-center justify-between border-b border-gray-200 pb-4">
-            <div>
-                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Antrean Verifikasi Pendaftaran</h2>
-                <p class="text-xs text-gray-500 mt-1">Periksa kelengkapan identitas, titik koordinat, dan berkas formal
-                    sebelum melakukan validasi data.</p>
+    <div class="max-w-6xl mx-auto space-y-6">
+        @if (session('success'))
+            <div
+                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium">
+                <i class="fa-solid fa-circle-check text-base text-green-500"></i>
+                <span>{{ session('success') }}</span>
             </div>
-            <span
-                class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full uppercase tracking-wider animate-pulse">
-                Flow B - Review
-            </span>
+        @endif
+
+        @if (session('error'))
+            <div
+                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium">
+                <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
+        <div class="border-b border-gray-200 pb-4">
+            <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Verifikasi Berkas</h2>
+            <p class="text-xs text-gray-500 mt-1">Periksa kelengkapan fisik, foto sakral, dan dokumen pdf calon warga
+                sebelum menerbitkan nomor anggota.</p>
         </div>
 
         <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
-            <div class="p-4 bg-slate-50 border-b border-gray-100 flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Daftar Pengajuan Masuk</span>
-                <span class="text-[11px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded-sm font-medium">2 Data
-                    Menunggu</span>
-            </div>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr
+                        class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <th class="p-4">Calon Anggota</th>
+                        <th class="p-4">Ranting Latihan</th>
+                        <th class="p-4">Tanggal Daftar</th>
+                        <th class="p-4 text-center">Dokumen Kelengkapan</th>
+                        <th class="p-4 text-right">Aksi Keputusan</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-xs">
+                    @forelse($antrean as $data)
+                        <tr class="hover:bg-slate-50/50 transition">
+                            <td class="p-4">
+                                <div class="font-bold text-slate-900 uppercase">{{ $data->nama_lengkap }}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">NIK: {{ $data->nik }}</div>
+                            </td>
+                            <td class="p-4 text-slate-600 font-medium">
+                                Ranting {{ $data->ranting?->nama_ranting ?? 'Tidak Terdaftar' }}
+                            </td>
+                            <td class="p-4 text-gray-500">
+                                {{ $data->created_at->translatedFormat('d F Y') }}
+                            </td>
+                            <td class="p-4 text-center">
+                                <a href="#"
+                                    class="inline-flex items-center space-x-1 text-red-600 font-bold bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded border border-red-100 text-[11px] transition">
+                                    <i class="fa-regular fa-file-pdf"></i>
+                                    <span>Lihat {{ $data->nama_file_berkas }}</span>
+                                </a>
+                            </td>
+                            <td class="p-4 text-right">
+                                <form action="{{ route('verifikasi.proses', $data->id) }}" method="POST"
+                                    class="inline-flex items-center gap-2">
+                                    @csrf
+                                    <input type="text" name="catatan" placeholder="Alasan jika ditolak..."
+                                        class="px-2 py-1 border border-gray-200 rounded text-[11px] focus:outline-none focus:border-red-500 w-36">
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-gray-600">
-                    <thead class="bg-gray-100 text-gray-700 uppercase font-semibold border-b border-gray-200">
+                                    <button type="submit" name="action" value="setujui"
+                                        class="px-3 py-1.5 bg-slate-950 text-white font-bold text-[11px] rounded hover:bg-slate-800 transition cursor-pointer">
+                                        Terima
+                                    </button>
+
+                                    <button type="submit" name="action" value="tolak"
+                                        class="px-3 py-1.5 bg-red-50 text-red-600 font-bold text-[11px] rounded border border-red-100 hover:bg-red-100 transition cursor-pointer">
+                                        Tolak
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
                         <tr>
-                            <th class="p-4">Nama Lengkap</th>
-                            <th class="p-4">Ranting / Tempat Latihan</th>
-                            <th class="p-4">Koordinat Domisili</th>
-                            <th class="p-4">Berkas Kelengkapan</th>
-                            <th class="p-4 text-center">Aksi Tindakan</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="p-4 font-medium text-slate-900 flex items-center space-x-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center font-bold text-slate-500">
-                                    WS</div>
-                                <div>
-                                    <p class="font-semibold text-slate-900">Wahyu Supono</p>
-                                    <p class="text-[10px] text-gray-400">081234567890</p>
-                                </div>
-                            </td>
-                            <td class="p-4">
-                                <p class="font-medium text-slate-800">Ranting Tanah Abang</p>
-                                <p class="text-[10px] text-gray-400">Jakarta Pusat</p>
-                            </td>
-                            <td class="p-4">
-                                <span
-                                    class="bg-gray-100 px-2 py-1 rounded text-[10px] font-mono text-slate-700 block w-max">📍
-                                    -6.1754, 106.8271</span>
-                            </td>
-                            <td class="p-4">
-                                <a href="#"
-                                    class="inline-flex items-center space-x-1 text-red-600 font-semibold hover:underline bg-red-50 px-2 py-1 rounded">
-                                    <span>📄</span> <span>Iks.pdf</span>
-                                </a>
-                            </td>
-                            <td class="p-4">
-                                <div class="flex items-center justify-center gap-2">
-                                    <button
-                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-semibold transition cursor-pointer">Tolak</button>
-                                    <button
-                                        class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded font-semibold transition cursor-pointer">Terima
-                                    </button>
-                                </div>
+                            <td colspan="5" class="p-12 text-center text-gray-400 italic">
+                                <i class="fa-solid fa-clipboard-check text-2xl block mb-2 text-gray-300"></i>
+                                Bersih! Tidak ada berkas calon anggota yang menunggu verifikasi saat ini.
                             </td>
                         </tr>
-
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="p-4 font-medium text-slate-900 flex items-center space-x-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center font-bold text-slate-500">
-                                    LP</div>
-                                <div>
-                                    <p class="font-semibold text-slate-900">Lukman Pratama</p>
-                                    <p class="text-[10px] text-gray-400">089876543210</p>
-                                </div>
-                            </td>
-                            <td class="p-4">
-                                <p class="font-medium text-slate-800">Ranting Kemayoran</p>
-                                <p class="text-[10px] text-gray-400">Jakarta Pusat</p>
-                            </td>
-                            <td class="p-4">
-                                <span
-                                    class="bg-gray-100 px-2 py-1 rounded text-[10px] font-mono text-slate-700 block w-max">📍
-                                    -6.1601, 106.8415</span>
-                            </td>
-                            <td class="p-4">
-                                <a href="#"
-                                    class="inline-flex items-center space-x-1 text-red-600 font-semibold hover:underline bg-red-50 px-2 py-1 rounded">
-                                    <span>📄</span> <span>Iks.pdf</span>
-                                </a>
-                            </td>
-                            <td class="p-4">
-                                <div class="flex items-center justify-center gap-2">
-                                    <button
-                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-semibold transition cursor-pointer">Tolak</button>
-                                    <button
-                                        class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded font-semibold transition cursor-pointer">Terima
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="p-4 bg-slate-900 text-white rounded-xl shadow-xs text-xs flex items-center justify-between">
-            <p>💡 <strong>Info Mekanisme Flow:</strong> Ketika tombol <span class="text-yellow-400 font-bold">"Terima"
-                </span> diklik, sistem akan otomatis melempar data ke **Flow C (Output)** untuk
-                men-generate laporan berkala dan membuka form input **Tanggal Awasul** secara otomatis.</p>
-        </div>
+                    @endempty
+            </tbody>
+        </table>
     </div>
+</div>
 </x-dashboard-layout>
