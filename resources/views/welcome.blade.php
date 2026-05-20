@@ -1,192 +1,188 @@
-    <!DOCTYPE html>
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="id">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>IKSPI Kera Sakti - Jiwa Satria</title>
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,600,700,800" rel="stylesheet" />
-        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-        <style>
-            body {
-                font-family: 'Plus Jakarta Sans', sans-serif;
-            }
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IKSPI Kera Sakti - Cabang Jakarta Pusat</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.bunny.net/css?family=inter:400,600,700,900" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
 
-            .hero-overlay {
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 100%);
-            }
+<body class="bg-slate-50">
 
-            .accent-border {
-                border-left: 4px solid #ef4444;
-            }
+    <div
+        class="bg-slate-950 text-white text-[10px] py-2 px-6 flex justify-between items-center uppercase tracking-widest font-bold">
+        <span>{{ date('l, d F Y') }}</span>
+        <div class="flex gap-4">
+            <a href="#" class="hover:text-red-500"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="hover:text-red-500"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="hover:text-red-500"><i class="fab fa-youtube"></i></a>
+        </div>
+    </div>
 
-            /* Merah IKS */
-        </style>
-    </head>
-
-    <body class="bg-[#fafafa] antialiased">
-
-        <!-- Navbar (Sticky & Glassmorphism) -->
-        <nav
-            class="fixed top-0 w-full z-50 flex justify-between items-center px-8 md:px-16 py-6 text-white transition-all duration-300">
-            <div class="text-2xl font-black tracking-tighter flex items-center gap-2">
-                <span class="bg-red-600 px-2 py-0.5 rounded italic">IKSPI</span> KERA SAKTI
+    <nav class="bg-white border-b border-slate-200 py-6 px-6 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <h1 class="text-3xl font-black italic tracking-tighter"><span class="text-red-600">IKSPI</span> JAKPUS</h1>
+            <div class="hidden md:flex gap-6 text-xs font-bold uppercase">
+                <a href="#" class="hover:text-red-600 transition">Beranda</a>
+                <a href="#" class="hover:text-red-600 transition">Sejarah</a>
+                <a href="#" class="hover:text-red-600 transition">Media</a>
+                <a href="#" class="hover:text-red-600 transition">Kontak</a>
             </div>
-            <div class="hidden md:flex gap-10 text-sm font-bold uppercase tracking-widest">
-                <a href="#" class="hover:text-red-500 transition">Beranda</a>
-                <a href="#" class="hover:text-red-500 transition">Sejarah</a>
-                <a href="#" class="hover:text-red-500 transition">Cabang</a>
-                <a href="#" class="hover:text-red-500 transition">Galeri</a>
-            </div>
-            <div class="flex gap-4">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}"
-                            class="px-6 py-2 bg-white text-black text-sm font-bold rounded-full">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="px-6 py-2 border border-white/50 backdrop-blur-md text-sm font-bold rounded-full hover:bg-white hover:text-black transition">Masuk</a>
-                    @endauth
-                @endif
-            </div>
-        </nav>
+            <a href="/login"
+                class="bg-red-600 text-white px-4 py-2 text-[10px] font-bold rounded hover:bg-slate-900 transition">LOGIN
+            </a>
+        </div>
+    </nav>
 
-        <!-- Hero Section (Immersive Like image_5f71db.jpg) -->
-        <header class="relative h-screen w-full overflow-hidden">
-            <!-- Ganti URL ini dengan foto latihan atau lambang IKSPI yang gagah -->
-            <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=2000"
-                class="absolute inset-0 w-full h-full object-cover grayscale-[20%]" alt="Silat Background">
+    <section class="max-w-6xl mx-auto p-6">
+        <div class="relative w-full h-[450px] rounded-lg overflow-hidden shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
+                class="w-full h-full object-cover">
             <div
-                class="absolute inset-0 hero-overlay flex flex-col items-center justify-center text-center text-white px-6">
-                <span class="mb-4 text-red-500 font-bold tracking-[0.3em] uppercase animate-pulse text-sm">Keempat
-                    Penjuru
-                    Cari Saudara</span>
-                <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.9]">
-                    JIWA <span class="text-red-600">SATRIA</span> <br> BELA DIRI.
-                </h1>
-                <p class="max-w-xl text-lg opacity-80 mb-10 leading-relaxed font-light">
-                    Lestarikan warisan budaya bangsa melalui kekuatan fisik dan kemantapan hati di Ikatan Kera Sakti
-                    Putra
-                    Indonesia.
-                </p>
-                <div class="flex flex-col md:row gap-4">
-                    <button
-                        class="px-10 py-4 bg-red-600 text-white font-bold rounded-full shadow-2xl hover:bg-red-700 transition transform hover:-translate-y-1">Daftar
-                        Anggota</button>
-                    <button
-                        class="px-10 py-4 bg-white/10 backdrop-blur-lg border border-white/20 font-bold rounded-full hover:bg-white/20 transition">Pelajari
-                        Teknik</button>
+                class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent p-12 flex flex-col justify-center">
+                <span class="bg-red-600 text-white w-fit px-2 py-1 text-[10px] font-bold mb-3 uppercase">Headline
+                    Utama</span>
+                <h2 class="text-5xl font-black text-white max-w-2xl leading-tight">MENJAGA WARISAN KERA SAKTI
+                    UNTUK MASA DEPAN</h2>
+                <button class="mt-6 w-fit bg-white text-black px-6 py-3 font-bold text-xs uppercase rounded">Baca
+                    Selengkapnya</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-12">
+        <h3 class="font-black text-sm uppercase border-b-2 border-black pb-2 mb-8">Galeri Foto</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="h-40 bg-slate-200 rounded hover:opacity-80 transition cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400" alt="Galeri Foto"
+                    class="w-full h-full object-cover rounded">
+            </div>
+            <div class="h-40 bg-slate-200 rounded hover:opacity-80 transition cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400" alt="Galeri Foto"
+                    class="w-full h-full object-cover rounded">
+            </div>
+            <div class="h-40 bg-slate-200 rounded hover:opacity-80 transition cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400" alt="Galeri Foto"
+                    class="w-full h-full object-cover rounded">
+            </div>
+            <div class="h-40 bg-slate-200 rounded hover:opacity-80 transition cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400" alt="Galeri Foto"
+                    class="w-full h-full object-cover rounded">
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8 py-10">
+        <div class="md:col-span-2 space-y-8">
+            <h3 class="font-black text-sm uppercase border-b-2 border-black pb-2">Berita Terbaru</h3>
+
+            <div class="bg-white p-4 border border-slate-200 rounded flex gap-6 hover:shadow-md transition">
+                <div class="w-32 h-24 bg-slate-200 shrink-0"><img
+                        src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
+                        class="w-full h-full object-cover"></div>
+                <div>
+                    <span class="text-[10px] font-bold text-red-600">KEGIATAN</span>
+                    <h3 class="font-bold text-lg mt-1">Penyambutan Warga Baru 2026</h3>
+                    <p class="text-xs text-slate-500 mt-1">Liputan lengkap prosesi pengesahan warga baru di padepokan
+                        pusat yang berlangsung khidmat.</p>
                 </div>
             </div>
-        </header>
-
-        <!-- Info & Statistik Section -->
-        <section class="max-w-7xl mx-auto px-6 py-28 grid md:grid-cols-2 gap-20 items-center">
-            <div class="relative">
-                <div class="accent-border pl-6">
-                    <h2 class="text-4xl font-extrabold tracking-tight mb-6 leading-tight text-gray-900">Membangun
-                        Karakter
-                        Melalui Gerak & Doa.</h2>
-                </div>
-                <p class="text-gray-500 mb-10 leading-relaxed text-lg">IKSPI Kera Sakti bukan sekadar bela diri,
-                    melainkan
-                    wadah pembentukan mental satria yang menjunjung tinggi persaudaraan dan nilai spiritual.</p>
-
-                <div class="grid grid-cols-3 gap-8 pt-6 border-t border-gray-100">
-                    <div>
-                        <div class="text-3xl font-black text-red-600">1980</div>
-                        <div class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">Tahun Berdiri
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-black">500+</div>
-                        <div class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">Cabang Aktif
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-black">1M+</div>
-                        <div class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">Warga Anggota
-                        </div>
-                    </div>
+            <div class="bg-white p-4 border border-slate-200 rounded flex gap-6 hover:shadow-md transition">
+                <div class="w-32 h-24 bg-slate-200 shrink-0"><img
+                        src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
+                        class="w-full h-full object-cover"></div>
+                <div><span class="text-[10px] font-bold text-red-600">PRESTASI</span>
+                    <h3 class="font-bold text-lg mt-1">Atlet Cabang Jakpus Sabet Juara Umum</h3>
+                    <p class="text-xs text-slate-500 mt-1">Turnamen silat antar perguruan se-Jakarta Pusat dimenangkan
+                        oleh atlet IKSPI.</p>
                 </div>
             </div>
-
-            <!-- Features Cards Like image_5f71db.jpg -->
-            <div class="space-y-6">
-                <div
-                    class="p-8 bg-white rounded-[2rem] border border-gray-100 shadow-sm flex items-start gap-6 hover:shadow-xl transition duration-500 group">
-                    <div
-                        class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition duration-500">
-                        🥊</div>
-                    <div>
-                        <h4 class="font-bold text-xl mb-1">Teknik Perkelahian</h4>
-                        <p class="text-sm text-gray-500">Kombinasi kelincahan kera dan kekuatan fisik yang efektif.</p>
-                    </div>
-                </div>
-                <div
-                    class="p-8 bg-white rounded-[2rem] border border-gray-100 shadow-sm flex items-start gap-6 hover:shadow-xl transition duration-500 group">
-                    <div
-                        class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition duration-500">
-                        🧘</div>
-                    <div>
-                        <h4 class="font-bold text-xl mb-1">Kekuatan Rohani</h4>
-                        <p class="text-sm text-gray-500">Pendalaman spiritual untuk ketenangan jiwa dan pikiran.</p>
-                    </div>
+            <div class="bg-white p-4 border border-slate-200 rounded flex gap-6 hover:shadow-md transition">
+                <div class="w-32 h-24 bg-slate-200 shrink-0"><img
+                        src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
+                        class="w-full h-full object-cover"></div>
+                <div><span class="text-[10px] font-bold text-red-600">RANTING</span>
+                    <h3 class="font-bold text-lg mt-1">Jadwal Kegiatan Setiap Ranting 2026</h3>
+                    <p class="text-xs text-slate-500 mt-1">Berikut adalah daftar kegiatan yang akan dilaksanakan oleh
+                        ranting dalam tahun 2026.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Gallery/Destinations Section -->
-        <section class="bg-gray-900 py-28 px-6 text-white rounded-[3rem] mx-4 mb-10 shadow-inner">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex justify-between items-end mb-16">
-                    <div>
-                        <h2 class="text-4xl font-black tracking-tight uppercase italic">Galeri Kegiatan</h2>
-                        <p class="text-gray-400 mt-2">Melihat lebih dekat semangat para pendekar.</p>
-                    </div>
-                    <button
-                        class="px-6 py-2 border border-white/20 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">Lihat
-                        Semua</button>
-                </div>
+        <aside class="space-y-8">
+            <h3 class="font-black text-sm uppercase border-b-2 border-black pb-2">
+                Trending
+            </h3>
+            <div class="bg-white border border-slate-200 rounded-lg p-6">
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Card 1 -->
-                    <div class="relative h-[450px] rounded-[2.5rem] overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1552072092-7f9b8d63efcb?auto=format&fit=crop&q=80&w=1000"
-                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                            alt="Latihan">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-10 flex flex-col justify-end">
-                            <h4 class="text-2xl font-bold">Latihan Gabungan</h4>
-                            <p class="text-sm text-gray-400 mt-2 italic">Membangun sinergi antar cabang.</p>
-                        </div>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="relative h-[450px] rounded-[2.5rem] overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1000"
-                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                            alt="Tradisi">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-10 flex flex-col justify-end">
-                            <h4 class="text-2xl font-bold">Tradisi Pengesahan</h4>
-                            <p class="text-sm text-gray-400 mt-2 italic">Momen sakral pengukuhan warga baru.</p>
-                        </div>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="relative h-[450px] rounded-[2.5rem] overflow-hidden group">
-                        <div
-                            class="absolute inset-0 bg-red-600 flex flex-col items-center justify-center p-10 text-center">
-                            <h4 class="text-3xl font-black uppercase mb-4 tracking-tighter">Bergabung Sekarang</h4>
-                            <p class="text-sm text-white/80 mb-8">Jadilah bagian dari keluarga besar IKSPI Kera Sakti di
-                                seluruh dunia.</p>
-                            <button class="px-8 py-3 bg-white text-red-600 font-bold rounded-full">Daftar</button>
-                        </div>
-                    </div>
-                </div>
+                <ul class="space-y-6">
+                    <li class="group cursor-pointer">
+                        <span class="text-[9px] font-bold text-red-600 uppercase tracking-widest">Agenda</span>
+                        <h4 class="font-bold text-sm mt-1 group-hover:text-red-700 transition">Jadwal Pengesahan Warga
+                            Baru 2026</h4>
+                    </li>
+
+                    <li class="group cursor-pointer">
+                        <span class="text-[9px] font-bold text-red-600 uppercase tracking-widest">Pendaftaran</span>
+                        <h4 class="font-bold text-sm mt-1 group-hover:text-red-700 transition">Dibuka: Pendaftaran Calon
+                            Anggota Gelombang II</h4>
+                    </li>
+
+                    <li class="group cursor-pointer">
+                        <span class="text-[9px] font-bold text-red-600 uppercase tracking-widest">Prestasi</span>
+                        <h4 class="font-bold text-sm mt-1 group-hover:text-red-700 transition">Atlet Jakpus Raih Medali
+                            Emas di Kejuaraan Nasional</h4>
+                    </li>
+
+                    <li class="group cursor-pointer">
+                        <span class="text-[9px] font-bold text-red-600 uppercase tracking-widest">Sosial</span>
+                        <h4 class="font-bold text-sm mt-1 group-hover:text-red-700 transition">Bakti Sosial Bersih
+                            Padepokan & Donor Darah</h4>
+                    </li>
+
+                    <li class="group cursor-pointer">
+                        <span class="text-[9px] font-bold text-red-600 uppercase tracking-widest">Internal</span>
+                        <h4 class="font-bold text-sm mt-1 group-hover:text-red-700 transition">Hasil Rapat Pleno
+                            Pengurus Cabang Bulanan</h4>
+                    </li>
+                </ul>
             </div>
-        </section>
+        </aside>
+    </main>
 
-    </body>
+    <footer class="bg-slate-950 text-white py-16 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-2">
+                <h2 class="text-2xl font-black italic mb-4"><span class="text-red-600">IKSPI</span> JAKPUS</h2>
+                <p class="text-[11px] text-slate-400 leading-relaxed max-w-sm">Portal berita resmi IKSPI Kera Sakti
+                    Cabang Jakarta Pusat. Wadah informasi untuk warga, pengurus, dan masyarakat umum.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-xs uppercase mb-4">Navigasi</h4>
+                <ul class="text-[11px] text-slate-400 space-y-2">
+                    <li><a href="#" class="hover:text-white">Tentang Cabang</a></li>
+                    <li><a href="#" class="hover:text-red-500">Struktur Organisasi</a></li>
+                    <li><a href="#" class="hover:text-red-500">Galeri Foto</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-xs uppercase mb-4">Kontak</h4>
+                <p class="text-[11px] text-slate-400">Jl. Contoh No. 123,<br>Jakarta Pusat, Indonesia.</p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-slate-800 text-center text-[10px] text-slate-500">
+            &copy; 2026 IKSPI KERA SAKTI CABANG JAKARTA PUSAT. ALL RIGHTS RESERVED.
+        </div>
+    </footer>
 
-    </html>
+</body>
+
+</html>
