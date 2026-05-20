@@ -14,7 +14,16 @@ class GerbangController extends Controller
 
     public function checkGerbangPassword(Request $request)
     {
-        // Sementara bypass dulu untuk keperluan testing frontend
-        return redirect()->route('login.form');
+        $request->validate([
+            'password_gerbang' => 'required',
+        ]);
+
+        if ($request->password_gerbang === 'IKSPI2026') {
+            session(['gerbang_terlewati' => true]);
+
+            return redirect()->route('login');
+        }
+
+        return back()->withErrors(['password_gerbang' => 'Password Gerbang Salah!']);
     }
 }

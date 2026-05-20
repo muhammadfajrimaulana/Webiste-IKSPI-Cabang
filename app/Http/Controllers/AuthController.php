@@ -7,16 +7,25 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // 1. Tampilkan Halaman Form Login
     public function showLogin()
     {
+        // 1. Cek dulu, dia udah lewat Gerbang belum?
+        // Kalo belom, lempar paksa ke halaman Gerbang
+        if (!session()->has('gerbang_terlewati')) {
+            return redirect()->route('gerbang.form')
+                ->with('error', 'Akses ditolak! Lewati gerbang utama terlebih dahulu.');
+        }
+
+        // 2. Kalo udah lewat Gerbang, baru cek apakah dia udah login sebagai admin?
+        // Kalo udah login, langsung bawa ke dashboard
         if (Auth::check()) {
             return redirect('/dashboard');
         }
+
+        // 3. Kalo belom login tapi udah lewat gerbang, baru tampilin form login
         return view('auth.login');
     }
 
-    // 2. Eksekusi Pengecekan Akun
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -32,7 +41,6 @@ class AuthController extends Controller
         return redirect()->back()->with('error', 'Username atau password salah, harap periksa kembali.');
     }
 
-    // 3. Hancurkan Sesi / Logout
     public function logout(Request $request)
     {
         Auth::logout();

@@ -18,9 +18,14 @@ use App\Http\Controllers\Internal\KeuanganController;
 |--------------------------------------------------------------------------
 */
 
-// Gerbang Utama (Halaman pertama kali dibuka wajib input password pengaman)
-Route::get('/', [GerbangController::class, 'showGerbangForm'])->name('gerbang.form');
-Route::post('/', [GerbangController::class, 'checkGerbangPassword'])->name('gerbang.check');
+// Halaman utama (Landing Page)
+Route::get('/', function () {
+    return view('welcome');
+})->name('landing');
+
+// Gerbang (Input Password Pengaman) - Sekarang pindah ke URL /gerbang
+Route::get('/gerbang', [GerbangController::class, 'showGerbangForm'])->name('gerbang.form');
+Route::post('/gerbang', [GerbangController::class, 'checkGerbangPassword'])->name('gerbang.check');
 
 // Alur Login Admin Resmi
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

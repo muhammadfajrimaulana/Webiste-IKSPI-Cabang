@@ -17,8 +17,13 @@
                 class="w-12 h-12 bg-red-600 text-white rounded-xl mx-auto flex items-center justify-center text-xl font-bold shadow-lg shadow-red-600/20">
                 <i class="fa-solid fa-user-shield"></i>
             </div>
-            <h2 class="text-base font-black text-white uppercase tracking-wider">Sistem Administrasi IKS.PI</h2>
-            <p class="text-[11px] text-slate-400">Khusus internal pengurus cabang Jakarta Pusat</p>
+            <h2 class="mt-4 text-center text-lg font-bold text-white uppercase">
+                Form Login
+            </h2>
+            <p class="mt-2 text-center text-xs text-gray-400">
+                Manajemen Administrasi IKSPI Kera Sakti <br>
+                <span class="text-yellow-400 font-semibold">Cabang Jakarta Pusat</span>
+            </p>
         </div>
 
         @if (session('error'))

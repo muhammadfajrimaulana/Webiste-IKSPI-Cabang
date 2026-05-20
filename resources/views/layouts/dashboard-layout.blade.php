@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="$title ?? 'Keanggotaan IKSPI Kera Sakti Cabang Jakpus'">
     <div class="flex h-screen overflow-hidden">
 
         <aside class="w-64 bg-slate-900 text-white flex flex-col h-full shrink-0">
