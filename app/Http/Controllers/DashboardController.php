@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Anggota;
 use App\Models\Ranting;
 use App\Models\Pendaftaran;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -26,6 +27,9 @@ class DashboardController extends Controller
             ->take(5) // Batasi maksimal 5 data terbaru yang muncul di beranda
             ->get();
 
+        // Kas Keuangan: Hitung total saldo (Flow C)
+        $totalMasuk = Transaksi::where('tipe', 'masuk')->sum('nominal') - Transaksi::where('tipe', 'keluar')->sum('nominal');
+
         // 3. Lempar semua data ke view beranda/dashboard utama
         return view('dashboard', [
             'title' => 'Beranda / Pusat Navigasi',
@@ -33,6 +37,7 @@ class DashboardController extends Controller
             'totalAnggota' => $totalAnggota,
             'totalRanting' => $totalRanting,
             'totalVerifikasi' => $totalVerifikasi,
+            'totalMasuk' => $totalMasuk,
             'antreanPendaftaran' => $antreanPendaftaran
         ]);
     }

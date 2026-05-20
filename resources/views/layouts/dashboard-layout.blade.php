@@ -16,64 +16,28 @@
 
                 <div>
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Menu Utama
+                        Ringkasan
                     </span>
                     <div class="space-y-1">
-                        <a href="{{ route('dashboard') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-semibold bg-red-600 rounded-lg text-white shadow-xs hover:bg-red-700 transition duration-200">
-                            <i class="fa-solid fa-house-chimney text-sm w-5 text-center"></i>
-                            <span>Beranda</span>
-                        </a>
+                        <x-nav-link route="dashboard" icon="fa-solid fa-house-chimney">Dashboard</x-nav-link>
                     </div>
                 </div>
 
                 <div>
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Pusat Manajemen
+                        Manajemen
                     </span>
                     <div class="space-y-1">
-                        <a href="{{ route('menu.tentang') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-info-circle text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Tentang IKSPI</span>
-                        </a>
-                        <a href="{{ route('menu.legalitas') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-regular fa-file-lines text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Tata Kelola & Legalitas</span>
-                        </a>
-                        <a href="{{ route('menu.ranting') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-map-location-dot text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Data Ranting & Latihan</span>
-                        </a>
-                        <a href="{{ route('menu.struktur') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-sitemap text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Struktur Organisasi</span>
-                        </a>
-                        <a href="{{ route('menu.media') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-regular fa-images text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Ruang Media & Galeri</span>
-                        </a>
-                        <a href="{{ route('menu.pengesahan') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-id-card-clip text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Data Pengesahan</span>
-                        </a>
-                        <a href="{{ route('menu.kontak') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-headset text-sm w-5 text-center text-slate-500 group-hover:text-red-500 transition"></i>
-                            <span>Kontak Cabang</span>
-                        </a>
+                        <x-nav-link route="menu.tentang" icon="fa-solid fa-info-circle">Tentang IKSPI</x-nav-link>
+                        <x-nav-link route="menu.legalitas" icon="fa-regular fa-file-lines">Tata Kelola &
+                            Legalitas</x-nav-link>
+                        <x-nav-link route="menu.ranting" icon="fa-solid fa-map-location-dot">Data Ranting &
+                            Latihan</x-nav-link>
+                        <x-nav-link route="menu.struktur" icon="fa-solid fa-sitemap">Struktur Organisasi</x-nav-link>
+
+                        <x-nav-link route="menu.media" icon="fa-regular fa-images">Ruang Media & Galeri</x-nav-link>
+                        <x-nav-link route="menu.pengesahan" icon="fa-solid fa-id-card-clip">Data Pengesahan</x-nav-link>
+                        <x-nav-link route="menu.kontak" icon="fa-solid fa-headset">Kontak Cabang</x-nav-link>
                     </div>
                 </div>
 
@@ -81,51 +45,30 @@
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
                         Administrasi
                     </span>
+
                     <div class="space-y-1">
-                        <a href="{{ route('pendaftaran.index') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-file-signature text-sm w-5 text-center text-slate-500 group-hover:text-yellow-500 transition"></i>
-                            <span>Flow A: Input Data Baru</span>
-                        </a>
-                        <a href="{{ route('verifikasi.index') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-user-check text-sm w-5 text-center text-slate-500 group-hover:text-yellow-500 transition"></i>
-                            <span>Flow B: Verifikasi Pengurus</span>
-                        </a>
-                        <a href="{{ route('output.index') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-file-invoice text-sm w-5 text-center text-slate-500 group-hover:text-yellow-500 transition"></i>
-                            <span>Flow C: Output Laporan</span>
+                        <x-nav-link route="pendaftaran.index" icon="fa-solid fa-file-signature" color="yellow">Flow A:
+                            Input Data Baru</x-nav-link>
+                        <x-nav-link route="verifikasi.index" icon="fa-solid fa-user-check" color="yellow">Flow B:
+                            Verifikasi Pengurus</x-nav-link>
+                        <x-nav-link route="output.index" icon="fa-solid fa-file-invoice" color="yellow">Flow C: Output
+                            Laporan</x-nav-link>
                         </a>
                     </div>
                 </div>
 
                 <div>
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Manajemen Internal
+                        Internal
                     </span>
+
                     <div class="space-y-1">
-                        <a href="{{ route('internal.keanggotaan') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-users text-sm w-5 text-center text-slate-500 group-hover:text-blue-400 transition"></i>
-                            <span>1. Keanggotaan</span>
-                        </a>
-                        <a href="{{ route('internal.operasional') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-building-shield text-sm w-5 text-center text-slate-500 group-hover:text-blue-400 transition"></i>
-                            <span>2. Operasional Ranting</span>
-                        </a>
-                        <a href="{{ route('internal.keuangan') }}"
-                            class="flex items-center space-x-3 px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 rounded-lg transition duration-200 group">
-                            <i
-                                class="fa-solid fa-wallet text-sm w-5 text-center text-slate-500 group-hover:text-blue-400 transition"></i>
-                            <span>3. Keuangan & Logistik</span>
-                        </a>
+                        <x-nav-link route="internal.keanggotaan" icon="fa-solid fa-users" color="blue">1.
+                            Keanggotaan</x-nav-link>
+                        <x-nav-link route="internal.operasional" icon="fa-solid fa-building-shield" color="blue">2.
+                            Operasional Ranting</x-nav-link>
+                        <x-nav-link route="internal.keuangan" icon="fa-solid fa-wallet" color="blue">3. Keuangan &
+                            Logistik</x-nav-link>
                     </div>
                 </div>
             </nav>

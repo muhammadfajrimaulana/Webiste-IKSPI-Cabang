@@ -1,5 +1,5 @@
 <x-dashboard-layout>
-    @slot('icon', 'fa-solid fa-gauge')
+    @slot('icon', 'fa-solid fa-house-chimney')
     @slot('title', 'Dashboard')
 
     <div class="space-y-6">
@@ -24,7 +24,7 @@
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Anggota</p>
-                    <h3 class="text-2xl font-bold text-slate-900">{{ $totalAnggota }}</h3>
+                    <h3 class="text-lg font-bold text-slate-900">{{ $totalAnggota }}</h3>
                     <span class="text-[10px] text-green-600 font-semibold flex items-center gap-1">
                         <i class="fa-solid fa-user-shield"></i> Warga & Pendekar
                     </span>
@@ -39,7 +39,7 @@
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Ranting</p>
-                    <h3 class="text-2xl font-bold text-slate-900">{{ $totalRanting }}</h3>
+                    <h3 class="text-lg font-bold text-slate-900">{{ $totalRanting }}</h3>
                     <span class="text-[10px] text-slate-500 font-medium flex items-center gap-1">
                         <i class="fa-solid fa-location-dot"></i> Tempat Latihan Aktif
                     </span>
@@ -54,7 +54,7 @@
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Verifikasi Form</p>
-                    <h3 class="text-2xl font-bold text-yellow-600">{{ $totalVerifikasi }}</h3>
+                    <h3 class="text-lg font-bold text-yellow-600">{{ $totalVerifikasi }}</h3>
                     <span class="text-[10px] text-yellow-600 font-bold flex items-center gap-1 animate-pulse">
                         <i class="fa-solid fa-circle-notch animate-spin"></i> Menunggu Review
                     </span>
@@ -69,9 +69,9 @@
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kas Keuangan</p>
-                    <h3 class="text-2xl font-bold text-slate-900">Rp 4.5M</h3>
+                    <h3 class="text-lg font-bold text-slate-900">Rp {{ number_format($totalMasuk, 0, ',', '.') }}</h3>
                     <span class="text-[10px] text-green-600 font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-vault"></i> Termasuk Modal Ijon 25
+                        <i class="fa-solid fa-vault"></i> Total Saldo Terkini
                     </span>
                 </div>
                 <div
@@ -170,7 +170,7 @@
                         <span class="flex items-center space-x-2.5">
                             <i
                                 class="fa-solid fa-file-invoice-dollar text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
-                            <span>Cetak Laporan & Set Tgl Awasul (Flow C)</span>
+                            <span>Cetak Laporan Output (Flow C)</span>
                         </span>
                         <i
                             class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
@@ -193,7 +193,7 @@
                 class="bg-slate-50 p-3 rounded-lg border border-gray-100 text-[11px] text-gray-500 leading-relaxed flex items-start gap-2">
                 <span class="text-yellow-600 shrink-0"><i class="fa-solid fa-lightbulb"></i></span>
                 <span><strong>Tips:</strong> Data pendaftaran yang lolos verifikasi otomatis memperbarui arsip
-                    khusus di modul <strong>Ruang Media</strong> dan <strong>Data Ranting</strong>.</span>
+                    khusus di modul <strong>Data Pengesahan</strong> pada kategori Manajemen.</span>
             </div>
         </div>
     </div>
