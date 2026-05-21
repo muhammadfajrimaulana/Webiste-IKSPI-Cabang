@@ -28,9 +28,16 @@ Route::get('/gerbang', [GerbangController::class, 'showGerbangForm'])->name('ger
 Route::post('/gerbang', [GerbangController::class, 'checkGerbangPassword'])->name('gerbang.check');
 
 // Alur Login Admin Resmi
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.post');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+route::get('/admin/cabang/dashboard', [DashboardController::class, 'index'])->name('admin.cabang.dashboard');
+route::get('/admin/ranting/dashboard', [DashboardController::class, 'index'])->name('admin.ranting.dashboard');
+route::get('/member/dashboard', [DashboardController::class, 'index'])->name('member.dashboard');
+// Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+// Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(
