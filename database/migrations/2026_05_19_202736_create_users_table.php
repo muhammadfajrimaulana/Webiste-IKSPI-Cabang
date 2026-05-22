@@ -13,6 +13,7 @@ return new class extends Migration
             $col->string('nama_pengurus');
             $col->string('username')->unique();
             $col->string('password');
+            $col->string('role')->default('anggota');
             $col->timestamps();
         });
     }
