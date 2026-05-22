@@ -14,6 +14,11 @@ class UserSeeder extends Seeder
         $ranting1 = \App\Models\Ranting::where('nama_ranting', 'Ranting Kemayoran')->first();
         $ranting2 = \App\Models\Ranting::where('nama_ranting', 'Ranting Tanah Abang')->first();
         $ranting3 = \App\Models\Ranting::where('nama_ranting', 'Ranting Gambir')->first();
+        $ranting4 = \App\Models\Ranting::where('nama_ranting', 'Ranting Sawah Besar')->first();
+        $ranting5 = \App\Models\Ranting::where('nama_ranting', 'Ranting Menteng')->first();
+        $ranting6 = \App\Models\Ranting::where('nama_ranting', 'Ranting Johar Baru')->first();
+        $ranting7 = \App\Models\Ranting::where('nama_ranting', 'Ranting Senen')->first();
+        $ranting8 = \App\Models\Ranting::where('nama_ranting', 'Ranting Cempaka Putih')->first();
 
         // 1. Buat Testing Admin Cabang
         User::create([
@@ -25,13 +30,27 @@ class UserSeeder extends Seeder
         ]);
 
         // 2. Buat Testing Admin Ranting
-        User::create([
-            'nama_pengurus' => 'Admin Ranting',
-            'username'      => 'admin_ranting',
-            'password'      => Hash::make('ranting1ksp1'),
-            'role'          => 'admin_ranting',
-            'ranting_id'    => $ranting3->id,
-        ]);
+        $adminRantingList = [
+            ['nama' => 'Admin Kemayoran', 'user' => 'admin_kemayoran', 'ranting' => $ranting1],
+            ['nama' => 'Admin Tanah Abang', 'user' => 'admin_tanahabang', 'ranting' => $ranting2],
+            ['nama' => 'Admin Gambir', 'user' => 'admin_gambir', 'ranting' => $ranting3],
+            ['nama' => 'Admin Sawah Besar', 'user' => 'admin_sawahbesar', 'ranting' => $ranting4],
+            ['nama' => 'Admin Menteng', 'user' => 'admin_menteng', 'ranting' => $ranting5],
+            ['nama' => 'Admin Johar Baru', 'user' => 'admin_joharbaru', 'ranting' => $ranting6],
+            ['nama' => 'Admin Senen', 'user' => 'admin_senen', 'ranting' => $ranting7],
+            ['nama' => 'Admin Cempaka Putih', 'user' => 'admin_cempakaputih', 'ranting' => $ranting8],
+        ];
+
+        foreach ($adminRantingList as $admin) {
+            if ($admin['ranting']) {
+                User::updateOrCreate(['username' => $admin['user']], [
+                    'nama_pengurus' => $admin['nama'],
+                    'password'      => Hash::make('ranting1ksp1'),
+                    'role'          => 'admin_ranting',
+                    'ranting_id'    => $admin['ranting']->id,
+                ]);
+            }
+        }
 
         // 3. Buat Testing Anggota
         $anggotas = [
