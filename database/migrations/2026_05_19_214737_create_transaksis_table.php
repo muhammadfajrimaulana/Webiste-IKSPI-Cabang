@@ -14,7 +14,8 @@ return new class extends Migration
             $table->string('keterangan');
             $table->enum('tipe', ['masuk', 'keluar']);
             $table->integer('nominal');
-            $table->string('kategori'); // Contoh: Pendaftaran, Logistik, Operasional, Iuran
+            $table->string('kategori');
+            $table->foreignId('ranting_id')->nullable()->constrained('rantings')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -32,9 +32,11 @@ Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-route::get('/admin/cabang/dashboard', [DashboardController::class, 'index'])->name('admin.cabang.dashboard');
-route::get('/admin/ranting/dashboard', [DashboardController::class, 'index'])->name('admin.ranting.dashboard');
-route::get('/member/dashboard', [DashboardController::class, 'index'])->name('member.dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard/admin-cabang', [DashboardController::class, 'index']);
+    Route::get('/dashboard/admin-ranting', [DashboardController::class, 'index']);
+    Route::get('/dashboard/member', [DashboardController::class, 'index']);
+});
 // Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 // Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 // Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

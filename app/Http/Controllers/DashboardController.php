@@ -2,43 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
-use App\Models\Ranting;
-use App\Models\Pendaftaran;
-use App\Models\Transaksi;
-use Illuminate\Http\Request;
+use App\Models\{Anggota, Ranting, Pendaftaran, Transaksi};
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // 1. Hitung total data statistik untuk Stat Cards
-        $totalAnggota = Anggota::count();
-        $totalRanting = Ranting::count();
+        $user = Auth::user();
 
-        // Verifikasi Form: Hitung pendaftar yang statusnya masih 'pending' (Flow B)
-        $totalVerifikasi = Pendaftaran::where('status_verifikasi', 'pending')->count();
+        // Query Dasar (Awalnya global)
+        $queryAnggota = Anggota::query();
+        $queryPendaftaran = Pendaftaran::with('ranting')->where('status_verifikasi', 'pending');
+        $queryTransaksi = Transaksi::query();
 
-        // 2. Ambil data antrean pendaftaran terbaru yang statusnya 'pending' untuk tabel utama
-        // Kita gunakan eager loading dengan 'ranting' untuk mengoptimalkan query database
-        $antreanPendaftaran = Pendaftaran::with('ranting')
-            ->where('status_verifikasi', 'pending')
-            ->orderBy('created_at', 'desc')
-            ->take(5) // Batasi maksimal 5 data terbaru yang muncul di beranda
-            ->get();
+        // FILTER OTOMATIS: 
+        // Jika Admin Ranting, batasi datanya hanya untuk ranting_id miliknya
+        if ($user->role === 'admin_ranting') {
+            $queryAnggota->where('ranting_id', $user->ranting_id);
+            $queryPendaftaran->where('ranting_id', $user->ranting_id);
+            $queryTransaksi->where('ranting_id', $user->ranting_id);
+        }
 
-        // Kas Keuangan: Hitung total saldo (Flow C)
-        $totalMasuk = Transaksi::where('tipe', 'masuk')->sum('nominal') - Transaksi::where('tipe', 'keluar')->sum('nominal');
+        // Ambil hasil statistik
+        $data = [
+            'title' => 'Dashboard ' . ucfirst(str_replace('_', ' ', $user->role)),
+            'totalAnggota' => $queryAnggota->count(),
+            'totalRanting' => ($user->role === 'admin_cabang') ? Ranting::count() : 0,
+            'totalVerifikasi' => $queryPendaftaran->count(),
+            'totalMasuk' => $queryTransaksi->where('tipe', 'masuk')->sum('nominal') - $queryTransaksi->where('tipe', 'keluar')->sum('nominal'),
+            'antreanPendaftaran' => $queryPendaftaran->latest()->take(5)->get(),
+        ];
 
-        // 3. Lempar semua data ke view beranda/dashboard utama
-        return view('dashboard', [
-            'title' => 'Beranda / Pusat Navigasi',
-            'icon' => 'fa-house-chimney',
-            'totalAnggota' => $totalAnggota,
-            'totalRanting' => $totalRanting,
-            'totalVerifikasi' => $totalVerifikasi,
-            'totalMasuk' => $totalMasuk,
-            'antreanPendaftaran' => $antreanPendaftaran
-        ]);
+        return view('dashboard', $data);
     }
 }

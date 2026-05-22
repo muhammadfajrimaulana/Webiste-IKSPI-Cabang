@@ -14,6 +14,7 @@ return new class extends Migration
             $col->string('username')->unique();
             $col->string('password');
             $col->string('role')->default('anggota');
+            $col->foreignId('ranting_id')->nullable()->constrained('rantings')->onDelete('cascade');
             $col->timestamps();
         });
     }

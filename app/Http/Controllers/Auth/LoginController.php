@@ -30,9 +30,9 @@ class LoginController extends Controller
             $user = Auth::user();
 
             return match ($user->role) {
-                'admin_cabang' => redirect()->intended('/admin/cabang/dashboard'),
-                'admin_ranting' => redirect()->intended('/admin/ranting/dashboard'),
-                default => redirect()->intended('/member/dashboard'),
+                'admin_cabang' => redirect()->intended('/dashboard/admin-cabang'),
+                'admin_ranting' => redirect()->intended('/dashboard/admin-ranting'),
+                default => redirect()->intended('/dashboard/member'),
             };
         }
 

@@ -75,11 +75,21 @@
 
             <div class="p-4 ml-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold">AD
+                    <div
+                        class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase">
+                        {{ collect(explode(' ', auth()->user()->nama_pengurus))->map(fn($word) => $word[0])->take(2)->implode('') }}
                     </div>
+
                     <div class="text-xs">
-                        <p class="font-semibold block truncate w-32">Admin Cabang</p>
-                        <p class="text-gray-400 text-[10px]">Level 1 - Full Access</p>
+                        <p class="font-semibold block truncate w-32">{{ auth()->user()->nama_pengurus }}</p>
+
+                        <p class="text-gray-400 text-[8px]">
+                            {{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }}
+
+                            @if (auth()->user()->ranting)
+                                ({{ auth()->user()->ranting->nama_ranting }})
+                            @endif
+                        </p>
                     </div>
                 </div>
                 <form action="{{ route('logout') }}" method="POST" class="p-2">
