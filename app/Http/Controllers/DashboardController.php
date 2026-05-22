@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Anggota, Ranting, Pendaftaran, Transaksi};
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -11,29 +14,30 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Query Dasar (Awalnya global)
+        // 1. Definisikan Base Query
         $queryAnggota = Anggota::query();
-        $queryPendaftaran = Pendaftaran::with('ranting')->where('status_verifikasi', 'pending');
+        $queryPendaftaran = Pendaftaran::where('status_verifikasi', 'pending');
         $queryTransaksi = Transaksi::query();
 
-        // FILTER OTOMATIS: 
-        // Jika Admin Ranting, batasi datanya hanya untuk ranting_id miliknya
-        if ($user->role === 'admin_ranting') {
+        // 2. Gunakan Gate untuk filter (lebih clean daripada mengecek string role)
+        if (Gate::allows('is-ranting')) {
             $queryAnggota->where('ranting_id', $user->ranting_id);
             $queryPendaftaran->where('ranting_id', $user->ranting_id);
             $queryTransaksi->where('ranting_id', $user->ranting_id);
         }
 
-        // Ambil hasil statistik
-        $data = [
-            'title' => 'Dashboard ' . ucfirst(str_replace('_', ' ', $user->role)),
-            'totalAnggota' => $queryAnggota->count(),
-            'totalRanting' => ($user->role === 'admin_cabang') ? Ranting::count() : 0,
-            'totalVerifikasi' => $queryPendaftaran->count(),
-            'totalMasuk' => $queryTransaksi->where('tipe', 'masuk')->sum('nominal') - $queryTransaksi->where('tipe', 'keluar')->sum('nominal'),
-            'antreanPendaftaran' => $queryPendaftaran->latest()->take(5)->get(),
-        ];
+        // 3. Hitung Keuangan (optimasi sum)
+        $totalMasuk = $queryTransaksi->where('tipe', 'masuk')->sum('nominal');
+        $totalKeluar = $queryTransaksi->where('tipe', 'keluar')->sum('nominal');
 
-        return view('dashboard', $data);
+        // 4. Data Dashboard
+        return view('dashboard', [
+            'title'           => 'Dashboard ' . ucfirst(str_replace('_', ' ', $user->role)),
+            'totalAnggota'    => $queryAnggota->count(),
+            'totalRanting'    => Gate::allows('is-cabang') ? Ranting::count() : 0,
+            'totalVerifikasi' => $queryPendaftaran->count(),
+            'totalSaldo'      => $totalMasuk - $totalKeluar,
+            'antreanPendaftaran' => $queryPendaftaran->latest()->take(5)->get(),
+        ]);
     }
 }

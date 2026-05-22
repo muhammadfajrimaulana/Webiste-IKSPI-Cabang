@@ -12,42 +12,66 @@
             </div>
         @endif
 
-        <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8 border-b border-gray-200 pb-6">
+
             <div>
                 <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Transparansi Kas & Logistik
                 </h2>
-                <p class="text-xs text-gray-500 mt-1">Sistem pencatatan arus kas masuk pendaftaran, operasional
-                    pengesahan, dan inventarisasi logistik.</p>
+                <p class="text-xs text-gray-500 mt-1">Sistem pencatatan arus kas masuk, operasional, dan inventarisasi
+                    logistik.</p>
             </div>
 
-            <button onclick="bukaModalKas()"
-                class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow-xs flex items-center gap-2 cursor-pointer">
-                <i class="fa-solid fa-file-invoice-dollar"></i> Catat Transaksi Baru
-            </button>
+            <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+
+                @if (auth()->user()->role === 'admin_cabang')
+                    <div class="relative w-full sm:w-64">
+                        <label class="text-[9px] font-semibold text-gray-400 mb-1">Filter Keuangan
+                            Ranting</label>
+                        <select name="ranting_id"
+                            class="w-full pl-3 pr-8 py-2 text-xs font-semibold bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-slate-900 appearance-none cursor-pointer">
+                            <option value="">Semua Ranting (Cabang Jakpus)</option>
+                            @foreach ($dataRanting as $ranting)
+                                <option value="{{ $ranting->id }}">{{ $ranting->nama_ranting }}</option>
+                            @endforeach
+                        </select>
+                        <i
+                            class="fa-solid fa-chevron-down absolute right-3 top-[30px] text-[10px] text-gray-400 pointer-events-none"></i>
+                    </div>
+                @endif
+
+                <button onclick="bukaModalKas()"
+                    class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow-sm flex items-center gap-2 cursor-pointer mt-5 sm:mt-5">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Catat Transaksi
+                </button>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Kas Bersih / Saldo</p>
-                <h4 class="text-2xl font-black text-slate-950 mt-1">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}
-                </h4>
-                <div class="text-[10px] {{ $saldoAkhir >= 0 ? 'text-green-600' : 'text-red-600' }} font-medium mt-1">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    {{ $saldoAkhir >= 0 ? 'Dana Cabang Aman' : 'Kas Defisit / Minus' }}
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-lg">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Kas Bersih (Saldo)</p>
+                <h4 class="text-2xl font-black text-white mt-1">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}</h4>
+                <div class="text-[10px] {{ $saldoAkhir >= 0 ? 'text-emerald-400' : 'text-rose-400' }} font-medium mt-1">
+                    <i class="fa-solid {{ $saldoAkhir >= 0 ? 'fa-shield-halved' : 'fa-triangle-exclamation' }}"></i>
+                    {{ $saldoAkhir >= 0 ? 'Posisi Dana Aman' : 'Perhatian: Kas Defisit' }}
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Pemasukan</p>
-                <h4 class="text-2xl font-black text-green-600 mt-1">Rp {{ number_format($totalMasuk, 0, ',', '.') }}
-                </h4>
-                <div class="text-[10px] text-gray-400 mt-1">Akumulasi iuran & pendaftaran</div>
+                <div>
+                    <h4 class="text-2xl font-black text-green-600 mt-1">Rp {{ number_format($totalMasuk, 0, ',', '.') }}
+                    </h4>
+                    <div class="text-[10px] text-gray-400 mt-1">Akumulasi iuran & pendaftaran</div>
+                </div>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Pengeluaran</p>
-                <h4 class="text-2xl font-black text-red-600 mt-1">Rp {{ number_format($totalKeluar, 0, ',', '.') }}</h4>
-                <div class="text-[10px] text-gray-400 mt-1">Alokasi logistik & operasional</div>
+                <div>
+                    <h4 class="text-2xl font-black text-red-600 mt-1">Rp {{ number_format($totalKeluar, 0, ',', '.') }}
+                    </h4>
+                    <div class="text-[10px] text-gray-400 mt-1">Alokasi logistik & operasional</div>
+                </div>
             </div>
         </div>
 

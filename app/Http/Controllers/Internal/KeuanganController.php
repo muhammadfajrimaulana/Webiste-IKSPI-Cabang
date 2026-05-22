@@ -4,19 +4,35 @@ namespace App\Http\Controllers\Internal;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transaksi;
+use App\Models\Ranting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class KeuanganController extends Controller
 {
     public function index()
     {
-        // 1. Tarik semua log transaksi dari DB, urutkan dari yang terbaru
-        $transaksi = Transaksi::orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
+        $user = Auth::user();
 
-        // 2. Kalkulasi nominal total masuk, keluar, dan hitung saldo bersih dinamis
-        $totalMasuk = Transaksi::where('tipe', 'masuk')->sum('nominal');
-        $totalKeluar = Transaksi::where('tipe', 'keluar')->sum('nominal');
-        $saldoAkhir = $totalMasuk - $totalKeluar;
+        // 1. Base Query
+        $query = Transaksi::query();
+
+        // 2. Isolasi: Admin Ranting hanya lihat kas rantingnya
+        if ($user->role === 'admin_ranting') {
+            $query->where('ranting_id', $user->ranting_id);
+        }
+
+        // 3. Ambil data transaksi
+        $transaksi = $query->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
+
+        // 4. Kalkulasi saldo (Clone query agar filter tetap terjaga)
+        $totalMasuk = (clone $query)->where('tipe', 'masuk')->sum('nominal');
+        $totalKeluar = (clone $query)->where('tipe', 'keluar')->sum('nominal');
+
+        $dataRanting = ($user->role === 'admin_cabang')
+            ? Ranting::orderBy('nama_ranting', 'asc')->get()
+            : [];
 
         return view('internal.keuangan', [
             'title' => '3. Keuangan & Logistik',
@@ -24,13 +40,15 @@ class KeuanganController extends Controller
             'transaksi' => $transaksi,
             'totalMasuk' => $totalMasuk,
             'totalKeluar' => $totalKeluar,
-            'saldoAkhir' => $saldoAkhir
+            'saldoAkhir' => $totalMasuk - $totalKeluar,
+            'dataRanting' => $dataRanting
         ]);
     }
 
     public function store(Request $request)
     {
-        // Validasi input catatan kas baru
+        $user = Auth::user();
+
         $request->validate([
             'tanggal' => 'required|date',
             'keterangan' => 'required|string|max:255',
@@ -39,15 +57,25 @@ class KeuanganController extends Controller
             'kategori' => 'required|string',
         ]);
 
-        // Simpan ke database
-        Transaksi::create($request->all());
+        // Simpan dengan menyertakan ranting_id secara otomatis
+        $data = $request->all();
+        $data['ranting_id'] = ($user->role === 'admin_ranting') ? $user->ranting_id : $request->ranting_id;
 
-        return redirect()->back()->with('success', 'Transaksi keuangan baru berhasil dicatat!');
+        Transaksi::create($data);
+
+        return redirect()->back()->with('success', 'Transaksi berhasil dicatat!');
     }
 
     public function update(Request $request, $id)
     {
-        // 1. Validasi input data perubahan
+        $user = Auth::user();
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Proteksi: Admin Ranting tidak boleh ubah kas ranting lain
+        if ($user->role === 'admin_ranting' && $transaksi->ranting_id !== $user->ranting_id) {
+            return redirect()->back()->with('error', 'Akses ditolak!');
+        }
+
         $request->validate([
             'tanggal' => 'required|date',
             'keterangan' => 'required|string|max:255',
@@ -56,26 +84,23 @@ class KeuanganController extends Controller
             'kategori' => 'required|string',
         ]);
 
-        // 2. Cari dan update datanya di DB
-        $transaksi = Transaksi::findOrFail($id);
         $transaksi->update($request->all());
 
-        // 3. Redirect balik dengan notifikasi sukses
-        return redirect()->back()->with('success', 'Catatan keuangan berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Catatan keuangan diperbarui!');
     }
 
     public function destroy($id)
     {
-        // Cari data transaksi berdasarkan ID di database
+        $user = Auth::user();
         $transaksi = Transaksi::findOrFail($id);
 
-        // Simpan keterangan singkat untuk notifikasi alert
-        $ketLama = $transaksi->keterangan;
+        // Proteksi: Admin Ranting tidak boleh hapus kas ranting lain
+        if ($user->role === 'admin_ranting' && $transaksi->ranting_id !== $user->ranting_id) {
+            return redirect()->back()->with('error', 'Akses ditolak!');
+        }
 
-        // Eksekusi penghapusan data
         $transaksi->delete();
 
-        // Kembalikan ke halaman dengan alert sukses
-        return redirect()->back()->with('success', 'Catatan transaksi "' . $ketLama . '" berhasil dihapus!');
+        return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
     }
 }

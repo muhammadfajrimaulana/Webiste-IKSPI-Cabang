@@ -13,7 +13,9 @@
 
         <div class="flex items-center justify-between border-b border-gray-200 pb-4">
             <div>
-                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Buku Induk Anggota Resmi</h2>
+                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Buku Induk Anggota Resmi
+                    {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}
+                </h2>
                 <p class="text-xs text-gray-500 mt-1">Daftar nomor anggota resmi yang telah diterbitkan sistem. Anda
                     dapat mengatur tanggal pengesahan di sini.</p>
             </div>

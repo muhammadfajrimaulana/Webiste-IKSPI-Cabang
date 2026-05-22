@@ -20,10 +20,12 @@
                     distribusi jumlah warga aktif.</p>
             </div>
 
-            <button onclick="bukaModal()"
-                class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow-xs flex items-center gap-2 cursor-pointer">
-                <i class="fa-solid fa-plus"></i> Tambah Ranting
-            </button>
+            @if (auth()->user()->role === 'admin_cabang')
+                <button onclick="bukaModal()"
+                    class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow-xs flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-plus"></i> Tambah Ranting
+                </button>
+            @endif
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -63,8 +65,10 @@
                                 {{ $ranting->nama_ranting }}</h3>
                         </div>
                         <div class="flex flex-col items-end">
-                            <span class="inline-flex items-center px-2 py-1 bg-slate-200 text-slate-700 text-[10px] font-bold rounded-md border border-slate-300">
-                                <i class="fa-solid fa-users mr-1.5 text-slate-400"></i> {{ $ranting->anggota_count }} Warga
+                            <span
+                                class="inline-flex items-center px-2 py-1 bg-slate-200 text-slate-700 text-[10px] font-bold rounded-md border border-slate-300">
+                                <i class="fa-solid fa-users mr-1.5 text-slate-400"></i> {{ $ranting->anggota_count }}
+                                Warga
                             </span>
                         </div>
                     </div>

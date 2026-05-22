@@ -6,45 +6,56 @@ use App\Http\Controllers\Controller;
 use App\Models\Anggota;
 use App\Models\Ranting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KeanggotaanController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $search = $request->input('search');
-        $rantingId = $request->input('ranting_id'); // Tangkap filter id ranting
 
-        $semuaAnggota = Anggota::with(['pendaftaran', 'ranting'])
-            // Filter pencarian teks nama/nomor
-            ->when($search, function ($query) use ($search) {
-                $query->where('nomor_anggota', 'LIKE', "%{$search}%")
-                    ->orWhereHas('pendaftaran', function ($q) use ($search) {
-                        $q->where('nama_lengkap', 'LIKE', "%{$search}%");
-                    });
-            })
-            // Filter spesifik per ranting (Tambahan baris ini)
-            ->when($rantingId, function ($query) use ($rantingId) {
-                $query->where('ranting_id', $rantingId);
-            })
-            ->orderBy('nomor_anggota', 'asc')
-            ->get();
+        // LOGIKA ISOLASI: Admin Ranting dipaksa melihat rantingnya sendiri
+        $rantingId = ($user->role === 'admin_ranting') ? $user->ranting_id : $request->input('ranting_id');
 
-        $statWarga = Anggota::where('tingkatan', 'Warga')->count();
-        $statPendekar = Anggota::where('tingkatan', 'Pendekar')->count();
-        $statAktif = Anggota::where('status_aktif', 'aktif')->count();
-        $statNonAktif = Anggota::where('status_aktif', 'non-aktif')->count();
+        // Query Dasar
+        $query = Anggota::with(['pendaftaran', 'ranting']);
+
+        // Filter Pencarian
+        $query->when($search, function ($q) use ($search) {
+            $q->where('nomor_anggota', 'LIKE', "%{$search}%")
+                ->orWhereHas('pendaftaran', function ($sq) use ($search) {
+                    $sq->where('nama_lengkap', 'LIKE', "%{$search}%");
+                });
+        });
+
+        // Filter Ranting (yang sudah diisolasi)
+        $query->when($rantingId, function ($q) use ($rantingId) {
+            $q->where('ranting_id', $rantingId);
+        });
+
+        $semuaAnggota = $query->orderBy('nomor_anggota', 'asc')->get();
+
+        // Statistik Dinamis (Penting: harus ikut terfilter berdasarkan user)
+        $statQuery = Anggota::query();
+        if ($user->role === 'admin_ranting') {
+            $statQuery->where('ranting_id', $user->ranting_id);
+        }
 
         return view('internal.keanggotaan', [
             'title' => '1. Manajemen Keanggotaan',
             'icon' => 'fa-users',
             'semuaAnggota' => $semuaAnggota,
-            'statWarga' => $statWarga,
-            'statPendekar' => $statPendekar,
-            'statAktif' => $statAktif,
-            'statNonAktif' => $statNonAktif,
+            'statWarga' => (clone $statQuery)->where('tingkatan', 'Warga')->count(),
+            'statPendekar' => (clone $statQuery)->where('tingkatan', 'Pendekar')->count(),
+            'statAktif' => (clone $statQuery)->where('status_aktif', 'aktif')->count(),
+            'statNonAktif' => (clone $statQuery)->where('status_aktif', 'non-aktif')->count(),
             'search' => $search,
             'rantingId' => $rantingId,
-            'dataRanting' => Ranting::orderBy('nama_ranting', 'asc')->get()
+            // Admin Cabang lihat semua ranting, Admin Ranting hanya lihat namanya sendiri
+            'dataRanting' => ($user->role === 'admin_cabang')
+                ? Ranting::orderBy('nama_ranting', 'asc')->get()
+                : Ranting::where('id', $user->ranting_id)->get()
         ]);
     }
 }

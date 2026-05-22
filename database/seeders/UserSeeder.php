@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
 
         // 1. Buat Testing Admin Cabang
         User::create([
-            'nama_pengurus' => 'Admin Cabang Utama',
+            'nama_pengurus' => 'Admin Cabang',
             'username'      => 'admin_cabang',
             'password'      => Hash::make('cabang1ksp1'),
             'role'          => 'admin_cabang',

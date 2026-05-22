@@ -70,7 +70,7 @@
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kas Keuangan</p>
-                    <h3 class="text-lg font-bold text-slate-900">Rp {{ number_format($totalMasuk, 0, ',', '.') }}</h3>
+                    <h3 class="text-lg font-bold text-slate-900">Rp {{ number_format($totalSaldo, 0, ',', '.') }}</h3>
                     <span class="text-[10px] text-green-600 font-medium flex items-center gap-1">
                         <i class="fa-solid fa-vault"></i> Total Saldo Terkini
                     </span>

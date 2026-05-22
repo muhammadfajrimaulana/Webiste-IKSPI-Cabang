@@ -7,7 +7,7 @@
                     class="w-10 h-10 object-contain rounded-md filter drop-shadow-md">
                 <div>
                     <h1 class="text-sm font-bold tracking-wide">IKSPI KERA SAKTI</h1>
-                    <p class="text-xs text-gray-400">Cab. Jakarta Pusat</p>
+                    <p class="text-xs text-gray-400">Cabang Jakarta Pusat</p>
                 </div>
             </div>
 
@@ -25,7 +25,7 @@
 
                 <div>
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Manajemen
+                        Pusat Navigasi
                     </span>
                     <div class="space-y-1">
                         <x-nav-link route="menu.tentang" icon="fa-solid fa-info-circle">Tentang IKSPI</x-nav-link>
@@ -43,7 +43,7 @@
 
                 <div>
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Administrasi
+                        Workflow Administrasi
                     </span>
 
                     <div class="space-y-1">
@@ -59,7 +59,7 @@
 
                 <div>
                     <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Internal
+                        Manajemen Internal
                     </span>
 
                     <div class="space-y-1">

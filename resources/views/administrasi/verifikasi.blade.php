@@ -20,7 +20,8 @@
         @endif
 
         <div class="border-b border-gray-200 pb-4">
-            <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Verifikasi Berkas</h2>
+            <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Verifikasi Berkas Calon Anggota
+                {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}</h2>
             <p class="text-xs text-gray-500 mt-1">Periksa kelengkapan fisik, foto sakral, dan dokumen pdf calon warga
                 sebelum menerbitkan nomor anggota.</p>
         </div>
