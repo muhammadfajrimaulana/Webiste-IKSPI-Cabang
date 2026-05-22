@@ -13,21 +13,23 @@
                     Selamat Datang, {{ auth()->user()->nama_pengurus }}!
                 </h2>
                 <p class="text-xs text-slate-400 leading-relaxed">
-                    Manajemen Keanggotaan & Administrasi IKSPI Kera Sakti Cabang Jakarta Pusat. Pantau alur pendaftaran,
-                    validasi berkas internal, output laporan administrasi dan manajemen ranting secara real-time dari
-                    panel pusat.
+                    Manajemen Keanggotaan & Administrasi IKSPI Kera Sakti Cabang Jakarta Pusat
+                    {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}. Pantau alur pendaftaran,
+                    validasi berkas internal, output laporan administrasi dan manajemen ranting secara real-time.
                 </p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
             <div
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Anggota</p>
                     <h3 class="text-lg font-bold text-slate-900">{{ $totalAnggota }}</h3>
-                    <span class="text-[10px] text-green-600 font-semibold flex items-center gap-1">
-                        <i class="fa-solid fa-user-shield"></i> Warga & Pendekar
+                    <span class="text-[10px] text-blue-600 font-semibold flex items-center gap-1">
+                        <i class="fa-solid fa-user-shield"></i>
+                        {{ auth()->user()->role === 'admin_ranting' ? 'Warga Ranting' : 'Total Cabang' }}
                     </span>
                 </div>
                 <div
@@ -39,10 +41,15 @@
             <div
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Ranting</p>
-                    <h3 class="text-lg font-bold text-slate-900">{{ $totalRanting }}</h3>
-                    <span class="text-[10px] text-slate-500 font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-location-dot"></i> Tempat Latihan Aktif
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                        {{ auth()->user()->role === 'admin_ranting' ? 'Nama Ranting' : 'Total Ranting' }}
+                    </p>
+                    <h3 class="text-sm font-bold text-slate-900 truncate">
+                        {{ auth()->user()->role === 'admin_ranting' ? auth()->user()->ranting->nama_ranting : $totalRanting }}
+                    </h3>
+                    <span class="text-[10px] text-slate-500 font-medium flex items-center gap-1 mt-2">
+                        <i class="fa-solid fa-location-dot"></i>
+                        {{ auth()->user()->role === 'admin_ranting' ? 'Ranting Aktif' : 'Semua Cabang' }}
                     </span>
                 </div>
                 <div
@@ -54,10 +61,12 @@
             <div
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Verifikasi Form</p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Menunggu Review</p>
                     <h3 class="text-lg font-bold text-yellow-600">{{ $totalVerifikasi }}</h3>
-                    <span class="text-[10px] text-yellow-600 font-bold flex items-center gap-1 animate-pulse">
-                        <i class="fa-solid fa-circle-notch animate-spin"></i> Menunggu Review
+                    <span
+                        class="text-[10px] text-yellow-600 font-bold flex items-center gap-1 {{ $totalVerifikasi > 0 ? 'animate-pulse' : '' }}">
+                        <i class="fa-solid fa-circle-notch {{ $totalVerifikasi > 0 ? 'animate-spin' : '' }}"></i>
+                        {{ $totalVerifikasi > 0 ? 'Perlu Diproses' : 'Selesai' }}
                     </span>
                 </div>
                 <div
@@ -69,10 +78,12 @@
             <div
                 class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                 <div class="space-y-1">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kas Keuangan</p>
-                    <h3 class="text-lg font-bold text-slate-900">Rp {{ number_format($totalSaldo, 0, ',', '.') }}</h3>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Saldo Kas</p>
+                    <h3 class="text-md font-bold text-slate-900 truncate">Rp
+                        {{ number_format($totalSaldo, 0, ',', '.') }}</h3>
                     <span class="text-[10px] text-green-600 font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-vault"></i> Total Saldo Terkini
+                        <i class="fa-solid fa-vault"></i>
+                        {{ auth()->user()->role === 'admin_ranting' ? 'Kas Ranting' : 'Kas Total Cabang' }}
                     </span>
                 </div>
                 <div
@@ -127,7 +138,7 @@
                                         <td class="p-3 text-center">
                                             <button
                                                 class="inline-flex items-center space-x-1 bg-slate-900 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-md hover:bg-slate-800 transition cursor-pointer">
-                                                <i class="fa-regular fa-eye"></i> <span>Review</span>
+                                                <i class="fa-regular fa-eye"></i> <span>Lihat</span>
                                             </button>
                                         </td>
                                     </tr>

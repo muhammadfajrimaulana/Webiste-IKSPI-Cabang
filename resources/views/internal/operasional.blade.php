@@ -15,9 +15,10 @@
         <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Kendali Operasional Tempat
-                    Latihan</h2>
+                    Latihan di {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}</h2>
                 <p class="text-xs text-gray-500 mt-1">Monitoring lokasi latihan resmi, penanggung jawab ranting, dan
-                    distribusi jumlah warga aktif.</p>
+                    distribusi jumlah warga aktif di {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}.
+                </p>
             </div>
 
             @if (auth()->user()->role === 'admin_cabang')

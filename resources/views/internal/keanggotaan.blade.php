@@ -5,9 +5,10 @@
     <div class="max-w-6xl mx-auto space-y-6">
         <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Data Master Warga</h2>
+                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Data Master
+                    {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}</h2>
                 <p class="text-xs text-gray-500 mt-1">Sistem kontrol internal sebaran tingkatan sabuk dan monitoring
-                    status keaktifan warga Cabang Jakarta Pusat.</p>
+                    status keaktifan anggota {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}.</p>
             </div>
 
             <form action="{{ route('internal.keanggotaan') }}" method="GET" class="flex items-center gap-2">
