@@ -38,7 +38,7 @@ class LoginController extends Controller
 
         // 4. Jika login gagal
         throw ValidationException::withMessages([
-            'username' => 'Kredensial tidak cocok dengan database kami.',
+            'username' => 'Username atau Password salah. Silakan coba kembali.',
         ]);
     }
 

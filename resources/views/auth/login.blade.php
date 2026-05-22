@@ -26,11 +26,11 @@
             </p>
         </div>
 
-        @if (session('error'))
+        @if ($errors->any())
             <div
-                class="bg-red-950 border border-red-800 text-red-400 p-3 rounded-lg text-[11px] flex items-center gap-2">
+                class="bg-red-950 border border-red-800 text-red-400 p-3 rounded-lg text-[11px] flex items-center gap-2 mb-4">
                 <i class="fa-solid fa-circle-exclamation text-xs"></i>
-                <span>{{ session('error') }}</span>
+                <span>{{ $errors->first() }}</span>
             </div>
         @endif
 
