@@ -5,6 +5,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\GerbangController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+
+use App\Http\Controllers\Navigasi\DataRantingController;
+use App\Http\Controllers\Navigasi\DataPengesahanController;
+
+
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
 use App\Http\Controllers\Administrasi\OutputController;
@@ -100,9 +105,7 @@ Route::middleware(['auth'])->group(
             return view('navigasi.legalitas', ['title' => '3. Tata Kelola & Legalitas', 'icon' => 'fa-file-shield']);
         })->name('menu.legalitas');
 
-        Route::get('/ranting', function () {
-            return view('navigasi.ranting', ['title' => '4. Data Ranting', 'icon' => 'fa-map-location-dot']);
-        })->name('menu.ranting');
+        Route::get('/ranting', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'daftarRanting'])->name('menu.ranting');
 
         Route::get('/struktur', function () {
             return view('navigasi.struktur', ['title' => '5. Struktur Organisasi', 'icon' => 'fa-sitemap']);
@@ -112,9 +115,7 @@ Route::middleware(['auth'])->group(
             return view('navigasi.media', ['title' => '6. Ruang Media', 'icon' => 'fa-images']);
         })->name('menu.media');
 
-        Route::get('/pengesahan', function () {
-            return view('navigasi.pengesahan', ['title' => '7. Data Pengesahan', 'icon' => 'fa-id-card-clip']);
-        })->name('menu.pengesahan');
+        Route::get('/pengesahan', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'daftarPengesahan'])->name('menu.pengesahan');
 
         Route::get('/kontak', function () {
             return view('navigasi.kontak', ['title' => '8. Kontak Cabang', 'icon' => 'fa-headset']);
