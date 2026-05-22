@@ -104,9 +104,16 @@
                     </div>
                 </div>
             @empty
-                <div
-                    class="col-span-2 bg-white p-12 text-center text-gray-400 italic border border-gray-200 rounded-xl">
-                    <i class="fa-solid fa-map-pin text-2xl block mb-2 text-gray-300"></i> Belum ada data ranting resmi.
+                <div class="col-span-2 bg-white p-10 border border-gray-100 rounded-2xl shadow-sm">
+                    <div class="flex flex-col items-center justify-center text-center">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-map-location-dot text-gray-400 text-2xl"></i>
+                        </div>
+
+                        <p class="font-semibold text-gray-700 text-sm">Data Ranting Belum Tersedia</p>
+                        <p class="text-xs text-gray-400 mt-1 max-w-[200px]">Belum ada cabang ranting yang terdaftar di
+                            sistem saat ini.</p>
+                    </div>
                 </div>
             @endforelse
         </div>

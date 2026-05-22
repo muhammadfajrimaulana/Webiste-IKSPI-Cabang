@@ -107,9 +107,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="p-12 text-center text-gray-400 italic">
-                                <i class="fa-solid fa-receipt text-2xl block mb-2 text-gray-300"></i>
-                                Belum ada riwayat transaksi keuangan kas masuk/keluar.
+                            <td colspan="5" class="p-10 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-400">
+                                    <div
+                                        class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                                        <i class="fa-solid fa-receipt text-gray-400 text-xl"></i>
+                                    </div>
+                                    <p class="font-medium text-sm text-gray-600">Belum Ada Transaksi</p>
+                                    <p class="text-xs">Riwayat arus kas akan muncul di sini saat
+                                        transaksi baru dicatat.</p>
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -140,8 +147,8 @@
                             Kas</label>
                         <select name="tipe" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500">
-                            <option value="masuk">Kas MASUK (+) Pemasukan</option>
-                            <option value="keluar">Kas KELUAR (-) Pengeluaran</option>
+                            <option value="masuk">(+) Pemasukan</option>
+                            <option value="keluar">(-) Pengeluaran</option>
                         </select>
                     </div>
                     <div class="space-y-1">
@@ -203,8 +210,8 @@
                             Kas</label>
                         <select id="edit_tipe" name="tipe" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
-                            <option value="masuk">Kas MASUK (+) Pemasukan</option>
-                            <option value="keluar">Kas KELUAR (-) Pengeluaran</option>
+                            <option value="masuk">(+) Pemasukan</option>
+                            <option value="keluar">(-) Pengeluaran</option>
                         </select>
                     </div>
                     <div class="space-y-1">

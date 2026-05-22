@@ -10,11 +10,12 @@
             </div>
             <div class="relative z-10 max-w-2xl space-y-1">
                 <h2 class="text-xl font-bold tracking-wide uppercase text-white flex items-center gap-2">
-                    Selamat Datang, Admin
+                    Selamat Datang, {{ auth()->user()->nama_pengurus }}!
                 </h2>
                 <p class="text-xs text-slate-400 leading-relaxed">
-                    Sistem Informasi & Administrasi IKSPI Kera Sakti Cabang Jakarta Pusat. Pantau alur pendaftaran,
-                    validasi berkas internal, dan manajemen ranting secara real-time dari panel pusat.
+                    Manajemen Keanggotaan & Administrasi IKSPI Kera Sakti Cabang Jakarta Pusat. Pantau alur pendaftaran,
+                    validasi berkas internal, output laporan administrasi dan manajemen ranting secara real-time dari
+                    panel pusat.
                 </p>
             </div>
         </div>
@@ -132,9 +133,15 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="p-8 text-center text-xs text-gray-400 italic">
-                                            <i class="fa-solid fa-inbox text-lg block mb-1 text-gray-300"></i>
-                                            Belum ada antrean pendaftaran baru saat ini.
+                                        <td colspan="4" class="p-10 text-center">
+                                            <div class="flex flex-col items-center justify-center text-gray-400">
+                                                <div
+                                                    class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                                                    <i class="fa-solid fa-inbox text-gray-400 text-xl"></i>
+                                                </div>
+                                                <p class="font-medium text-sm text-gray-600">Tidak ada antrean</p>
+                                                <p class="text-xs">Saat ini semua pendaftaran sudah diproses.</p>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endempty

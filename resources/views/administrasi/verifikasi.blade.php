@@ -78,9 +78,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="p-12 text-center text-gray-400 italic">
-                                <i class="fa-solid fa-clipboard-check text-2xl block mb-2 text-gray-300"></i>
-                                Bersih! Tidak ada berkas calon anggota yang menunggu verifikasi saat ini.
+                            <td colspan="5" class="p-10 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-400">
+                                    <div
+                                        class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                                        <i class="fa-solid fa-clipboard-check text-gray-400 text-xl"></i>
+                                    </div>
+                                    <p class="font-medium text-sm text-gray-600">Semua Data Sudah Terverifikasi</p>
+                                    <p class="text-xs">Tidak ada berkas calon anggota yang menunggu verifikasi saat ini.
+                                    </p>
+                                </div>
                             </td>
                         </tr>
                     @endempty

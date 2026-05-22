@@ -75,9 +75,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="p-12 text-center text-gray-400 italic">
-                                <i class="fa-solid fa-folder-minus text-2xl block mb-2 text-gray-300"></i>
-                                Belum ada data anggota resmi yang disahkan.
+                            <td colspan="5" class="p-10 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-400">
+                                    <div
+                                        class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                                        <i class="fa-solid fa-users-slash text-gray-400 text-xl"></i>
+                                    </div>
+                                    <p class="font-medium text-sm text-gray-600">Belum Ada Data Anggota</p>
+                                    <p class="text-xs">Data anggota resmi akan muncul di sini setelah proses verifikasi
+                                        selesai.</p>
+                                </div>
                             </td>
                         </tr>
                     @endempty
