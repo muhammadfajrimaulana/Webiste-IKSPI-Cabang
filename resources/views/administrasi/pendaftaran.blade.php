@@ -90,7 +90,7 @@
                             @foreach ($rantings as $ranting)
                                 <option value="{{ $ranting->id }}"
                                     {{ old('ranting_id') == $ranting->id ? 'selected' : '' }}>
-                                    Ranting {{ $ranting->nama_ranting }}
+                                    {{ $ranting->nama_ranting }}
                                 </option>
                             @endforeach
                         </select>

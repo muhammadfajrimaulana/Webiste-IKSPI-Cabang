@@ -31,9 +31,9 @@
                 <div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Ranting Terdaftar</p>
                     <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $totalRanting }} <span
-                            class="text-xs font-normal text-gray-400">Titik GOR</span></h4>
+                            class="text-xs font-normal text-gray-400">Tempat Latihan</span></h4>
                 </div>
-                <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center text-xs">
+                <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xs">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </div>
             </div>
@@ -42,79 +42,82 @@
                 <div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pelatih Kepala Aktif</p>
                     <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $totalPelatihAktif }} <span
-                            class="text-xs font-normal text-gray-400">Personel</span></h4>
+                            class="text-xs font-normal text-gray-400">Personel Pelatih</span></h4>
                 </div>
-                <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xs">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             @forelse($dataRanting as $ranting)
                 <div
-                    class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden flex flex-col justify-between">
-                    <div class="p-5 space-y-4">
-                        <div class="flex items-start justify-between">
-                            <div class="space-y-0.5">
-                                <span class="text-[10px] uppercase font-extrabold tracking-wider text-red-600">Ranting
-                                    Resmi Cabang</span>
-                                <h3 class="text-base font-bold text-slate-950 uppercase">Ranting
-                                    {{ $ranting->nama_ranting }}</h3>
-                            </div>
+                    class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col overflow-hidden">
+                    <div class="p-6 border-b border-slate-50 flex items-start justify-between">
+                        <div>
                             <span
-                                class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-50 text-slate-800 border border-slate-200">
-                                <i class="fa-solid fa-users mr-1.5 text-slate-400"></i> {{ $ranting->anggota_count }}
-                                Warga
+                                class="inline-block text-[10px] uppercase font-bold tracking-widest text-red-500 mb-1">Ranting
+                                Resmi</span>
+                            <h3 class="text-lg font-extrabold text-slate-900 uppercase tracking-tight">
+                                {{ $ranting->nama_ranting }}</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="inline-flex items-center px-2 py-1 bg-slate-200 text-slate-700 text-[10px] font-bold rounded-md border border-slate-300">
+                                <i class="fa-solid fa-users mr-1.5 text-slate-400"></i> {{ $ranting->anggota_count }} Warga
                             </span>
                         </div>
+                    </div>
 
-                        <div class="space-y-2 text-xs text-slate-600">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-5 text-gray-400 text-center"><i class="fa-solid fa-user-tie"></i></div>
-                                <div><span class="text-gray-400">Pelatih Kepala:</span> <strong
-                                        class="text-slate-900">{{ $ranting->nama_pelatih ?? 'Belum Ditentukan' }}</strong>
-                                </div>
+                    <div class="p-6 space-y-4 bg-slate-50/50 flex-grow">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 shadow-sm">
+                                <i class="fa-solid fa-user-tie text-xs"></i>
                             </div>
-                            <div class="flex items-start gap-2.5">
-                                <div class="w-5 text-gray-400 text-center mt-0.5"><i
-                                        class="fa-solid fa-location-dot"></i></div>
-                                <div><span class="text-gray-400">Lokasi Latihan:</span> <span
-                                        class="text-slate-800 font-medium">{{ $ranting->lokasi_latihan }}</span></div>
+                            <div class="text-xs">
+                                <p class="text-slate-400 font-medium">Pelatih Kepala</p>
+                                <p class="text-slate-800 font-bold">{{ $ranting->nama_pelatih ?? '-' }}</p>
                             </div>
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-5 text-gray-400 text-center"><i class="fa-solid fa-phone"></i></div>
-                                <div><span class="text-gray-400">Kontak/WA:</span> <span
-                                        class="text-slate-800 font-mono">{{ $ranting->kontak_ranting ?? '-' }}</span>
-                                </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 shadow-sm">
+                                <i class="fa-solid fa-location-dot text-xs"></i>
+                            </div>
+                            <div class="text-xs">
+                                <p class="text-slate-400 font-medium">Lokasi Latihan</p>
+                                <p class="text-slate-800 font-bold leading-tight">{{ $ranting->lokasi_latihan }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-emerald-500 shadow-sm">
+                                <i class="fa-brands fa-whatsapp text-xs"></i>
+                            </div>
+                            <div class="text-xs">
+                                <p class="text-slate-400 font-medium">Kontak WhatsApp</p>
+                                <p class="text-emerald-700 font-bold font-mono">{{ $ranting->kontak_ranting ?? '-' }}
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-50 border-t border-gray-100 px-5 py-3 flex items-center justify-end gap-2">
+                    <div class="px-6 py-4 bg-white flex items-center gap-2">
                         <button
                             onclick="bukaModalEdit({{ $ranting->id }}, '{{ $ranting->nama_ranting }}', '{{ $ranting->nama_pelatih }}', '{{ $ranting->lokasi_latihan }}', '{{ $ranting->kontak_ranting }}')"
-                            class="px-3 py-1.5 border border-gray-200 text-gray-600 font-semibold text-[11px] rounded-md hover:bg-white transition cursor-pointer">
-                            <i class="fa-solid fa-pen-to-square"></i> Edit Data
+                            class="flex-1 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] uppercase tracking-wider rounded-xl transition cursor-pointer">
+                            Edit
                         </button>
                         <a href="{{ route('internal.keanggotaan', ['ranting_id' => $ranting->id]) }}"
-                            class="px-3 py-1.5 bg-slate-950 text-white font-bold text-[11px] rounded-md hover:bg-slate-800 transition text-center">
-                            Lihat Anggota Ranting
+                            class="flex-[2] px-4 py-2 bg-slate-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition text-center shadow-lg shadow-slate-200">
+                            Data Warga
                         </a>
                     </div>
                 </div>
             @empty
-                <div class="col-span-2 bg-white p-10 border border-gray-100 rounded-2xl shadow-sm">
-                    <div class="flex flex-col items-center justify-center text-center">
-                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fa-solid fa-map-location-dot text-gray-400 text-2xl"></i>
-                        </div>
-
-                        <p class="font-semibold text-gray-700 text-sm">Data Ranting Belum Tersedia</p>
-                        <p class="text-xs text-gray-400 mt-1 max-w-[200px]">Belum ada cabang ranting yang terdaftar di
-                            sistem saat ini.</p>
-                    </div>
-                </div>
             @endforelse
         </div>
 
