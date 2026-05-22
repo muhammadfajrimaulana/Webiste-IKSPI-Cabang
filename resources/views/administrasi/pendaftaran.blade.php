@@ -131,7 +131,7 @@
                             readonly>
                     </div>
                 </div>
-                <div
+                <div id="map"
                     class="w-full h-48 bg-slate-100 border border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 gap-1">
                     <i class="fa-solid fa-map-marked-alt text-2xl mb-2"></i>
                     <p class="text-[11px] font-medium">Area Mockup Peta Lokasi Domisili Anggota</p>
@@ -189,3 +189,27 @@
         </form>
     </div>
 </x-dashboard-layout>
+
+<script>
+    // Koordinat default (Tengah Jakarta)
+    const lat = document.querySelector('input[name="latitude"]').value;
+    const lng = document.querySelector('input[name="longitude"]').value;
+
+    const map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Tambahkan marker yang bisa digeser
+    const marker = L.marker([lat, lng], {
+        draggable: true
+    }).addTo(map);
+
+    // Event saat marker selesai digeser
+    marker.on('moveend', function(e) {
+        const position = marker.getLatLng();
+        document.querySelector('input[name="latitude"]').value = position.lat.toFixed(6);
+        document.querySelector('input[name="longitude"]').value = position.lng.toFixed(6);
+    });
+</script>

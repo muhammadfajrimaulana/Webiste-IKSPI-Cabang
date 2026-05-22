@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('no_hp');
             $table->text('alamat');
             $table->string('status_verifikasi')->default('pending');
-            $table->string('foto_sakral')->nullable();
+            $table->string('foto')->nullable();
             $table->string('berkas_pdf')->nullable();
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
             $table->timestamps();
 
             $table->foreign('ranting_id')->references('id')->on('rantings')->onDelete('cascade');
