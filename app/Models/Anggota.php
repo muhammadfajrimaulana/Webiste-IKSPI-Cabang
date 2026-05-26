@@ -17,4 +17,10 @@ class Anggota extends Model
     {
         return $this->belongsTo(Ranting::class);
     }
+
+    public function getNamaLengkapAttribute()
+    {
+        // Mengambil nama dari relasi pendaftaran
+        return $this->pendaftaran ? $this->pendaftaran->nama_lengkap : 'Nama Tidak Ditemukan';
+    }
 }

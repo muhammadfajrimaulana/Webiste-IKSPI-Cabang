@@ -2,78 +2,259 @@
     @slot('icon', 'fa-solid fa-id-card-clip')
     @slot('title', 'Data Pengesahan Anggota')
 
+    <style type="text/css" media="print">
+        /* Sembunyikan elemen dashboard saat print */
+        nav,
+        aside,
+        header,
+        .no-print {
+            display: none !important;
+        }
+
+        /* Pastikan area dokumen tampil penuh */
+        #printableArea {
+            box-shadow: none !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+    </style>
+
     <div class="space-y-6 max-w-5xl mx-auto">
-        <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
-            <div
-                class="p-4 bg-gray-50/50 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div class="flex items-center space-x-2">
-                    <div class="text-red-600 text-xs"><i class="fa-solid fa-address-book"></i></div>
-                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Arsip Kelulusan Warga /
-                        Pendekar</span>
+        @if (auth()->user()->role === 'admin_cabang' || auth()->user()->role === 'admin_ranting')
+            <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+                <div
+                    class="p-4 bg-gray-50/50 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="text-red-600 text-xs"><i class="fa-solid fa-address-book"></i></div>
+                        <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Arsip Kelulusan Warga /
+                            Pendekar</span>
+                    </div>
+
+                    <form action="{{ route('menu.pengesahan') }}" method="GET" class="flex items-center gap-2">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                            </span>
+                            <input type="text" name="search" value="{{ $search }}"
+                                placeholder="Cari nama atau nomor anggota..."
+                                class="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-500 focus:outline-none w-64 bg-white text-slate-900">
+                        </div>
+                        @if ($search)
+                            <a href="{{ route('menu.pengesahan') }}"
+                                class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition">Reset</a>
+                        @endif
+                        <button type="submit"
+                            class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow-xs cursor-pointer">Cari</button>
+                    </form>
                 </div>
-                <div class="relative max-w-xs w-full">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 text-[11px]">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="text"
-                        class="w-full pl-8 pr-3 py-1.5 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-500 focus:outline-none"
-                        placeholder="Cari nama anggota...">
+
+                <div class="p-4 overflow-x-auto">
+
+                    <table class="w-full text-left text-sm text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3">Nomor Anggota</th>
+                                <th class="px-6 py-3">Nama Lengkap</th>
+                                <th class="px-6 py-3">Ranting</th>
+                                <th class="px-6 py-3">Tingkatan</th>
+                                <th class="px-6 py-3">Status</th>
+                                @if (auth()->user()->role !== 'anggota')
+                                    <th class="px-6 py-3 text-center">Aksi</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @forelse($dataPengesahan as $pengesahan)
+                                <tr class="bg-white hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 font-bold text-red-700">{{ $pengesahan->nomor_anggota }}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900">
+                                        {{ $pengesahan->nama_lengkap ?? 'N/A' }}</td>
+                                    </td>
+                                    <td class="px-6 py-4">{{ $pengesahan->ranting->nama_ranting ?? 'N/A' }}</td>
+                                    <td class="px-6 py-4">{{ $pengesahan->tingkatan ?? 'N/A' }}</td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="{{ $pengesahan->status_aktif == 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider border">
+                                            {{ ucfirst($pengesahan->status_aktif) }}
+                                        </span>
+                                    </td>
+                                    @if (auth()->user()->role !== 'anggota')
+                                        <td class="px-6 py-4 text-center">
+                                            <button type="button"
+                                                onclick="bukaModalEdit({{ json_encode($pengesahan) }})"
+                                                class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-sm rounded-lg hover:bg-blue-700 transition">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="{{ auth()->user()->role === 'anggota' ? 5 : 6 }}"
+                                        class="p-10 text-center text-gray-400">
+                                        <div class="flex flex-col items-center">
+                                            <i class="fa-solid fa-clipboard-check text-xl mb-2"></i>
+                                            <p class="text-sm">Tidak ada data tersedia.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+    @endif
+    </div>
+    @if (auth()->user()->role === 'anggota')
+        <div class="max-w-2xl mx-auto my-8 bg-white p-10 shadow-lg border border-gray-200" id="printableArea">
+            <div class="flex justify-between border-b pb-6 mb-6">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Data
+                        Pengesahan</h1>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Sistem Manajemen
+                        Keanggotaan</p>
+                </div>
+                <div class="text-right">
+                    <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center ml-auto mb-2">
+                        <i class="fa-solid fa-id-card text-white"></i>
+                    </div>
                 </div>
             </div>
 
-            <div class="p-4">
-                <table class="w-full text-left text-sm text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Nomor Anggota</th>
-                            <th scope="col" class="px-6 py-3">Nama Lengkap</th>
-                            <th scope="col" class="px-6 py-3">Asal Ranting</th>
-                            <th scope="col" class="px-6 py-3">Tingkatan</th>
-                            <th scope="col" class="px-6 py-3">Tanggal Pengesahan</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($dataPengesahan as $pengesahan)
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-6 py-4 font-medium text-gray-900">{{ $pengesahan->nomor_anggota }}</td>
-                                <td class="px-6 py-4 font-medium text-gray-900">{{ $pengesahan->nama_lengkap }}</td>
-                                <td class="px-6 py-4">{{ $pengesahan->ranting->nama_ranting ?? 'N/A' }}</td>
-                                <td class="px-6 py-4">{{ $pengesahan->tingkatan ?? 'N/A' }}</td>
-                                <td class="px-6 py-4">{{ $pengesahan->tanggal_pengesahan->format('d M Y') }}</td>
-                                <td class="px-6 py-4">
-                                    @if ($pengesahan->status == 'lulus')
-                                        <span
-                                            class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider border border-green-200">
-                                            Lulus
-                                        </span>
-                                    @else
-                                        <span
-                                            class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider border border-red-200">
-                                            Tidak Lulus
-                                        </span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="p-10 text-center">
-                                    <div class="flex flex-col items-center justify-center text-gray-400">
-                                        <div
-                                            class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                                            <i class="fa-solid fa-clipboard-check text-gray-400 text-xl"></i>
-                                        </div>
-                                        <p class="font-medium text-sm text-gray-600">Tidak ada data pengesahan yang
-                                            tersedia</p>
-                                        <p class="text-xs">Silakan periksa kembali nanti atau pastikan ada anggota yang
-                                            telah disahkan.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            @forelse($dataPengesahan as $pengesahan)
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 uppercase">Nomor Anggota</p>
+                            <p class="text-sm font-bold text-slate-900">{{ $pengesahan->nomor_anggota }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 uppercase">Tingkatan</p>
+                            <p class="text-sm font-bold text-slate-900">{{ $pengesahan->tingkatan }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 uppercase">Nama Lengkap</p>
+                            <p class="text-sm font-bold text-slate-900">{{ $pengesahan->nama_lengkap }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 uppercase">Asal Ranting</p>
+                            <p class="text-sm font-bold text-slate-900">
+                                {{ $pengesahan->ranting->nama_ranting ?? '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-6 mt-6">
+                        <p class="text-[9px] font-bold text-gray-400 uppercase">Status Kelulusan</p>
+                        <div
+                            class="{{ $pengesahan->status_aktif == 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider border">
+                            {{ ucfirst($pengesahan->status_aktif) }}
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p class="text-center text-gray-400">Data tidak ditemukan.</p>
+            @endforelse
+
+            <div class="mt-12 pt-6 border-t text-[10px] text-gray-400 text-center">
+                Dokumen ini dicetak otomatis oleh sistem. | {{ now()->format('d F Y, H:i') }}
             </div>
         </div>
+
+        <div class="max-w-2xl mx-auto flex justify-center mb-10">
+            <a href="{{ route('menu.pengesahan.cetak') }}" target="_blank"
+                class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition">
+                <i class="fa-solid fa-print mr-2"></i> Cetak Dokumen Pengesahan
+            </a>
+        </div>
+    @else
+        <div class="p-4 overflow-x-auto bg-white rounded-xl border">
+            <table class="w-full text-left text-sm text-gray-500">
+            </table>
+        </div>
+    @endif
+
+    <div id="modalEditPengesahan"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+        <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl p-6">
+            <h3 class="text-sm font-bold text-slate-950 mb-4">Edit Data Pengesahan</h3>
+
+            <form id="formEditPengesahan" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Nomor Anggota</label>
+                        <input type="text" name="nomor_anggota" id="edit_nomor_anggota"
+                            class="w-full mt-1 p-2 text-xs border rounded-lg" readonly disabled>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Nama Lengkap</label>
+                        <input type="text" name="nama_lengkap" id="edit_nama_lengkap"
+                            class="w-full mt-1 p-2 text-xs border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Asal Ranting</label>
+                        <textarea name="nama_ranting" id="edit_nama_ranting" class="w-full mt-1 p-2 text-xs border rounded-lg" readonly></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Tingkatan</label>
+                        <input type="text" name="tingkatan" id="edit_tingkatan"
+                            class="w-full mt-1 p-2 text-xs border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Status</label>
+                        <select name="status" id="edit_status" class="w-full mt-1 p-2 text-xs border rounded-lg">
+                            <option value="aktif">Aktif</option>
+                            <option value="non-aktif">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="tutupModal()"
+                        class="px-4 py-2 text-xs font-bold text-gray-600">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg">Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <script>
+        function bukaModalEdit(pengesahan) {
+            const modal = document.getElementById('modalEditPengesahan');
+            const form = document.getElementById('formEditPengesahan');
+
+            // Set Action Form (Update Route)
+            form.action = '/pengesahan/update/' + pengesahan.id;
+
+            // Isi field form
+            document.getElementById('edit_nomor_anggota').value = pengesahan.nomor_anggota;
+            document.getElementById('edit_nama_lengkap').value = pengesahan.nama_lengkap;
+            document.getElementById('edit_nama_ranting').value = pengesahan.nama_ranting;
+            document.getElementById('edit_tingkatan').value = pengesahan.tingkatan;
+            document.getElementById('edit_status').value = pengesahan.status;
+            modal.classList.remove('hidden');
+        }
+
+        function tutupModal() {
+            document.getElementById('modalEditPengesahan').classList.add('hidden');
+        }
+    </script>
+
 </x-dashboard-layout>

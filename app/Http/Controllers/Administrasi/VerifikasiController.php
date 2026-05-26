@@ -4,19 +4,21 @@ namespace App\Http\Controllers\Administrasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
+use App\Models\Anggota;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class VerifikasiController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-
-        // 1. Inisialisasi Query
         $query = Pendaftaran::with('ranting')->where('status_verifikasi', 'pending');
 
-        // 2. Filter hanya jika dia Admin Ranting
         if ($user->role === 'admin_ranting') {
             $query->where('ranting_id', $user->ranting_id);
         }
@@ -30,24 +32,48 @@ class VerifikasiController extends Controller
         $user = Auth::user();
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        // 3. PROTEKSI: Pastikan Admin Ranting tidak bisa memproses data ranting lain
         if ($user->role === 'admin_ranting' && $pendaftaran->ranting_id !== $user->ranting_id) {
-            return redirect()->back()->with('error', 'Akses ditolak! Anda tidak memiliki izin untuk memproses data ranting ini.');
+            return redirect()->back()->with('error', 'Akses ditolak!');
         }
 
-        // 4. Validasi aksi (Terima atau Tolak)
-        $request->validate([
-            'action' => 'required|in:setujui,tolak'
-        ]);
+        $request->validate(['action' => 'required|in:setujui,tolak']);
 
-        if ($request->action === 'setujui') {
-            $pendaftaran->update(['status_verifikasi' => 'verified']);
-            $msg = 'Data ' . $pendaftaran->nama_lengkap . ' berhasil diverifikasi.';
-        } else {
-            $pendaftaran->update(['status_verifikasi' => 'rejected', 'catatan' => $request->catatan]);
-            $msg = 'Data ' . $pendaftaran->nama_lengkap . ' ditolak.';
-        }
+        DB::transaction(function () use ($request, $pendaftaran) {
+            if ($request->action === 'setujui') {
 
-        return redirect()->back()->with('success', $msg);
+                $pendaftaran->update(['status_verifikasi' => 'verified']);
+
+                $firstName = explode(' ', $pendaftaran->nama_lengkap)[0];
+                $username = strtolower($firstName) . rand(100, 999);
+
+                $newUser = User::create([
+                    'name'          => $pendaftaran->nama_lengkap,
+                    'email'         => $pendaftaran->email,
+                    'username'      => $username,
+                    'nama_pengurus' => $pendaftaran->nama_lengkap,
+                    'password'      => Hash::make('ikspi123'),
+                    'role'          => 'anggota',
+                ]);
+
+                Anggota::create([
+                    'user_id'            => $newUser->id,
+                    'pendaftaran_id'     => $pendaftaran->id,
+                    'ranting_id'         => $pendaftaran->ranting_id,
+                    'nomor_anggota'      => 'IKS-' . date('Y') . '-' . str_pad($pendaftaran->id, 4, '0', STR_PAD_LEFT),
+                    'tingkatan'          => 'warga',
+                    'status_aktif'       => 'aktif',
+                    'tanggal_pengesahan' => date('Y-m-d'),
+                ]);
+
+                $this->msg = 'Data ' . $pendaftaran->nama_lengkap . ' berhasil diverifikasi, akun dibuat (Pass: password123).';
+            } else {
+                $pendaftaran->update(['status_verifikasi' => 'rejected', 'catatan' => $request->catatan]);
+                $this->msg = 'Data ' . $pendaftaran->nama_lengkap . ' ditolak.';
+            }
+        });
+
+        return redirect()->back()->with('success', $this->msg);
     }
+
+    protected $msg;
 }

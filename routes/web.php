@@ -42,9 +42,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/admin-ranting', [DashboardController::class, 'index']);
     Route::get('/dashboard/member', [DashboardController::class, 'index']);
 });
-// Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-// Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(
@@ -106,6 +103,7 @@ Route::middleware(['auth'])->group(
         })->name('menu.legalitas');
 
         Route::get('/ranting', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'daftarRanting'])->name('menu.ranting');
+        Route::put('/ranting/update/{id}', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'updateRanting'])->name('menu.ranting.update');
 
         Route::get('/struktur', function () {
             return view('navigasi.struktur', ['title' => '5. Struktur Organisasi', 'icon' => 'fa-sitemap']);
@@ -116,6 +114,8 @@ Route::middleware(['auth'])->group(
         })->name('menu.media');
 
         Route::get('/pengesahan', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'daftarPengesahan'])->name('menu.pengesahan');
+        Route::put('/pengesahan/update/{id}', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'updatePengesahan'])->name('menu.pengesahan.update');
+        Route::get('/pengesahan/cetak', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'cetak'])->name('menu.pengesahan.cetak');
 
         Route::get('/kontak', function () {
             return view('navigasi.kontak', ['title' => '8. Kontak Cabang', 'icon' => 'fa-headset']);

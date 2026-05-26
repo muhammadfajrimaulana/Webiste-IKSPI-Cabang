@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('rantings', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_ranting')->unique(); // Contoh: Tanah Abang, Kemayoran
+            $table->string('nama_ranting')->unique();
+            $table->string('ketua_ranting');
+            $table->text('alamat_ranting');
             $table->string('nama_pelatih');
             $table->text('lokasi_latihan');
             $table->string('kontak_ranting')->nullable();
