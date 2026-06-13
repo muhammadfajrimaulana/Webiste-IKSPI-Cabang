@@ -15,7 +15,7 @@
     };
 @endphp
 
-<a href="{{ route($route) }}"
+<a href="{{ Route::has($route) ? route($route) : '#' }}"
     class="flex items-center space-x-3 px-3 py-2 text-[11px] font-semibold rounded-lg transition duration-200 group
     {{ request()->routeIs($route) ? $activeClass : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100' }}">
 

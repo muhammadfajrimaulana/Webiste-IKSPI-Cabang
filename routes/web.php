@@ -120,5 +120,34 @@ Route::middleware(['auth'])->group(
         Route::get('/kontak', function () {
             return view('navigasi.kontak', ['title' => '8. Kontak Cabang', 'icon' => 'fa-headset']);
         })->name('menu.kontak');
+
+        /*
+|--------------------------------------------------------------------------
+| 6. RUTE KHUSUS ANGGOTA (Tambahan agar Sidebar tidak Error)
+|--------------------------------------------------------------------------
+*/
+        Route::name('anggota.')->group(function () {
+            Route::get('/anggota/profil', function () {
+                return view('anggota.profil');
+            })->name('profil');
+            Route::get('/anggota/pengesahan', function () {
+                return view('anggota.pengesahan');
+            })->name('pengesahan');
+            Route::get('/anggota/iuran', function () {
+                return view('anggota.iuran');
+            })->name('iuran');
+            Route::get('/anggota/password', function () {
+                return view('anggota.password');
+            })->name('password');
+            Route::get('/anggota/jadwal', function () {
+                return view('anggota.jadwal');
+            })->name('jadwal');
+            Route::get('/anggota/info', function () {
+                return view('anggota.info');
+            })->name('info');
+            Route::get('/anggota/bantuan', function () {
+                return view('anggota.bantuan');
+            })->name('bantuan');
+        });
     }
 );

@@ -14,63 +14,93 @@
             <nav class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent"
                 style="scrollbar-width: thin; scrollbar-color: #1e293b transparent;">
 
-                <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Ringkasan
-                    </span>
-                    <div class="space-y-1">
-                        <x-nav-link route="dashboard" icon="fa-solid fa-house-chimney">Dashboard</x-nav-link>
+                @if (auth()->user()->role !== 'anggota')
+                    {{-- MENU ADMIN (Cabang/Ranting) --}}
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Ringkasan</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="dashboard" icon="fa-solid fa-house-chimney">Dashboard</x-nav-link>
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Pusat Navigasi
-                    </span>
-                    <div class="space-y-1">
-                        <x-nav-link route="menu.tentang" icon="fa-solid fa-info-circle">Tentang IKSPI</x-nav-link>
-                        <x-nav-link route="menu.legalitas" icon="fa-regular fa-file-lines">Tata Kelola &
-                            Legalitas</x-nav-link>
-                        <x-nav-link route="menu.ranting" icon="fa-solid fa-map-location-dot">Data Ranting &
-                            Latihan</x-nav-link>
-                        <x-nav-link route="menu.struktur" icon="fa-solid fa-sitemap">Struktur Organisasi</x-nav-link>
-
-                        <x-nav-link route="menu.media" icon="fa-regular fa-images">Ruang Media & Galeri</x-nav-link>
-                        <x-nav-link route="menu.pengesahan" icon="fa-solid fa-id-card-clip">Data Pengesahan</x-nav-link>
-                        <x-nav-link route="menu.kontak" icon="fa-solid fa-headset">Kontak Cabang</x-nav-link>
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pusat
+                            Navigasi</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="menu.tentang" icon="fa-solid fa-info-circle">Tentang IKSPI</x-nav-link>
+                            <x-nav-link route="menu.legalitas" icon="fa-regular fa-file-lines">Tata Kelola &
+                                Legalitas</x-nav-link>
+                            <x-nav-link route="menu.ranting" icon="fa-solid fa-map-location-dot">Data Ranting &
+                                Latihan</x-nav-link>
+                            <x-nav-link route="menu.struktur" icon="fa-solid fa-sitemap">Struktur
+                                Organisasi</x-nav-link>
+                            <x-nav-link route="menu.media" icon="fa-regular fa-images">Ruang Media & Galeri</x-nav-link>
+                            <x-nav-link route="menu.pengesahan" icon="fa-solid fa-id-card-clip">Data
+                                Pengesahan</x-nav-link>
+                            <x-nav-link route="menu.kontak" icon="fa-solid fa-headset">Kontak Cabang</x-nav-link>
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Workflow Administrasi
-                    </span>
-
-                    <div class="space-y-1">
-                        <x-nav-link route="pendaftaran.index" icon="fa-solid fa-file-signature" color="yellow">Flow A:
-                            Input Data Baru</x-nav-link>
-                        <x-nav-link route="verifikasi.index" icon="fa-solid fa-user-check" color="yellow">Flow B:
-                            Verifikasi Pengurus</x-nav-link>
-                        <x-nav-link route="output.index" icon="fa-solid fa-file-invoice" color="yellow">Flow C: Output
-                            Laporan</x-nav-link>
-                        </a>
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Workflow
+                            Administrasi</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="pendaftaran.index" icon="fa-solid fa-file-signature" color="yellow">Flow
+                                A: Input Data Baru</x-nav-link>
+                            <x-nav-link route="verifikasi.index" icon="fa-solid fa-user-check" color="yellow">Flow B:
+                                Verifikasi Pengurus</x-nav-link>
+                            <x-nav-link route="output.index" icon="fa-solid fa-file-invoice" color="yellow">Flow C:
+                                Output Laporan</x-nav-link>
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">
-                        Manajemen Internal
-                    </span>
-
-                    <div class="space-y-1">
-                        <x-nav-link route="internal.keanggotaan" icon="fa-solid fa-users" color="blue">1.
-                            Keanggotaan</x-nav-link>
-                        <x-nav-link route="internal.operasional" icon="fa-solid fa-building-shield" color="blue">2.
-                            Operasional Ranting</x-nav-link>
-                        <x-nav-link route="internal.keuangan" icon="fa-solid fa-wallet" color="blue">3. Keuangan &
-                            Logistik</x-nav-link>
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Manajemen
+                            Internal</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="internal.keanggotaan" icon="fa-solid fa-users" color="blue">1.
+                                Keanggotaan</x-nav-link>
+                            <x-nav-link route="internal.operasional" icon="fa-solid fa-building-shield"
+                                color="blue">2. Operasional Ranting</x-nav-link>
+                            <x-nav-link route="internal.keuangan" icon="fa-solid fa-wallet" color="blue">3. Keuangan &
+                                Logistik</x-nav-link>
+                        </div>
                     </div>
-                </div>
+                @else
+                    {{-- MENU ANGGOTA --}}
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Manajemen
+                            Personal</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="dashboard" icon="fa-solid fa-house">Dashboard</x-nav-link>
+                            <x-nav-link route="anggota.profil" icon="fa-solid fa-id-card">Kartu Tanda Anggota
+                                (KTA)</x-nav-link>
+                            <x-nav-link route="anggota.pengesahan" icon="fa-solid fa-medal">Riwayat
+                                Pengesahan</x-nav-link>
+                            <x-nav-link route="anggota.iuran" icon="fa-solid fa-wallet">Riwayat Iuran
+                                Anggota</x-nav-link>
+                            <x-nav-link route="anggota.password" icon="fa-solid fa-key">Ubah Password</x-nav-link>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Informasi
+                            & Komunikasi</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="anggota.jadwal" icon="fa-solid fa-calendar-days">Jadwal &
+                                Agenda</x-nav-link>
+                            <x-nav-link route="anggota.info" icon="fa-solid fa-circle-info">Info Organisasi</x-nav-link>
+                            <x-nav-link route="anggota.bantuan" icon="fa-solid fa-headset">Bantuan &
+                                Support</x-nav-link>
+                        </div>
+                    </div>
+                @endif
             </nav>
 
             <div class="p-4 ml-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
