@@ -52,8 +52,11 @@ Route::middleware(['auth'])->group(
 |--------------------------------------------------------------------------
 */
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    }
+);
 
-
+Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
+    function () {
         /*
 |--------------------------------------------------------------------------
 | 3. PANEL ALUR ADMINISTRASI (Flow A, B, C - Melewati Controller Resmi)
@@ -120,7 +123,11 @@ Route::middleware(['auth'])->group(
         Route::get('/kontak', function () {
             return view('navigasi.kontak', ['title' => '8. Kontak Cabang', 'icon' => 'fa-headset']);
         })->name('menu.kontak');
+    }
+);
 
+Route::middleware(['auth', 'role:anggota'])->group(
+    function () {
         /*
 |--------------------------------------------------------------------------
 | 6. RUTE KHUSUS ANGGOTA (Tambahan agar Sidebar tidak Error)
