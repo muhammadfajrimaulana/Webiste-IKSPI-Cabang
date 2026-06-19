@@ -3,6 +3,24 @@
     @slot('title', 'Tata Kelola & Legalitas')
 
     <div class="space-y-6 max-w-4xl mx-auto">
+
+        {{-- Form Upload (Khusus Admin Cabang) --}}
+        @if (auth()->user()->role === 'admin_cabang')
+            <div class="bg-white p-5 rounded-xl border border-red-200 shadow-xs">
+                <h3 class="text-xs font-bold text-slate-950 uppercase mb-4">Upload Dokumen Baru</h3>
+                <form action="{{ route('menu.legalitas.store') }}" method="POST" enctype="multipart/form-data"
+                    class="flex flex-col md:flex-row gap-3">
+                    @csrf
+                    <input type="text" name="nama" placeholder="Nama Dokumen (Contoh: SK Cabang 2026)"
+                        class="text-xs border border-gray-200 rounded-lg p-2 flex-1" required>
+                    <input type="file" name="dokumen" class="text-xs border border-gray-200 rounded-lg p-2" required>
+                    <button type="submit"
+                        class="bg-red-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-red-700">Upload</button>
+                </form>
+            </div>
+        @endif
+
+        {{-- Daftar Dokumen --}}
         <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
             <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center space-x-3">
                 <div class="text-red-600 text-base"><i class="fa-solid fa-shield-halved"></i></div>
@@ -11,39 +29,26 @@
             </div>
 
             <div class="p-5 divide-y divide-gray-100">
-                <div class="flex items-center justify-between py-4.5 first:pt-0 last:pb-0">
-                    <div class="flex items-center space-x-4">
-                        <div
-                            class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 text-sm">
-                            <i class="fa-regular fa-file-pdf"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900">AD / ART Perguruan IKSPI Kera Sakti</p>
-                            <p class="text-[10px] text-gray-400 mt-0.5">Format: PDF • Ukuran: 2.4 MB • Hak Akses:
-                                Internal</p>
+                @forelse($legals as $legal)
+                    <div class="flex items-center justify-between py-4.5">
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 text-sm">
+                                <i class="fa-regular fa-file-pdf"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">{{ $legal->legalitas_nama }}</p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">Format: PDF • Hak Akses: Resmi Cabang</p>
+                            </div>
                         </div>
+                        <a href="{{ asset('storage/' . $legal->legalitas_file) }}" target="_blank"
+                            class="inline-flex items-center space-x-1.5 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                            <i class="fa-solid fa-arrow-down-to-line"></i> <span>Unduh</span>
+                        </a>
                     </div>
-                    <button
-                        class="inline-flex items-center space-x-1.5 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition cursor-pointer">
-                        <i class="fa-solid fa-arrow-down-to-line"></i> <span>Unduh Berkas</span>
-                    </button>
-                </div>
-
-                <div class="flex items-center justify-between py-4.5">
-                    <div class="flex items-center space-x-4">
-                        <div
-                            class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 text-sm">
-                            <i class="fa-regular fa-file-pdf"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900">SK Kepengurusan Cabang Jakarta Pusat (Aktif)</p>
-                            <p class="text-[10px] text-gray-400 mt-0.5">Format: PDF • Ukuran: 1.1 MB • Hak Akses:
-                                Pengurus</p>
-                        </div>
-                    </div>
-                    <button
-                        class="inline-flex items-center space-x-1.5 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition cursor-pointer">
-                        <i class="fa-solid fa-arrow-down-to-line"></i> <span>Unduh Berkas</span>
-                    </button>
-                </div>
+                @empty
+                    <p class="text-xs text-gray-400 py-4 text-center">Belum ada dokumen legalitas yang diunggah.</p>
+                @endforelse
             </div>
         </div>
     </div>

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
-    protected $fillable = ['slug', 'content'];
+    protected $fillable = ['visi', 'misi', 'sejarah', 'legalitas_nama', 'legalitas_file'];
 }

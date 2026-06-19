@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Navigasi\DataRantingController;
 use App\Http\Controllers\Navigasi\DataPengesahanController;
 use App\Http\Controllers\Navigasi\TentangController;
+use App\Http\Controllers\Navigasi\LegalitasController;
 
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
@@ -97,11 +98,9 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
 | 5. RUTE TAMPILAN INFORMASI (Menu Navigasi 2 - 8)
 |--------------------------------------------------------------------------
 */
-        Route::get('/tentang', [TentangController::class, 'index'])->name('menu.tentang');
+        Route::get('/tentang', [\App\Http\Controllers\Navigasi\TentangController::class, 'index'])->name('menu.tentang');
 
-        Route::get('/legalitas', function () {
-            return view('navigasi.legalitas', ['title' => '3. Tata Kelola & Legalitas', 'icon' => 'fa-file-shield']);
-        })->name('menu.legalitas');
+        Route::get('/legalitas', [\App\Http\Controllers\Navigasi\LegalitasController::class, 'index'])->name('menu.legalitas');
 
         Route::get('/ranting', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'daftarRanting'])->name('menu.ranting');
         Route::put('/ranting/update/{id}', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'updateRanting'])->name('menu.ranting.update');
@@ -165,4 +164,5 @@ Route::middleware(['auth', 'role:admin_cabang'])->group(function () {
 |--------------------------------------------------------------------------
 */
     Route::put('/tentang/update', [TentangController::class, 'update'])->name('menu.tentang.update');
+    Route::post('/legalitas/store', [LegalitasController::class, 'store'])->name('menu.legalitas.store');
 });
