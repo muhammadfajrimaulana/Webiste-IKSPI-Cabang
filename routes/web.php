@@ -8,7 +8,7 @@ use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\Navigasi\DataRantingController;
 use App\Http\Controllers\Navigasi\DataPengesahanController;
-
+use App\Http\Controllers\Navigasi\TentangController;
 
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
@@ -97,9 +97,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
 | 5. RUTE TAMPILAN INFORMASI (Menu Navigasi 2 - 8)
 |--------------------------------------------------------------------------
 */
-        Route::get('/tentang', function () {
-            return view('navigasi.tentang', ['title' => '2. Tentang IKSPI', 'icon' => 'fa-clock-rotate-left']);
-        })->name('menu.tentang');
+        Route::get('/tentang', [TentangController::class, 'index'])->name('menu.tentang');
 
         Route::get('/legalitas', function () {
             return view('navigasi.legalitas', ['title' => '3. Tata Kelola & Legalitas', 'icon' => 'fa-file-shield']);
@@ -130,7 +128,7 @@ Route::middleware(['auth', 'role:anggota'])->group(
     function () {
         /*
 |--------------------------------------------------------------------------
-| 6. RUTE KHUSUS ANGGOTA (Tambahan agar Sidebar tidak Error)
+| 6. RUTE KHUSUS ANGGOTA
 |--------------------------------------------------------------------------
 */
         Route::name('anggota.')->group(function () {
@@ -158,3 +156,13 @@ Route::middleware(['auth', 'role:anggota'])->group(
         });
     }
 );
+
+
+Route::middleware(['auth', 'role:admin_cabang'])->group(function () {
+    /*
+|--------------------------------------------------------------------------
+| 6. RUTE KHUSUS ADMIN CABANG EDIT KONTEN
+|--------------------------------------------------------------------------
+*/
+    Route::put('/tentang/update', [TentangController::class, 'update'])->name('menu.tentang.update');
+});

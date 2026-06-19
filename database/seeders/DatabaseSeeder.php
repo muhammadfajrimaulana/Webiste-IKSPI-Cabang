@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RantingSeeder::class,
             UserSeeder::class,
             IKSPISeeder::class,
+            ContentSeeder::class,
         ]);
     }
 }
