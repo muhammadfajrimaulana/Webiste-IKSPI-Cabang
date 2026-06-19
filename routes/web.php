@@ -10,6 +10,7 @@ use App\Http\Controllers\Navigasi\DataRantingController;
 use App\Http\Controllers\Navigasi\DataPengesahanController;
 use App\Http\Controllers\Navigasi\TentangController;
 use App\Http\Controllers\Navigasi\LegalitasController;
+use App\Http\Controllers\Navigasi\PengurusController;
 
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
@@ -105,9 +106,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::get('/ranting', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'daftarRanting'])->name('menu.ranting');
         Route::put('/ranting/update/{id}', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'updateRanting'])->name('menu.ranting.update');
 
-        Route::get('/struktur', function () {
-            return view('navigasi.struktur', ['title' => '5. Struktur Organisasi', 'icon' => 'fa-sitemap']);
-        })->name('menu.struktur');
+        Route::get('/struktur', [PengurusController::class, 'index'])->name('menu.struktur');
 
         Route::get('/media', function () {
             return view('navigasi.media', ['title' => '6. Ruang Media', 'icon' => 'fa-images']);
@@ -165,4 +164,7 @@ Route::middleware(['auth', 'role:admin_cabang'])->group(function () {
 */
     Route::put('/tentang/update', [TentangController::class, 'update'])->name('menu.tentang.update');
     Route::post('/legalitas/store', [LegalitasController::class, 'store'])->name('menu.legalitas.store');
+    Route::post('/struktur', [PengurusController::class, 'store'])->name('menu.struktur.store');
+    Route::put('/struktur/{pengurus}', [PengurusController::class, 'update'])->name('menu.struktur.update');
+    Route::delete('/struktur/{pengurus}', [PengurusController::class, 'destroy'])->name('menu.struktur.destroy');
 });

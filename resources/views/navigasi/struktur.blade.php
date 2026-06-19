@@ -2,40 +2,65 @@
     @slot('icon', 'fa-solid fa-sitemap')
     @slot('title', 'Struktur Organisasi Cabang')
 
-    <div class="space-y-6 max-w-4xl mx-auto">
-        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs text-center space-y-6">
-            <div class="flex items-center justify-center space-x-2 border-b border-gray-100 pb-4 max-w-xs mx-auto">
-                <div class="text-red-600 text-sm"><i class="fa-solid fa-sitemap"></i></div>
-                <h3 class="text-xs font-bold text-slate-950 uppercase tracking-wider">Bagan Komando Kepengurusan</h3>
+
+    <div class="max-w-7xl mx-auto py-10 px-4">
+        @if (auth()->check() && auth()->user()->role === 'admin_cabang')
+            <div class="mb-8 text-center">
+                <button onclick="openModal()"
+                    class="bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-700">
+                    <i class="fa-solid fa-plus mr-2"></i>Tambah Pengurus
+                </button>
             </div>
+        @endif
 
-            <div
-                class="inline-block bg-slate-900 text-white p-4 rounded-xl min-w-[240px] shadow-sm border border-slate-800">
-                <div class="text-[9px] font-bold text-yellow-400 uppercase tracking-widest">Ketua Cabang</div>
-                <p class="text-xs font-bold mt-1.5 uppercase tracking-wide">Wahyu Supono</p>
-            </div>
-
-            <div class="h-8 w-0.5 bg-gray-200 mx-auto"></div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-                <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-xs flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600 text-xs"><i
-                            class="fa-regular fa-id-card"></i></div>
-                    <div class="text-left">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase">Sekretaris Cabang</p>
-                        <p class="text-xs font-bold text-slate-900 mt-0.5">Lukman Pratama</p>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-xs flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-600 text-xs">
-                        <i class="fa-solid fa-wallet"></i></div>
-                    <div class="text-left">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase">Bendahara Keuangan</p>
-                        <p class="text-xs font-bold text-slate-900 mt-0.5">Sintia Saputri</p>
-                    </div>
-                </div>
-            </div>
+        <div class="flex justify-center flex-wrap gap-8">
+            @foreach ($struktur as $item)
+                @include('navigasi._pengurus-item', ['item' => $item])
+            @endforeach
         </div>
     </div>
+
+    <div id="pengurusModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+        <form id="pengurusForm" action="" method="POST" class="bg-white p-6 rounded-xl w-full max-w-sm">
+            @csrf
+            <input type="hidden" name="_method" id="formMethod" value="POST">
+            <h3 id="modalTitle" class="text-sm font-bold mb-4">Tambah Pengurus</h3>
+
+            <input type="text" id="nama" name="nama" placeholder="Nama Lengkap"
+                class="w-full border p-2 mb-2 text-xs rounded" required>
+            <input type="text" id="jabatan" name="jabatan" placeholder="Jabatan"
+                class="w-full border p-2 mb-2 text-xs rounded" required>
+            <input type="number" name="urutan" placeholder="Nomor Urut (ex: 1)"
+                class="w-full border p-2 mb-2 text-xs rounded" required>
+
+            <select name="parent_id" id="parent_id" class="w-full border p-2 mb-4 text-xs rounded">
+                <option value="">-- Pilih Atasan (Parent) --</option>
+                @foreach (\App\Models\Pengurus::all() as $p)
+                    <option value="{{ $p->id }}">{{ $p->jabatan }} - {{ $p->nama }}</option>
+                @endforeach
+            </select>
+
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeModal()" class="text-xs px-3 py-1">Batal</button>
+                <button type="submit" class="bg-red-600 text-white text-xs px-3 py-1 rounded">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function openModal(actionUrl = "{{ route('menu.struktur.store') }}", method = "POST", nama = "", jabatan = "",
+            parentId = "") {
+            document.getElementById('pengurusForm').action = actionUrl;
+            document.getElementById('formMethod').value = method;
+            document.getElementById('nama').value = nama;
+            document.getElementById('jabatan').value = jabatan;
+            document.getElementById('parent_id').value = parentId;
+            document.getElementById('modalTitle').innerText = method === "PUT" ? "Edit Pengurus" : "Tambah Pengurus";
+            document.getElementById('pengurusModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('pengurusModal').classList.add('hidden');
+        }
+    </script>
 </x-dashboard-layout>

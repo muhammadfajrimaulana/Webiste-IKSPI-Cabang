@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             IKSPISeeder::class,
             ContentSeeder::class,
+            PengurusSeeder::class,
         ]);
     }
 }
