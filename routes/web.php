@@ -12,6 +12,7 @@ use App\Http\Controllers\Navigasi\TentangController;
 use App\Http\Controllers\Navigasi\LegalitasController;
 use App\Http\Controllers\Navigasi\PengurusController;
 use App\Http\Controllers\Navigasi\PostController;
+use App\Http\Controllers\Navigasi\ContactController;
 
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
@@ -115,9 +116,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::put('/pengesahan/update/{id}', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'updatePengesahan'])->name('menu.pengesahan.update');
         Route::get('/pengesahan/cetak', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'cetak'])->name('menu.pengesahan.cetak');
 
-        Route::get('/kontak', function () {
-            return view('navigasi.kontak', ['title' => '8. Kontak Cabang', 'icon' => 'fa-headset']);
-        })->name('menu.kontak');
+        Route::get('/kontak', [\App\Http\Controllers\Navigasi\ContactController::class, 'index'])->name('menu.kontak');
     }
 );
 
@@ -169,4 +168,5 @@ Route::middleware(['auth', 'role:admin_cabang'])->group(function () {
     Route::post('/media', [PostController::class, 'store'])->name('menu.media.store');
     Route::put('/media/{post}', [PostController::class, 'update'])->name('menu.media.update');
     Route::delete('/media/{post}', [PostController::class, 'destroy'])->name('menu.media.destroy');
+    Route::post('/kontak', [ContactController::class, 'store'])->name('menu.kontak.store');
 });

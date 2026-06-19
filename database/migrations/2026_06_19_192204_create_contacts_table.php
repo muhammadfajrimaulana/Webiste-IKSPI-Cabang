@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->string('jabatan');
+            $table->string('nomor_wa');
+            $table->enum('level', ['cabang', 'ranting'])->default('ranting');
+            $table->unsignedBigInteger('ranting_id')->nullable(); // Untuk mengelompokkan ke ranting tertentu
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ContentSeeder::class,
             PengurusSeeder::class,
             PostSeeder::class,
+            ContactSeeder::class,
         ]);
     }
 }
