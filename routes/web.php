@@ -11,6 +11,7 @@ use App\Http\Controllers\Navigasi\DataPengesahanController;
 use App\Http\Controllers\Navigasi\TentangController;
 use App\Http\Controllers\Navigasi\LegalitasController;
 use App\Http\Controllers\Navigasi\PengurusController;
+use App\Http\Controllers\Navigasi\PostController;
 
 use App\Http\Controllers\Administrasi\InputDataController;
 use App\Http\Controllers\Administrasi\VerifikasiController;
@@ -108,9 +109,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
 
         Route::get('/struktur', [PengurusController::class, 'index'])->name('menu.struktur');
 
-        Route::get('/media', function () {
-            return view('navigasi.media', ['title' => '6. Ruang Media', 'icon' => 'fa-images']);
-        })->name('menu.media');
+        Route::get('/media', [\App\Http\Controllers\Navigasi\PostController::class, 'index'])->name('menu.media');
 
         Route::get('/pengesahan', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'daftarPengesahan'])->name('menu.pengesahan');
         Route::put('/pengesahan/update/{id}', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'updatePengesahan'])->name('menu.pengesahan.update');
@@ -167,4 +166,7 @@ Route::middleware(['auth', 'role:admin_cabang'])->group(function () {
     Route::post('/struktur', [PengurusController::class, 'store'])->name('menu.struktur.store');
     Route::put('/struktur/{pengurus}', [PengurusController::class, 'update'])->name('menu.struktur.update');
     Route::delete('/struktur/{pengurus}', [PengurusController::class, 'destroy'])->name('menu.struktur.destroy');
+    Route::post('/media', [PostController::class, 'store'])->name('menu.media.store');
+    Route::put('/media/{post}', [PostController::class, 'update'])->name('menu.media.update');
+    Route::delete('/media/{post}', [PostController::class, 'destroy'])->name('menu.media.destroy');
 });

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             IKSPISeeder::class,
             ContentSeeder::class,
             PengurusSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }
