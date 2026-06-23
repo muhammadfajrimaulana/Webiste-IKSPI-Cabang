@@ -39,7 +39,7 @@
                             <x-nav-link route="menu.media" icon="fa-regular fa-images">Ruang Media & Galeri</x-nav-link>
                             <x-nav-link route="menu.pengesahan" icon="fa-solid fa-id-card-clip">Data
                                 Pengesahan</x-nav-link>
-                            <x-nav-link route="menu.kontak" icon="fa-solid fa-headset">Kontak Cabang</x-nav-link>
+                            <x-nav-link route="menu.kontak" icon="fa-solid fa-headset">Kontak Organisasi</x-nav-link>
                         </div>
                     </div>
 

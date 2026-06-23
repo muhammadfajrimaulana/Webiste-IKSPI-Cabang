@@ -22,16 +22,19 @@
 
         {{-- Section Ranting --}}
         <div>
-            <h3 class="text-xs font-bold text-slate-900 mb-4 uppercase">Kontak Ranting Anda</h3>
+            <h3 class="text-xs font-bold text-slate-900 mb-4 uppercase">Kontak Ranting</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach ($kontakRanting as $r)
                     <div class="bg-white p-4 rounded-xl border border-gray-200 flex justify-between items-center">
                         <div>
-                            <p class="text-xs font-bold">{{ $r->nama }}</p>
-                            <p class="text-[10px] text-gray-500">{{ $r->jabatan }}</p>
+                            {{-- Sesuaikan field dengan model Ranting --}}
+                            <p class="text-xs font-bold">{{ $r->nama_ranting }}</p>
+                            <p class="text-[10px] text-gray-500">Ketua: {{ $r->ketua_ranting }}</p>
                         </div>
-                        <a href="https://wa.me/{{ $r->nomor_wa }}" target="_blank" class="text-green-500 text-lg"><i
-                                class="fa-brands fa-whatsapp"></i></a>
+                        {{-- Gunakan kolom kontak_ranting dari tabel rantings --}}
+                        <a href="https://wa.me/{{ $r->kontak_ranting }}" target="_blank" class="text-green-500 text-lg">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
                     </div>
                 @endforeach
             </div>

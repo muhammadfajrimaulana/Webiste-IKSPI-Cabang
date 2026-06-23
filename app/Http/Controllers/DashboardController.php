@@ -14,14 +14,12 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // 1. Jika role adalah anggota, langsung return view tanpa data admin
         if ($user->role === 'anggota') {
             return view('dashboard', [
                 'title' => 'Dashboard Anggota'
             ]);
         }
 
-        // 2. Jika bukan anggota (admin_cabang/admin_ranting), proses logika admin
         $queryAnggota = Anggota::query();
         $queryPendaftaran = Pendaftaran::where('status_verifikasi', 'pending');
         $queryTransaksi = Transaksi::query();

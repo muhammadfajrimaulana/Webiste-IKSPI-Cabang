@@ -11,14 +11,15 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $kontakCabang = Contact::where('level', 'cabang')->get();
-
-        // Gunakan Auth::user() atau auth()->user()
         $user = Auth::user();
 
-        $kontakRanting = Contact::where('level', 'ranting')
-            ->where('ranting_id', $user->ranting_id)
-            ->get();
+        $kontakCabang = Contact::where('level', 'cabang')->get();
+
+        if ($user->role === 'admin_cabang') {
+            $kontakRanting = \App\Models\Ranting::all();
+        } else {
+            $kontakRanting = \App\Models\Ranting::where('id', $user->ranting_id)->get();
+        }
 
         return view('navigasi.kontak', compact('kontakCabang', 'kontakRanting'));
     }
