@@ -76,31 +76,50 @@
                 @else
                     {{-- MENU ANGGOTA --}}
                     <div>
-                        <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Manajemen
-                            Personal</span>
-                        <div class="space-y-1">
-                            <x-nav-link route="dashboard" icon="fa-solid fa-house">Dashboard</x-nav-link>
-                            <x-nav-link route="anggota.profil" icon="fa-solid fa-id-card">Kartu Tanda Anggota
-                                (KTA)</x-nav-link>
-                            <x-nav-link route="anggota.pengesahan" icon="fa-solid fa-medal">Riwayat
-                                Pengesahan</x-nav-link>
-                            <x-nav-link route="anggota.iuran" icon="fa-solid fa-wallet">Riwayat Iuran
-                                Anggota</x-nav-link>
-                            <x-nav-link route="anggota.password" icon="fa-solid fa-key">Ubah Password</x-nav-link>
+                        <div>
+                            <span
+                                class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Ringkasan</span>
+                            <div class="space-y-1">
+                                <x-nav-link route="dashboard" icon="fa-solid fa-house-chimney">Dashboard</x-nav-link>
+                            </div>
                         </div>
                     </div>
 
                     <div>
                         <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Informasi
-                            & Komunikasi</span>
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pusat
+                            Informasi</span>
                         <div class="space-y-1">
-                            <x-nav-link route="anggota.jadwal" icon="fa-solid fa-calendar-days">Jadwal &
-                                Agenda</x-nav-link>
-                            <x-nav-link route="anggota.info" icon="fa-solid fa-circle-info">Info Organisasi</x-nav-link>
-                            <x-nav-link route="anggota.bantuan" icon="fa-solid fa-headset">Bantuan &
-                                Support</x-nav-link>
+                            <x-nav-link route="anggota.jadwal" icon="fa-solid fa-calendar-days">Jadwal
+                                Kegiatan</x-nav-link>
+                            <x-nav-link route="anggota.berita" icon="fa-solid fa-newspaper">Berita &
+                                Artikel</x-nav-link>
+                            <x-nav-link route="anggota.galeri" icon="fa-solid fa-images">Galeri Dokumentasi</x-nav-link>
+                            <x-nav-link route="anggota.kontak" icon="fa-solid fa-phone">Kontak Ranting</x-nav-link>
+                            <x-nav-link route="anggota.pengumuman" icon="fa-solid fa-bullhorn">Pengumuman</x-nav-link>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pengembangan
+                            Diri</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="anggota.materi" icon="fa-solid fa-graduation-cap">Materi
+                                Latihan</x-nav-link>
+                            <x-nav-link route="anggota.video" icon="fa-solid fa-video">Video Tutorial</x-nav-link>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Manajemen
+                            Personal</span>
+                        <div class="space-y-1">
+                            <x-nav-link route="anggota.profil" icon="fa-solid fa-user">Profil</x-nav-link>
+                            <x-nav-link route="anggota.kta" icon="fa-solid fa-id-card">Cetak KTA</x-nav-link>
+                            <x-nav-link route="anggota.iuran" icon="fa-solid fa-file-invoice">Laporan Iuran</x-nav-link>
+                            <x-nav-link route="anggota.bantuan" icon="fa-solid fa-headset">Pusat Bantuan</x-nav-link>
                         </div>
                     </div>
                 @endif
