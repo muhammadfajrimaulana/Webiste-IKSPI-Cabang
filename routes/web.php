@@ -56,6 +56,8 @@ Route::middleware(['auth'])->group(
 |--------------------------------------------------------------------------
 */
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+        Route::get('/profile/edit', [DashboardController::class, 'editProfile'])->name('profile.edit');
     }
 );
 

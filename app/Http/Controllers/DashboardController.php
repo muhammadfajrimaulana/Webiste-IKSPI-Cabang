@@ -42,4 +42,24 @@ class DashboardController extends Controller
             'antreanPendaftaran' => $queryPendaftaran->latest()->take(5)->get(),
         ]);
     }
+
+    public function profile()
+    {
+        $user = Auth::user();
+
+        return view('profile/profile', [
+            'title' => 'Profil ' . ucfirst(str_replace('_', ' ', $user->role)),
+            'user'  => $user,
+        ]);
+    }
+
+    public function editProfile()
+    {
+        $user = Auth::user();
+
+        return view('profile/edit', [
+            'title' => 'Edit Profil ' . ucfirst(str_replace('_', ' ', $user->role)),
+            'user'  => $user,
+        ]);
+    }
 }

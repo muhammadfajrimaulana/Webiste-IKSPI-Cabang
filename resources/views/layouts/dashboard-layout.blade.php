@@ -2,13 +2,16 @@
     <div class="flex h-screen overflow-hidden">
 
         <aside class="w-64 bg-slate-900 text-white flex flex-col h-full shrink-0">
-            <div class="p-5 bg-slate-950 flex items-center space-x-3 border-b border-slate-800">
-                <img src="{{ asset('assets/img/logo-ikspi.png') }}" alt="Logo IKSPI Kera Sakti"
-                    class="w-10 h-10 object-contain rounded-md filter drop-shadow-md">
-                <div>
-                    <h1 class="text-sm font-bold tracking-wide">IKSPI KERA SAKTI</h1>
-                    <p class="text-xs text-gray-400">Cabang Jakarta Pusat</p>
-                </div>
+            <div class="p-5 bg-slate-950 border-b border-slate-800">
+                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
+                    <img src="{{ asset('assets/img/logo-ikspi.png') }}" alt="Logo IKSPI Kera Sakti"
+                        class="w-10 h-10 object-contain rounded-md filter drop-shadow-md">
+
+                    <div>
+                        <h1 class="text-sm font-bold tracking-wide">IKSPI KERA SAKTI</h1>
+                        <p class="text-xs text-gray-400">Cabang Jakarta Pusat</p>
+                    </div>
+                </a>
             </div>
 
             <nav class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent"
@@ -104,23 +107,25 @@
             </nav>
 
             <div class="p-4 ml-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <div
-                        class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase">
-                        {{ collect(explode(' ', auth()->user()->nama_pengurus))->map(fn($word) => $word[0])->take(2)->implode('') }}
-                    </div>
+                <div>
+                    <a href="{{ route('profile') }}" class="flex items-center space-x-2">
+                        <div
+                            class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase">
+                            {{ collect(explode(' ', auth()->user()->nama_pengurus))->map(fn($word) => $word[0])->take(2)->implode('') }}
+                        </div>
 
-                    <div class="text-xs">
-                        <p class="font-semibold block truncate w-32">{{ auth()->user()->nama_pengurus }}</p>
+                        <div class="text-xs">
+                            <p class="font-semibold block truncate w-32">{{ auth()->user()->nama_pengurus }}</p>
 
-                        <p class="text-gray-400 text-[8px]">
-                            {{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }}
+                            <p class="text-gray-400 text-[8px]">
+                                {{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }}
 
-                            @if (auth()->user()->ranting)
-                                ({{ auth()->user()->ranting->nama_ranting }})
-                            @endif
-                        </p>
-                    </div>
+                                @if (auth()->user()->ranting)
+                                    ({{ auth()->user()->ranting->nama_ranting }})
+                                @endif
+                            </p>
+                        </div>
+                    </a>
                 </div>
                 <form action="{{ route('logout') }}" method="POST" class="p-2">
                     @csrf
