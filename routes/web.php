@@ -130,9 +130,10 @@ Route::middleware(['auth', 'role:anggota'])->group(
 |--------------------------------------------------------------------------
 */
         Route::name('anggota.')->group(function () {
-            Route::get('/anggota/pengesahan', function () {
-                return view('anggota.pengesahan');
-            })->name('pengesahan');
+            Route::get('/anggota/profile', [DashboardController::class, 'profile'])->name('profile');
+            Route::get('/anggota/informasi', function () {
+                return view('anggota.informasi');
+            })->name('informasi');
             Route::get('/anggota/dokumen', function () {
                 return view('anggota.dokumen');
             })->name('dokumen');

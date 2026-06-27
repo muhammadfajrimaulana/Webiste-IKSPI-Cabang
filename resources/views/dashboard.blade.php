@@ -60,7 +60,7 @@
                     <i class="fa-solid fa-id-card text-4xl text-red-500 mb-3"></i>
                     <h4 class="font-bold text-slate-900">KTA Digital</h4>
                     <p class="text-xs text-gray-600 mb-4">Download atau cetak KTA digital kamu di sini.</p>
-                    <a href="{{ route('anggota.profil') }}"
+                    <a href="{{ route('anggota.profile') }}"
                         class="block w-full bg-red-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-red-700">Lihat
                         Profil</a>
                 </div>
