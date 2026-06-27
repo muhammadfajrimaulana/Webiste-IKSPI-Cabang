@@ -90,35 +90,37 @@
                             class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pusat
                             Informasi</span>
                         <div class="space-y-1">
-                            <x-nav-link route="anggota.jadwal" icon="fa-solid fa-calendar-days">Jadwal
-                                Kegiatan</x-nav-link>
+                            <x-nav-link route="anggota.informasi" icon="fa-solid fa-info-circle">Informasi
+                                Ranting</x-nav-link>
+                            <x-nav-link route="anggota.dokumen" icon="fa-solid fa-envelope">Dokumen Ranting</x-nav-link>
+                            <x-nav-link route="anggota.struktur" icon="fa-solid fa-sitemap">Struktur
+                                Ranting</x-nav-link>
                             <x-nav-link route="anggota.berita" icon="fa-solid fa-newspaper">Berita &
                                 Artikel</x-nav-link>
-                            <x-nav-link route="anggota.galeri" icon="fa-solid fa-images">Galeri Dokumentasi</x-nav-link>
-                            <x-nav-link route="anggota.kontak" icon="fa-solid fa-phone">Kontak Ranting</x-nav-link>
+                            <x-nav-link route="anggota.media" icon="fa-solid fa-images">Media & Galeri</x-nav-link>
                             <x-nav-link route="anggota.pengumuman" icon="fa-solid fa-bullhorn">Pengumuman</x-nav-link>
                         </div>
                     </div>
 
                     <div>
                         <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pengembangan
-                            Diri</span>
+                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Layanan
+                            Anggota</span>
                         <div class="space-y-1">
-                            <x-nav-link route="anggota.materi" icon="fa-solid fa-graduation-cap">Materi
-                                Latihan</x-nav-link>
-                            <x-nav-link route="anggota.video" icon="fa-solid fa-video">Video Tutorial</x-nav-link>
+                            <x-nav-link route="anggota.pengesahan" icon="fa-solid fa-stamp">Riwayat
+                                Pengesahan</x-nav-link>
+                            <x-nav-link route="anggota.kta" icon="fa-solid fa-id-card">Cetak Kartu Anggota</x-nav-link>
+                            <x-nav-link route="anggota.laporan" icon="fa-solid fa-file-invoice">Laporan
+                                Pembayaran</x-nav-link>
                         </div>
                     </div>
 
                     <div>
                         <span
                             class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Manajemen
-                            Personal</span>
+                            Akun</span>
                         <div class="space-y-1">
-                            <x-nav-link route="anggota.profil" icon="fa-solid fa-user">Profil</x-nav-link>
-                            <x-nav-link route="anggota.kta" icon="fa-solid fa-id-card">Cetak KTA</x-nav-link>
-                            <x-nav-link route="anggota.iuran" icon="fa-solid fa-file-invoice">Laporan Iuran</x-nav-link>
+                            <x-nav-link route="anggota.pengaturan" icon="fa-solid fa-gear">Pengaturan</x-nav-link>
                             <x-nav-link route="anggota.bantuan" icon="fa-solid fa-headset">Pusat Bantuan</x-nav-link>
                         </div>
                     </div>
