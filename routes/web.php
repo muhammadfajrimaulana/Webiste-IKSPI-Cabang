@@ -130,24 +130,36 @@ Route::middleware(['auth', 'role:anggota'])->group(
 |--------------------------------------------------------------------------
 */
         Route::name('anggota.')->group(function () {
-            Route::get('/anggota/profil', function () {
-                return view('anggota.profil');
-            })->name('profil');
             Route::get('/anggota/pengesahan', function () {
                 return view('anggota.pengesahan');
             })->name('pengesahan');
-            Route::get('/anggota/iuran', function () {
-                return view('anggota.iuran');
-            })->name('iuran');
-            Route::get('/anggota/password', function () {
-                return view('anggota.password');
-            })->name('password');
-            Route::get('/anggota/jadwal', function () {
-                return view('anggota.jadwal');
-            })->name('jadwal');
-            Route::get('/anggota/info', function () {
-                return view('anggota.info');
-            })->name('info');
+            Route::get('/anggota/dokumen', function () {
+                return view('anggota.dokumen');
+            })->name('dokumen');
+            Route::get('/anggota/struktur', function () {
+                return view('anggota.struktur');
+            })->name('struktur');
+            Route::get('/anggota/berita', function () {
+                return view('anggota.berita');
+            })->name('berita');
+            Route::get('/anggota/media', function () {
+                return view('anggota.media');
+            })->name('media');
+            Route::get('/anggota/pengumuman', function () {
+                return view('anggota.pengumuman');
+            })->name('pengumuman');
+            Route::get('/anggota/pengesahan', function () {
+                return view('anggota.pengesahan');
+            })->name('pengesahan');
+            Route::get('/anggota/kta', function () {
+                return view('anggota.kta');
+            })->name('kta');
+            Route::get('/anggota/laporan', function () {
+                return view('anggota.laporan');
+            })->name('laporan');
+            Route::get('/anggota/pengaturan', function () {
+                return view('anggota.pengaturan');
+            })->name('pengaturan');
             Route::get('/anggota/bantuan', function () {
                 return view('anggota.bantuan');
             })->name('bantuan');
