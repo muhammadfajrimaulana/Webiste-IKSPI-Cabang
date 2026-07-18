@@ -190,33 +190,36 @@
                                 <thead
                                     class="bg-gray-50 text-gray-700 uppercase font-semibold border-b border-gray-100">
                                     <tr>
+                                        <th class="p-3">Tanggal Daftar</th>
                                         <th class="p-3">Nama Pendaftar</th>
                                         <th class="p-3">Ranting Tujuan</th>
-                                        <th class="p-3">Berkas</th>
-                                        <th class="p-3 text-center">Aksi</th>
+                                        <th class="p-3 text-center">Berkas</th> <!-- Kolom aksi dihapus -->
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     @forelse($antreanPendaftaran as $pendaftar)
                                         <tr class="hover:bg-slate-50/40 transition">
                                             <td class="p-3 font-bold text-slate-900 uppercase">
-                                                {{ $pendaftar->nama_lengkap }}</td>
+                                                {{ $pendaftar->created_at->translatedFormat('d F Y') }}
+                                            </td>
+                                            <td class="p-3 font-bold text-slate-900 uppercase">
+                                                {{ $pendaftar->nama_lengkap }}
+                                            </td>
                                             <td class="p-3 text-slate-500">
                                                 <i class="fa-solid fa-location-dot text-gray-400 mr-1"></i>
                                                 {{ $pendaftar->ranting->nama_ranting }}
                                             </td>
-                                            <td class="p-3">
-                                                <span
-                                                    class="inline-flex items-center space-x-1.5 text-red-600 font-bold bg-red-50 px-2 py-0.5 rounded border border-red-100 text-[11px]">
-                                                    <i class="fa-regular fa-file-pdf"></i>
-                                                    <span>{{ $pendaftar->nama_file_berkas }}</span>
-                                                </span>
-                                            </td>
                                             <td class="p-3 text-center">
-                                                <button
-                                                    class="inline-flex items-center space-x-1 bg-slate-900 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-md hover:bg-slate-800 transition cursor-pointer">
-                                                    <i class="fa-regular fa-eye"></i> <span>Lihat</span>
-                                                </button>
+                                                @if ($pendaftar->berkas_pdf)
+                                                    <a href="{{ asset('storage/' . $pendaftar->berkas_pdf) }}"
+                                                        target="_blank"
+                                                        class="inline-flex items-center space-x-1 bg-slate-900 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-md hover:bg-slate-800 transition cursor-pointer">
+                                                        <i class="fa-regular fa-eye"></i> <span>Lihat</span>
+                                                    </a>
+                                                @else
+                                                    <span class="text-[10px] text-gray-400 italic">Tidak ada
+                                                        file</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty
@@ -232,69 +235,69 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endempty
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div
-                class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex flex-col justify-between space-y-4">
-                <div>
-                    <div class="flex items-center space-x-2 border-b border-gray-100 pb-4 mb-4">
-                        <div class="text-red-600 text-xs"><i class="fa-solid fa-bolt"></i></div>
-                        <h4 class="font-bold text-slate-950 text-xs uppercase tracking-wider">Akses Cepat Alur
-                            Kerja
-                        </h4>
-                    </div>
-
-                    <div class="space-y-2">
-                        <a href="{{ route('pendaftaran.index') }}"
-                            class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
-                            <span class="flex items-center space-x-2.5">
-                                <i
-                                    class="fa-solid fa-cloud-arrow-up text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
-                                <span>Input Data Baru (Flow A)</span>
-                            </span>
-                            <i
-                                class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-                        </a>
-
-                        <a href="{{ route('output.index') }}"
-                            class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
-                            <span class="flex items-center space-x-2.5">
-                                <i
-                                    class="fa-solid fa-file-invoice-dollar text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
-                                <span>Cetak Laporan Output (Flow C)</span>
-                            </span>
-                            <i
-                                class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-                        </a>
-
-                        <a href="#"
-                            class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
-                            <span class="flex items-center space-x-2.5">
-                                <i
-                                    class="fa-solid fa-box-open text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
-                                <span>Cek Inventaris & Logistik Atribut</span>
-                            </span>
-                            <i
-                                class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-                        </a>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <div
-                    class="bg-slate-50 p-3 rounded-lg border border-gray-100 text-[11px] text-gray-500 leading-relaxed flex items-start gap-2">
-                    <span class="text-yellow-600 shrink-0"><i class="fa-solid fa-lightbulb"></i></span>
-                    <span><strong>Tips:</strong> Data pendaftaran yang lolos verifikasi otomatis memperbarui arsip
-                        khusus di modul <strong>Data Pengesahan</strong> pada kategori Manajemen.</span>
+                    class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center space-x-2 border-b border-gray-100 pb-4 mb-4">
+                            <div class="text-red-600 text-xs"><i class="fa-solid fa-bolt"></i></div>
+                            <h4 class="font-bold text-slate-950 text-xs uppercase tracking-wider">Akses Cepat Alur
+                                Kerja
+                            </h4>
+                        </div>
+
+                        <div class="space-y-2">
+                            <a href="{{ route('pendaftaran.index') }}"
+                                class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
+                                <span class="flex items-center space-x-2.5">
+                                    <i
+                                        class="fa-solid fa-cloud-arrow-up text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
+                                    <span>Input Data Baru (Flow A)</span>
+                                </span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </a>
+
+                            <a href="{{ route('output.index') }}"
+                                class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
+                                <span class="flex items-center space-x-2.5">
+                                    <i
+                                        class="fa-solid fa-file-invoice-dollar text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
+                                    <span>Cetak Laporan Output (Flow C)</span>
+                                </span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </a>
+
+                            <a href="#"
+                                class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
+                                <span class="flex items-center space-x-2.5">
+                                    <i
+                                        class="fa-solid fa-box-open text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
+                                    <span>Cek Inventaris & Logistik Atribut</span>
+                                </span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-slate-50 p-3 rounded-lg border border-gray-100 text-[11px] text-gray-500 leading-relaxed flex items-start gap-2">
+                        <span class="text-yellow-600 shrink-0"><i class="fa-solid fa-lightbulb"></i></span>
+                        <span><strong>Tips:</strong> Data pendaftaran yang lolos verifikasi otomatis memperbarui arsip
+                            khusus di modul <strong>Data Pengesahan</strong> pada kategori Manajemen.</span>
+                    </div>
                 </div>
             </div>
-        </div>
-@endif
-</div>
+    @endif
+    </div>
 
 
 </x-dashboard-layout>
