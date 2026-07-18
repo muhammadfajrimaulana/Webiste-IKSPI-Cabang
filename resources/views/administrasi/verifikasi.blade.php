@@ -61,11 +61,16 @@
                                 {{ $data->created_at->translatedFormat('d F Y') }}
                             </td>
                             <td class="p-4 text-center">
-                                <a href="#"
-                                    class="inline-flex items-center space-x-1 text-red-600 font-bold bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded border border-red-100 text-[11px] transition">
-                                    <i class="fa-regular fa-file-pdf"></i>
-                                    <span>Lihat {{ $data->nama_file_berkas }}</span>
-                                </a>
+                                @if (!empty($data->berkas_pdf))
+                                    <a href="{{ route('berkas.lihat', ['filename' => $data->berkas_pdf]) }}"
+                                        target="_blank"
+                                        class="inline-flex items-center space-x-1 text-red-600 font-bold bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded border border-red-100 text-[11px] transition">
+                                        <i class="fa-regular fa-file-pdf"></i>
+                                        <span>Lihat File</span>
+                                    </a>
+                                @else
+                                    <span class="text-[10px] text-gray-400 italic">Tidak upload berkas</span>
+                                @endif
                             </td>
                             <td class="p-4 text-right">
                                 @if (auth()->user()->role === 'admin_cabang')

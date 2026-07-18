@@ -76,6 +76,9 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         // Flow B: Validasi & Verifikasi Berkas oleh Pengurus
         Route::get('/administrasi/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
         Route::post('/administrasi/verifikasi/{id}', [VerifikasiController::class, 'proses'])->name('verifikasi.proses');
+        Route::get('/berkas/lihat/{filename}', [VerifikasiController::class, 'lihatBerkas'])
+            ->where('filename', '.*')
+            ->name('berkas.lihat');
 
         // Flow C: Cetak Output Laporan Kelulusan & Set Tgl Awasul
         Route::get('/administrasi/output', [OutputController::class, 'index'])->name('output.index');

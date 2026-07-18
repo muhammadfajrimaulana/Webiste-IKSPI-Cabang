@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerifikasiController extends Controller
 {
@@ -74,6 +76,18 @@ class VerifikasiController extends Controller
 
         return redirect()->back()->with('success', $this->msg);
     }
-
     protected $msg;
+
+    public function lihatBerkas($filename)
+    {
+        $path = $filename;
+
+        $fullPath = storage_path('app/public/' . $path);
+
+        if (!file_exists($fullPath)) {
+            abort(404, "File tidak ditemukan di: " . $fullPath);
+        }
+
+        return response()->file($fullPath);
+    }
 }
