@@ -30,8 +30,8 @@ class DashboardController extends Controller
             $queryTransaksi->where('ranting_id', $user->ranting_id);
         }
 
-        $totalMasuk = $queryTransaksi->where('tipe', 'masuk')->sum('nominal');
-        $totalKeluar = $queryTransaksi->where('tipe', 'keluar')->sum('nominal');
+        $totalMasuk = (clone $queryTransaksi)->where('tipe', 'masuk')->sum('nominal');
+        $totalKeluar = (clone $queryTransaksi)->where('tipe', 'keluar')->sum('nominal');
 
         return view('dashboard', [
             'title'             => 'Dashboard ' . ucfirst(str_replace('_', ' ', $user->role)),
@@ -40,6 +40,7 @@ class DashboardController extends Controller
             'totalVerifikasi'   => $queryPendaftaran->count(),
             'totalSaldo'        => $totalMasuk - $totalKeluar,
             'antreanPendaftaran' => $queryPendaftaran->latest()->take(5)->get(),
+            'userRanting'       => $user->ranting
         ]);
     }
 

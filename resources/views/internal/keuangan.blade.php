@@ -23,22 +23,11 @@
             </div>
 
             <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3">
-
-                @if (auth()->user()->role === 'admin_cabang')
-                    <div class="relative w-full sm:w-64">
-                        <label class="text-[9px] font-semibold text-gray-400 mb-1">Filter Keuangan
-                            Ranting</label>
-                        <select name="ranting_id"
-                            class="w-full pl-3 pr-8 py-2 text-xs font-semibold bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-slate-900 appearance-none cursor-pointer">
-                            <option value="">Semua Ranting (Cabang Jakpus)</option>
-                            @foreach ($dataRanting as $ranting)
-                                <option value="{{ $ranting->id }}">{{ $ranting->nama_ranting }}</option>
-                            @endforeach
-                        </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-3 top-[30px] text-[10px] text-gray-400 pointer-events-none"></i>
-                    </div>
-                @endif
+                <a href="{{ route('internal.keuangan.cetak', request()->query()) }}" target="_blank"
+                    class="px-4 py-2 mt-5 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i> Cetak Laporan
+                    {{ request('ranting_id') ? 'Ranting Terpilih' : 'Semua Ranting' }}
+                </a>
 
                 <button onclick="bukaModalKas()"
                     class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow-sm flex items-center gap-2 cursor-pointer mt-5 sm:mt-5">
@@ -47,33 +36,51 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-lg">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Kas Bersih (Saldo)</p>
-                <h4 class="text-2xl font-black text-white mt-1">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}</h4>
-                <div class="text-[10px] {{ $saldoAkhir >= 0 ? 'text-emerald-400' : 'text-rose-400' }} font-medium mt-1">
-                    <i class="fa-solid {{ $saldoAkhir >= 0 ? 'fa-shield-halved' : 'fa-triangle-exclamation' }}"></i>
-                    {{ $saldoAkhir >= 0 ? 'Posisi Dana Aman' : 'Perhatian: Kas Defisit' }}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            {{-- 1. Total Kas Keseluruhan --}}
+            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kas Keseluruhan</p>
+                    <h4 class="text-xl font-black text-white mt-1">Rp
+                        {{ number_format($saldoTotalCabang, 0, ',', '.') }}</h4>
+                    <div class="text-[9px] text-slate-500 font-medium mt-2 flex items-center gap-1">
+                        <i class="fa-solid fa-building-columns"></i> Seluruh Ranting
+                    </div>
+                </div>
+                <i class="fa-solid fa-vault absolute -bottom-2 -right-2 text-5xl text-slate-900"></i>
+            </div>
+
+            {{-- 2. Kas Bersih (Saldo Ranting/User) --}}
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    {{ auth()->user()->role === 'admin_ranting' ? 'Kas Ranting Anda' : 'Total Saldo Anda' }}
+                </p>
+                <h4 class="text-xl font-black text-slate-950 mt-1">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}</h4>
+                <div
+                    class="text-[9px] {{ $saldoAkhir >= 0 ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50' }} px-2 py-1 rounded-md font-bold mt-2 inline-block">
+                    <i
+                        class="fa-solid {{ $saldoAkhir >= 0 ? 'fa-shield-halved' : 'fa-triangle-exclamation' }} mr-1"></i>
+                    {{ $saldoAkhir >= 0 ? 'DANA AMAN' : 'PERHATIAN: DEFISIT' }}
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Pemasukan</p>
-                <div>
-                    <h4 class="text-2xl font-black text-green-600 mt-1">Rp {{ number_format($totalMasuk, 0, ',', '.') }}
-                    </h4>
-                    <div class="text-[10px] text-gray-400 mt-1">Akumulasi iuran & pendaftaran</div>
-                </div>
+            {{-- 3. Pemasukan --}}
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pemasukan</p>
+                <h4 class="text-xl font-black text-emerald-600 mt-1">Rp {{ number_format($totalMasuk, 0, ',', '.') }}
+                </h4>
+                <p class="text-[9px] text-slate-400 mt-2 font-medium">Akumulasi iuran & masuk</p>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Pengeluaran</p>
-                <div>
-                    <h4 class="text-2xl font-black text-red-600 mt-1">Rp {{ number_format($totalKeluar, 0, ',', '.') }}
-                    </h4>
-                    <div class="text-[10px] text-gray-400 mt-1">Alokasi logistik & operasional</div>
-                </div>
+            {{-- 4. Pengeluaran --}}
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pengeluaran</p>
+                <h4 class="text-xl font-black text-rose-600 mt-1">Rp {{ number_format($totalKeluar, 0, ',', '.') }}
+                </h4>
+                <p class="text-[9px] text-slate-400 mt-2 font-medium">Operasional & logistik</p>
             </div>
+
         </div>
 
         <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
@@ -86,8 +93,62 @@
                     <tr
                         class="bg-slate-50/50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                         <th class="p-4">Tanggal</th>
+                        @if (auth()->user()->role === 'admin_cabang')
+                            <th class="p-4">
+                                <div class="flex items-center gap-1 group">
+                                    <span class="{{ request('ranting_id') ? 'text-red-600' : '' }}">Ranting</span>
+                                    <div class="relative">
+                                        <button onclick="toggleRantingFilter()"
+                                            class="text-slate-400 hover:text-slate-900">
+                                            <i class="fa-solid fa-filter text-[9px]"></i>
+                                        </button>
+
+                                        <!-- Menu Filter Ranting -->
+                                        <div id="filterRantingMenu"
+                                            class="hidden absolute top-full left-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-xl z-20 max-h-60 overflow-y-auto">
+                                            <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['ranting_id' => ''])) }}"
+                                                class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Semua
+                                                Ranting</a>
+                                            @foreach ($dataRanting as $ranting)
+                                                <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['ranting_id' => $ranting->id])) }}"
+                                                    class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50 {{ request('ranting_id') == $ranting->id ? 'bg-slate-100' : '' }}">
+                                                    {{ $ranting->nama_ranting }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        @endif
                         <th class="p-4">Keterangan Transaksi</th>
-                        <th class="p-4">Kategori</th>
+                        <th class="p-4 group">
+                            <div class="flex items-center gap-1">
+                                <span class="{{ request('kategori') ? 'text-red-600' : '' }}">Kategori</span>
+                                <!-- Dropdown filter sederhana di header -->
+                                <div class="relative">
+                                    <button onclick="toggleFilterMenu()"
+                                        class="text-slate-400 hover:text-slate-900 focus:outline-none">
+                                        <i class="fa-solid fa-filter text-[9px] ml-1"></i>
+                                    </button>
+
+                                    <!-- Menu Filter Kategori -->
+                                    <div id="filterMenu"
+                                        class="hidden absolute top-full left-0 mt-2 w-40 bg-white border border-slate-200 rounded-lg shadow-xl z-20 overflow-hidden">
+                                        <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['kategori' => ''])) }}"
+                                            class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Semua
+                                            Kategori</a>
+                                        <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['kategori' => 'Pendaftaran'])) }}"
+                                            class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Pendaftaran</a>
+                                        <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['kategori' => 'Iuran'])) }}"
+                                            class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Iuran</a>
+                                        <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['kategori' => 'Logistik'])) }}"
+                                            class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Logistik</a>
+                                        <a href="{{ route('internal.keuangan', array_merge(request()->query(), ['kategori' => 'Operasional'])) }}"
+                                            class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Operasional</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
                         <th class="p-4 text-right">Nominal</th>
                         <th class="p-4 text-center w-28">Aksi</th>
                     </tr>
@@ -96,8 +157,27 @@
                     @forelse($transaksi as $item)
                         <tr class="hover:bg-slate-50/50 transition">
                             <td class="p-4 text-gray-500 font-medium">
-                                {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}
+                                <div class="flex flex-col">
+                                    <span>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}</span>
+                                    <span class="text-[9px] text-slate-400 font-bold uppercase">
+                                        {{ \Carbon\Carbon::parse($item->created_at)->format('H:i') }} WIB
+                                    </span>
+                                </div>
                             </td>
+                            @if (auth()->user()->role === 'admin_cabang')
+                                <td class="p-4 font-bold">
+                                    @if ($item->ranting_id === null)
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700 uppercase tracking-wider">
+                                            <i class="fa-solid fa-building-columns mr-1"></i> Cabang
+                                        </span>
+                                    @else
+                                        <span class="text-xs text-gray-700">
+                                            {{ $item->ranting->nama_ranting ?? '-' }}
+                                        </span>
+                                    @endif
+                                </td>
+                            @endif
                             <td class="p-4 font-semibold text-slate-900">
                                 {{ $item->keterangan }}
                             </td>
@@ -177,20 +257,25 @@
                         </select>
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Kategori
-                            Anggaran</label>
-                        <select name="kategori" required
-                            class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:border-red-500">
-                            <option value="Pendaftaran">Uang Pendaftaran Anggota</option>
-                            <option value="Iuran">Iuran Bulanan / Kas Rutin</option>
-                            <option value="Logistik">Logistik Atribut / Sabuk / Sakral</option>
-                            <option value="Operasional">Sewa GOR / Operasional Acara</option>
+                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Kategori</label>
+                        <select name="kategori" onchange="this.form.submit()"
+                            class="w-full pl-3 pr-8 py-2 text-xs font-semibold bg-white border border-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <option value="">Semua Kategori</option>
+                            <option value="Pendaftaran" {{ request('kategori') == 'Pendaftaran' ? 'selected' : '' }}>
+                                Pendaftaran</option>
+                            <option value="Iuran" {{ request('kategori') == 'Iuran' ? 'selected' : '' }}>Iuran
+                            </option>
+                            <option value="Logistik" {{ request('kategori') == 'Logistik' ? 'selected' : '' }}>
+                                Logistik</option>
+                            <option value="Operasional" {{ request('kategori') == 'Operasional' ? 'selected' : '' }}>
+                                Operasional</option>
                         </select>
                     </div>
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nominal
                             (Rupiah)</label>
-                        <input type="number" name="nominal" required placeholder="Contoh: 500000"
+                        <input type="text" id="inputNominal" name="nominal" required
+                            placeholder="Contoh: 500.000"
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 font-mono focus:outline-none focus:border-red-500">
                     </div>
                     <div class="space-y-1">
@@ -304,5 +389,58 @@
         function tutupModalEditKas() {
             document.getElementById('modalEditKas').classList.add('hidden');
         }
+
+        // Fungsi filter kategori transaksi
+        function toggleFilterMenu() {
+            const menu = document.getElementById('filterMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Menutup menu jika klik di luar
+        window.onclick = function(event) {
+            if (!event.target.matches('.fa-filter')) {
+                const menu = document.getElementById('filterMenu');
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            }
+        }
+
+        // Fungsi untuk toggle menu filter Ranting
+        function toggleRantingFilter() {
+            const rantingMenu = document.getElementById('filterRantingMenu');
+            const kategoriMenu = document.getElementById('filterKategoriMenu'); // Pastikan ini ID menu kategori kamu
+
+            rantingMenu.classList.toggle('hidden');
+            kategoriMenu.classList.add('hidden'); // Tutup menu kategori jika sedang buka ranting
+        }
+
+        // Menutup menu jika klik di area mana saja di luar menu
+        window.onclick = function(event) {
+            if (!event.target.matches('.fa-filter')) {
+                document.getElementById('filterRantingMenu').classList.add('hidden');
+                document.getElementById('filterKategoriMenu').classList.add('hidden');
+            }
+        }
+
+        // Fungsi Nominal
+        const inputNominal = document.getElementById('inputNominal');
+
+        inputNominal.addEventListener('input', function(e) {
+            // Hapus karakter selain angka
+            let value = e.target.value.replace(/[^0-9]/g, '');
+
+            // Format dengan titik
+            if (value !== "") {
+                e.target.value = new Intl.NumberFormat('id-ID').format(value);
+            } else {
+                e.target.value = "";
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function() {
+            let rawValue = inputNominal.value.replace(/\./g, '');
+            inputNominal.value = rawValue;
+        });
     </script>
 </x-dashboard-layout>

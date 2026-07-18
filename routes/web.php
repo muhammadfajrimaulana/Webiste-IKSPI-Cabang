@@ -97,6 +97,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::post('/internal/keuangan-logistik', [KeuanganController::class, 'store'])->name('internal.keuangan.store');
         Route::put('/internal/keuangan-logistik/{id}', [KeuanganController::class, 'update'])->name('internal.keuangan.update');
         Route::delete('/internal/keuangan-logistik/{id}', [KeuanganController::class, 'destroy'])->name('internal.keuangan.destroy');
+        Route::get('/internal/keuangan-cetak', [KeuanganController::class, 'cetak'])->name('internal.keuangan.cetak');
 
         /*
 |--------------------------------------------------------------------------

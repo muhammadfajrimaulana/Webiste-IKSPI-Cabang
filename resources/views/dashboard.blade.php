@@ -146,11 +146,20 @@
                     class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                     <div class="space-y-1">
                         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Saldo Kas</p>
-                        <h3 class="text-md font-bold text-slate-900 truncate">Rp
-                            {{ number_format($totalSaldo, 0, ',', '.') }}</h3>
-                        <span class="text-[10px] text-green-600 font-medium flex items-center gap-1">
-                            <i class="fa-solid fa-vault"></i>
-                            {{ auth()->user()->role === 'admin_ranting' ? 'Kas Ranting' : 'Kas Total Cabang' }}
+                        <h3 class="text-xl font-extrabold text-slate-950 tracking-tight">
+                            Rp {{ number_format($totalSaldo, 0, ',', '.') }}
+                        </h3>
+
+                        <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1.5">
+                            @if (auth()->user()->role === 'admin_ranting')
+                                {{-- Menggunakan relasi ranting user yang login untuk nama yang akurat --}}
+                                <i class="fa-solid fa-building-shield text-red-500"></i>
+                                {{ auth()->user()->ranting->nama_ranting ?? 'Ranting' }}
+                            @else
+                                {{-- Tampilan untuk Admin Cabang --}}
+                                <i class="fa-solid fa-vault text-green-600"></i>
+                                Total Kas Cabang
+                            @endif
                         </span>
                     </div>
                     <div

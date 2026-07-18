@@ -11,24 +11,41 @@ use Illuminate\Support\Facades\Auth;
 
 class KeuanganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
         // 1. Base Query
-        $query = Transaksi::query();
+        $query = Transaksi::with('ranting');
 
-        // 2. Isolasi: Admin Ranting hanya lihat kas rantingnya
-        if ($user->role === 'admin_ranting') {
-            $query->where('ranting_id', $user->ranting_id);
+        // 2. Filter berdasarkan ranting_id jika ada input dari form
+        if ($request->has('ranting_id') && $request->ranting_id != '') {
+            $query->where('ranting_id', $request->ranting_id);
         }
 
-        // 3. Ambil data transaksi
+        // 3. Filter kategori transaksi
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('kategori', $request->kategori);
+        }
+
+        // 4. Isolasi: Admin Ranting hanya lihat kas rantingnya
+        if ($user->role === 'admin_ranting') {
+            $query->where(function ($q) use ($user) {
+                $q->where('ranting_id', $user->ranting_id);
+                // ->orWhereNull('ranting_id')
+            });
+        }
+
+        // 5. Ambil data transaksi
         $transaksi = $query->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
 
-        // 4. Kalkulasi saldo (Clone query agar filter tetap terjaga)
+        // 6. Kalkulasi saldo
         $totalMasuk = (clone $query)->where('tipe', 'masuk')->sum('nominal');
         $totalKeluar = (clone $query)->where('tipe', 'keluar')->sum('nominal');
+
+        $totalMasukCabang = Transaksi::where('tipe', 'masuk')->sum('nominal');
+        $totalKeluarCabang = Transaksi::where('tipe', 'keluar')->sum('nominal');
+        $saldoTotalCabang = $totalMasukCabang - $totalKeluarCabang;
 
         $dataRanting = ($user->role === 'admin_cabang')
             ? Ranting::orderBy('nama_ranting', 'asc')->get()
@@ -41,6 +58,7 @@ class KeuanganController extends Controller
             'totalMasuk' => $totalMasuk,
             'totalKeluar' => $totalKeluar,
             'saldoAkhir' => $totalMasuk - $totalKeluar,
+            'saldoTotalCabang' => $saldoTotalCabang,
             'dataRanting' => $dataRanting
         ]);
     }
@@ -102,5 +120,24 @@ class KeuanganController extends Controller
         $transaksi->delete();
 
         return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
+    }
+
+    public function cetak(Request $request)
+    {
+        $query = Transaksi::query();
+
+        // Terapkan filter yang sama persis dengan index agar hasil cetak akurat
+        if ($request->has('ranting_id') && $request->ranting_id != '') {
+            $query->where('ranting_id', $request->ranting_id);
+        }
+
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $transaksi = $query->orderBy('tanggal', 'desc')->get();
+        $ranting = $request->ranting_id ? Ranting::find($request->ranting_id) : null;
+
+        return view('laporan.cetak', compact('transaksi', 'ranting'));
     }
 }
