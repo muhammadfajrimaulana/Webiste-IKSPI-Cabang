@@ -21,12 +21,83 @@
             <div class="overflow-x-auto">
                 @if (auth()->user()->role === 'admin_ranting')
                     {{-- Tampilan Card khusus untuk Admin Ranting --}}
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                        <h2 class="text-lg font-bold">{{ $dataRanting->first()->nama_ranting }}</h2>
-                        <p>Ketua Ranting: {{ $dataRanting->first()->ketua_ranting }}</p>
-                        <p>Kontak Ranting: {{ $dataRanting->first()->kontak_ranting }}</p>
-                        <p>Nama Pelatih: {{ $dataRanting->first()->nama_pelatih }}</p>
-                        <p>Tempat Latihan: {{ $dataRanting->first()->lokasi_latihan }}</p>
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition duration-300">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h2 class="text-xl font-extrabold text-slate-950 flex items-center gap-2">
+                                    <i class="fa-solid fa-building-shield text-red-600"></i>
+                                    {{ $dataRanting->first()->nama_ranting }}
+                                </h2>
+                                <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-bold">Informasi
+                                    Profil Ranting</p>
+                            </div>
+
+                            <button type="button" onclick="bukaModalEdit({{ json_encode($dataRanting->first()) }})"
+                                class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-xl hover:bg-slate-800 active:scale-95 transition flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Profil
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                            {{-- Item Info --}}
+                            <div class="flex items-start gap-3">
+                                <div
+                                    class="bg-slate-100 p-2 rounded-lg text-slate-600 w-8 h-8 flex items-center justify-center">
+                                    <i class="fa-solid fa-user-tie text-[12px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold text-slate-400">Ketua Ranting</p>
+                                    <p class="text-xs font-semibold text-slate-700">
+                                        {{ $dataRanting->first()->ketua_ranting ?? '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div
+                                    class="bg-slate-100 p-2 rounded-lg text-slate-600 w-8 h-8 flex items-center justify-center">
+                                    <i class="fa-solid fa-chalkboard-user text-[12px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold text-slate-400">Pelatih</p>
+                                    <p class="text-xs font-semibold text-slate-700">
+                                        {{ $dataRanting->first()->nama_pelatih ?? '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div
+                                    class="bg-slate-100 p-2 rounded-lg text-slate-600 w-8 h-8 flex items-center justify-center">
+                                    <i class="fa-solid fa-phone text-[12px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold text-slate-400">Kontak</p>
+                                    <a href="https://wa.me/{{ $dataRanting->first()->kontak_ranting }}" target="_blank"
+                                        class="text-xs font-bold text-blue-600 hover:underline">
+                                        {{ $dataRanting->first()->kontak_ranting ?? '-' }}
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div
+                                    class="bg-slate-100 p-2 rounded-lg text-slate-600 w-8 h-8 flex items-center justify-center">
+                                    <i class="fa-solid fa-location-dot text-[12px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold text-slate-400">Alamat</p>
+                                    <p class="text-xs font-semibold text-slate-700">
+                                        {{ $dataRanting->first()->alamat_ranting ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100">
+                            <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Titik Lokasi Latihan</p>
+                            <p class="text-xs text-slate-600 italic bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                "{{ $dataRanting->first()->lokasi_latihan ?? 'Lokasi belum ditentukan' }}"
+                            </p>
+                        </div>
                     </div>
                 @elseif (auth()->user()->role === 'anggota')
                     {{-- Tampilan Grid Card untuk Anggota (Lebih Informatif & Rapi) --}}
@@ -145,6 +216,11 @@
                             class="w-full mt-1 p-2 text-xs border rounded-lg">
                     </div>
                     <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Kontak Ranting</label>
+                        <input type="text" name="kontak_ranting" id="edit_kontak_ranting"
+                            class="w-full mt-1 p-2 text-xs border rounded-lg">
+                    </div>
+                    <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Nama Pelatih</label>
                         <input type="text" name="nama_pelatih" id="edit_nama_pelatih"
                             class="w-full mt-1 p-2 text-xs border rounded-lg">
@@ -153,17 +229,13 @@
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Lokasi Latihan</label>
                         <textarea name="lokasi_latihan" id="edit_lokasi_latihan" class="w-full mt-1 p-2 text-xs border rounded-lg" required></textarea>
                     </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-gray-500 uppercase">Kontak Ranting</label>
-                        <input type="text" name="kontak_ranting" id="edit_kontak_ranting"
-                            class="w-full mt-1 p-2 text-xs border rounded-lg">
-                    </div>
                 </div>
 
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" onclick="tutupModal()"
                         class="px-4 py-2 text-xs font-bold text-gray-600">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg">Simpan
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg">Simpan
                     </button>
                 </div>
             </form>
@@ -175,11 +247,9 @@
             const modal = document.getElementById('modalEditRanting');
             const form = document.getElementById('formEditRanting');
 
-            // Ganti route-nya sesuai route update ranting lu (asumsi nama routenya 'menu.ranting.update')
             const baseUrl = "{{ route('menu.ranting.update', ':id') }}";
             form.action = baseUrl.replace(':id', ranting.id);
 
-            // Isi field form
             document.getElementById('edit_nama_ranting').value = ranting.nama_ranting;
             document.getElementById('edit_ketua_ranting').value = ranting.ketua_ranting || '';
             document.getElementById('edit_alamat_ranting').value = ranting.alamat_ranting || '';
