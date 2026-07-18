@@ -13,7 +13,9 @@ class PostController extends Controller
     {
         // Mengambil semua konten media, terbaru di atas
         $posts = Post::latest()->get();
-        return view('navigasi.media', compact('posts'));
+
+        $totalMedia = Post::count();
+        return view('navigasi.media', compact('posts', 'totalMedia'));
     }
 
     public function store(Request $request)

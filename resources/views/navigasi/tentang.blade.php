@@ -2,7 +2,7 @@
     @slot('icon', 'fa-solid fa-info-circle')
     @slot('title', 'Tentang IKSPI Kera Sakti')
 
-    <form action="{{ route('menu.tentang.update') }}" method="POST" class="space-y-6 max-w-5xl mx-auto">
+    <form action="{{ route('menu.tentang.update') }}" method="POST" class="space-y-6 max-w-6xl mx-auto">
         @csrf
         @method('PUT')
 

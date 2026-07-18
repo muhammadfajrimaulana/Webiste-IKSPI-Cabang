@@ -2,17 +2,66 @@
     @slot('icon', 'fa-solid fa-images')
     @slot('title', 'Ruang Media & Galeri')
 
-    <div class="space-y-6 max-w-5xl mx-auto">
-        {{-- Header --}}
-        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
-            <div class="flex items-center space-x-2.5">
-                <div class="text-red-600 text-sm"><i class="fa-regular fa-images"></i></div>
-                <h3 class="text-xs font-bold text-slate-950 uppercase tracking-wider">Dokumentasi & Galeri Kegiatan</h3>
+    <div class="space-y-6 max-w-6xl mx-auto">
+        @if (session('success'))
+            <div id="alert-success"
+                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-check text-base text-green-500"></i>
+                <span>{{ session('success') }}</span>
             </div>
-            <button onclick="openModal()"
-                class="inline-flex items-center space-x-1.5 bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition">
-                <i class="fa-solid fa-cloud-arrow-up"></i> <span>Unggah Media</span>
-            </button>
+        @endif
+
+        @if (session('error'))
+            <div id="alert-error"
+                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
+        {{-- Header --}}
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+                <!-- Kiri: Judul & Deskripsi -->
+                <div class="flex items-center gap-4">
+                    <div class="h-12 w-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">
+                            {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Media' : 'Galeri Kegiatan' }}
+                        </h3>
+                        <p class="text-[11px] text-gray-500 font-medium">
+                            {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola aset visual & dokumentasi.' : 'Koleksi dokumentasi resmi organisasi.' }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Kanan: Statistik & Aksi -->
+                <div class="flex items-center gap-4">
+                    <!-- Badge Statistik -->
+                    <div class="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
+                        <div
+                            class="h-7 w-7 rounded-lg bg-white text-slate-600 flex items-center justify-center border border-slate-100">
+                            <i class="fa-solid fa-folder-open text-[10px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-[8px] text-gray-400 uppercase font-bold tracking-wider">Total Media</p>
+                            <p class="text-xs font-black text-slate-900">{{ $totalMedia ?? 0 }} <span
+                                    class="font-medium text-gray-400 text-[9px]">File</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    @if (auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang')
+                        <button onclick="openModal()"
+                            class="h-[44px] inline-flex items-center gap-2 bg-red-600 text-white text-[10px] font-bold px-5 rounded-xl hover:bg-red-700 transition shadow-sm shadow-red-200">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> UNGGAH MEDIA
+                        </button>
+                    @endif
+                </div>
+            </div>
         </div>
 
         {{-- Grid Galeri --}}
@@ -69,12 +118,12 @@
 
             <h3 id="modalTitle" class="text-sm font-bold mb-4">Unggah Foto Kegiatan</h3>
 
+            <input type="file" name="thumbnail" id="thumbnail" class="w-full border p-2 mb-4 text-xs rounded"
+                accept="image/*">
             <input type="text" id="judul" name="judul" placeholder="Judul Kegiatan"
                 class="w-full border p-2 mb-2 text-xs rounded" required>
             <input type="text" id="kategori" name="kategori" placeholder="Kategori"
                 class="w-full border p-2 mb-2 text-xs rounded" required>
-            <input type="file" name="thumbnail" id="thumbnail" class="w-full border p-2 mb-4 text-xs rounded"
-                accept="image/*">
             <textarea id="isi" name="isi" placeholder="Deskripsi Singkat" class="w-full border p-2 mb-4 text-xs rounded"></textarea>
 
             <div class="flex justify-end gap-2">
@@ -85,6 +134,25 @@
     </div>
 
     <script>
+        // Menutup alert
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = ['alert-success', 'alert-error'];
+
+            alerts.forEach(id => {
+                const alertElement = document.getElementById(id);
+                if (alertElement) {
+                    setTimeout(() => {
+                        alertElement.style.opacity = '0';
+
+                        setTimeout(() => {
+                            alertElement.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+        });
+
+        // Membuka modal
         function openModal(action = "{{ route('menu.media.store') }}", method = "POST", judul = "", kategori = "", isi =
             "") {
             document.getElementById('mediaForm').action = action;

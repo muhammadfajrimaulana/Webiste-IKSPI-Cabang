@@ -3,7 +3,39 @@
     @slot('title', 'Struktur Organisasi Cabang')
 
 
-    <div class="max-w-7xl mx-auto py-10 px-4">
+    <div class="space-y-6 max-w-6xl mx-auto">
+
+        <div class="flex items-center justify-between border-b border-gray-200 pb-4">
+            <div class="flex items-center gap-3">
+                <!-- Icon dengan background halus -->
+                <div class="h-8 w-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+                    <i class="fa-solid fa-sitemap"></i>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Struktur Organisasi' : 'Informasi Latihan' }}
+                    </h3>
+                    <p class="text-[10px] text-gray-500 font-medium">
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola hierarki struktur organisasi IKSPI Jakarta Pusat di sini.' : 'Detail lokasi latihan resmi untuk seluruh anggota' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="bg-white border border-gray-100 px-4 py-2 rounded-xl shadow-sm flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+                        <i class="fa-solid fa-users text-[12px]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Total Pengurus</p>
+                        <p class="text-xs font-black text-slate-900">{{ $totalPengurus }} <span
+                                class="font-medium text-gray-400 text-[10px]">Data</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @if (auth()->check() && auth()->user()->role === 'admin_cabang')
             <div class="mb-8 text-center">
                 <button onclick="openModal()"

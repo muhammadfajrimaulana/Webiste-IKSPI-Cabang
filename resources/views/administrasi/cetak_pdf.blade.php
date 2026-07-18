@@ -131,8 +131,10 @@
                 </td>
                 <td style="border: none; width: 70%; text-align: center;">
                     <h1 class="judul-organisasi">Ikatan Keluarga Silat Putra Indonesia</h1>
-                    <h2 class="sub-judul">IKS.PI KERA SAKTI</h2>
-                    <p class="alamat">Sekretariat Pengurus Cabang • Email: cabang@ikspi.org • Kontak: +62 8xx xxxx</p>
+                    <h2 class="sub-judul">IKS.PI KERA SAKTI CABANG JAKARTA PUSAT</h2>
+                    <p class="alamat">Sekretariat Pengurus Cabang • Email: cabangjakpus@ikspi.org • Kontak: +62
+                        812-9696-4998
+                    </p>
                 </td>
                 <td style="border: none; width: 15%; font-size: 9px; color: #94a3b8; text-align: center;">
                     DOKUMEN<br>KAS/WARGA
@@ -162,7 +164,7 @@
                     <td class="text-center">{{ $index + 1 }}</td>
                     <td class="font-mono" style="color: #dc2626;">{{ $row->nomor_anggota }}</td>
                     <td style="font-weight: bold; text-transform: uppercase;">{{ $row->pendaftaran->nama_lengkap }}</td>
-                    <td>Ranting {{ $row->ranting->nama_ranting }}</td>
+                    <td>{{ $row->ranting->nama_ranting }}</td>
                     <td>{{ $row->created_at->format('d M Y') }}</td>
                 </tr>
             @empty

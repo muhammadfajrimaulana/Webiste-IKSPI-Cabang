@@ -37,6 +37,7 @@ class DataPengesahanController extends Controller
 
         // 4. EKSEKUSI QUERY (Ini yang lu lupa tadi!)
         $dataPengesahan = $query->orderBy('created_at', 'desc')->get();
+        $totalPengesahan = $dataPengesahan->count();
 
         // 5. Transformasi data
         $dataPengesahan->transform(function ($item) {
@@ -46,7 +47,7 @@ class DataPengesahanController extends Controller
             return $item;
         });
 
-        return view('navigasi.pengesahan', compact('dataPengesahan', 'search'));
+        return view('navigasi.pengesahan', compact('dataPengesahan', 'search', 'totalPengesahan'));
     }
 
     public function updatePengesahan(Request $request, $id)

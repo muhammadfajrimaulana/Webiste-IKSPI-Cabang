@@ -4,10 +4,18 @@
 
     <div class="max-w-6xl mx-auto space-y-6">
         @if (session('success'))
-            <div
-                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium">
+            <div id="alert-success"
+                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
                 <i class="fa-solid fa-circle-check text-base text-green-500"></i>
                 <span>{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="alert-error"
+                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                <span>{{ session('error') }}</span>
             </div>
         @endif
 
@@ -20,7 +28,7 @@
                     dapat mengatur tanggal pengesahan di sini.</p>
             </div>
             <a href="{{ route('output.cetak') }}" target="_blank"
-                class="px-4 py-2 bg-slate-900 text-white font-bold text-xs rounded-lg hover:bg-slate-800 shadow-xs transition inline-flex items-center gap-2 cursor-pointer print:hidden">
+                class="px-4 py-2 bg-yellow-600 text-white font-bold text-xs rounded-lg hover:bg-slate-800 shadow-xs transition inline-flex items-center gap-2 cursor-pointer print:hidden">
                 <i class="fa-solid fa-print"></i> Cetak Laporan
             </a>
         </div>
@@ -48,7 +56,7 @@
                                 {{ $row->pendaftaran->nama_lengkap }}
                             </td>
                             <td class="p-4 text-gray-600 font-medium">
-                                Ranting {{ $row->ranting->nama_ranting }}
+                                {{ $row->ranting->nama_ranting }}
                             </td>
                             <td class="p-4">
                                 <span
@@ -94,4 +102,25 @@
         </table>
     </div>
 </div>
+
+<script>
+    // Menutup alert
+    document.addEventListener('DOMContentLoaded', () => {
+        const alerts = ['alert-success', 'alert-error'];
+
+        alerts.forEach(id => {
+            const alertElement = document.getElementById(id);
+            if (alertElement) {
+                setTimeout(() => {
+                    alertElement.style.opacity = '0';
+
+                    setTimeout(() => {
+                        alertElement.remove();
+                    }, 500);
+                }, 3000);
+            }
+        });
+    });
+</script>
+
 </x-dashboard-layout>

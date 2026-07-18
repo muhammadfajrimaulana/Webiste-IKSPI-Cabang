@@ -20,8 +20,10 @@ class DataRantingController extends Controller
         }
 
         $dataRanting = $query->orderBy('nama_ranting', 'asc')->get();
+        $totalTitik = $dataRanting->count();
+        $totalAktif = $dataRanting->whereNotNull('nama_pelatih')->count();
 
-        return view('navigasi.ranting', compact('dataRanting'));
+        return view('navigasi.ranting', compact('dataRanting', 'totalTitik', 'totalAktif'));
     }
 
     public function updateRanting(Request $request, $id)

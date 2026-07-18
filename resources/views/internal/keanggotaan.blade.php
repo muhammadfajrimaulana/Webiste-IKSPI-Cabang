@@ -3,6 +3,22 @@
     @slot('icon', 'fa-solid fa-users')
 
     <div class="max-w-6xl mx-auto space-y-6">
+        @if (session('success'))
+            <div id="alert-success"
+                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-check text-base text-green-500"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="alert-error"
+                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
         <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Data Master
@@ -132,4 +148,25 @@
         </table>
     </div>
 </div>
+
+<script>
+    // Menutup alert
+    document.addEventListener('DOMContentLoaded', () => {
+        const alerts = ['alert-success', 'alert-error'];
+
+        alerts.forEach(id => {
+            const alertElement = document.getElementById(id);
+            if (alertElement) {
+                setTimeout(() => {
+                    alertElement.style.opacity = '0';
+
+                    setTimeout(() => {
+                        alertElement.remove();
+                    }, 500);
+                }, 3000);
+            }
+        });
+    });
+</script>
+
 </x-dashboard-layout>

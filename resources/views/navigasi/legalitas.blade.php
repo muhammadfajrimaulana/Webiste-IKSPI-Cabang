@@ -2,7 +2,38 @@
     @slot('icon', 'fa-regular fa-file-lines')
     @slot('title', 'Tata Kelola & Legalitas')
 
-    <div class="space-y-6 max-w-4xl mx-auto">
+    <div class="space-y-6 max-w-6xl mx-auto">
+
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Icon dengan background halus -->
+                <div class="h-8 w-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+                    <i class="fa-regular fa-file-lines"></i>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Dokumen Legalitas' : 'Informasi Latihan' }}
+                    </h3>
+                    <p class="text-[10px] text-gray-500 font-medium">
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola dokumen-dokumen legalitas organisasi di sini.' : 'Detail lokasi latihan resmi untuk seluruh anggota' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="bg-white border border-gray-100 px-4 py-2 rounded-xl shadow-sm flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+                        <i class="fa-solid fa-layer-group text-[12px]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Total Dokumen</p>
+                        <p class="text-xs font-black text-slate-900">{{ $totalDokumen }} <span
+                                class="font-medium text-gray-400 text-[10px]">Data</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         {{-- Form Upload (Khusus Admin Cabang) --}}
         @if (auth()->user()->role === 'admin_cabang')

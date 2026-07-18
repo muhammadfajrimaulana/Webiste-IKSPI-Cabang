@@ -16,7 +16,9 @@ class PengurusController extends Controller
             ->orderBy('urutan', 'asc')
             ->get();
 
-        return view('navigasi.struktur', compact('struktur'));
+        $totalPengurus = Pengurus::count();
+
+        return view('navigasi.struktur', compact('struktur', 'totalPengurus'));
     }
 
     public function store(Request $request)

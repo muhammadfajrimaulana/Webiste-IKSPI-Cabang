@@ -11,8 +11,9 @@ class LegalitasController extends Controller
     public function index()
     {
         $legals = Content::whereNotNull('legalitas_nama')->get();
+        $totalDokumen = $legals->count();
 
-        return view('navigasi.legalitas', compact('legals'));
+        return view('navigasi.legalitas', compact('legals', 'totalDokumen'));
     }
 
     public function store(Request $request)

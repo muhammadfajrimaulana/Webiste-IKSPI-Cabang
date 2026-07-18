@@ -2,18 +2,62 @@
     @slot('icon', 'fa-solid fa-map-location-dot')
     @slot('title', 'Data Ranting & Tempat Latihan')
 
-    <div class="space-y-6 max-w-5xl mx-auto">
+    <div class="space-y-6 max-w-6xl mx-auto">
+        @if (session('success'))
+            <div id="alert-success"
+                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-check text-base text-green-500"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="alert-error"
+                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
         <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2.5">
-                <div class="text-red-600 text-sm"><i class="fa-solid fa-map-location-dot"></i></div>
-                @if (auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang')
-                    <h3 class="text-xs font-bold text-slate-950 uppercase tracking-wider">Manajemen Wilayah & Titik
-                        Latihan
+            <div class="flex items-center gap-3">
+                <!-- Icon dengan background halus -->
+                <div class="h-8 w-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Wilayah' : 'Informasi Latihan' }}
                     </h3>
-                @else
-                    <h3 class="text-xs font-bold text-slate-950 uppercase tracking-wider">Informasi ranting dan lokasi
-                        latihan resmi untuk anggota</h3>
-                @endif
+                    <p class="text-[10px] text-gray-500 font-medium">
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola titik latihan dan data wilayah.' : 'Detail lokasi latihan resmi untuk seluruh anggota' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="bg-white border border-gray-100 px-4 py-2 rounded-xl shadow-sm flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+                        <i class="fa-solid fa-layer-group text-[12px]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Total Ranting</p>
+                        <p class="text-xs font-black text-slate-900">{{ $totalTitik }} <span
+                                class="font-medium text-gray-400 text-[10px]">Data</span></p>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-xl shadow-sm flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                        <i class="fa-solid fa-circle-check text-[12px]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-emerald-600/70 uppercase font-bold tracking-wider">Aktif</p>
+                        <p class="text-xs font-black text-emerald-800">{{ $totalAktif }}</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -170,7 +214,8 @@
                                     </td>
                                     @if (auth()->user()->role !== 'anggota')
                                         <td class="px-6 py-4 text-center">
-                                            <button type="button" onclick="bukaModalEdit({{ json_encode($ranting) }})"
+                                            <button type="button"
+                                                onclick="bukaModalEdit({{ json_encode($ranting) }})"
                                                 class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
                                                 Edit
                                             </button>
@@ -243,6 +288,24 @@
     </div>
 
     <script>
+        // Menutup alert
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = ['alert-success', 'alert-error'];
+
+            alerts.forEach(id => {
+                const alertElement = document.getElementById(id);
+                if (alertElement) {
+                    setTimeout(() => {
+                        alertElement.style.opacity = '0';
+
+                        setTimeout(() => {
+                            alertElement.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+        });
+
         function bukaModalEdit(ranting) {
             const modal = document.getElementById('modalEditRanting');
             const form = document.getElementById('formEditRanting');
