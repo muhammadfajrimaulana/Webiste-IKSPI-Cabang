@@ -35,7 +35,9 @@
                         <th class="p-4">Ranting Latihan</th>
                         <th class="p-4">Tanggal Daftar</th>
                         <th class="p-4 text-center">Dokumen Kelengkapan</th>
-                        <th class="p-4 text-right">Aksi Keputusan</th>
+                        <th class="p-4 text-right">
+                            {{ auth()->user()->role === 'admin_cabang' ? 'Aksi Keputusan' : 'Status Verifikasi' }}
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-xs">
@@ -59,22 +61,43 @@
                                 </a>
                             </td>
                             <td class="p-4 text-right">
-                                <form action="{{ route('verifikasi.proses', $data->id) }}" method="POST"
-                                    class="inline-flex items-center gap-2">
-                                    @csrf
-                                    <input type="text" name="catatan" placeholder="Alasan jika ditolak..."
-                                        class="px-2 py-1 border border-gray-200 rounded text-[11px] focus:outline-none focus:border-red-500 w-36">
+                                @if (auth()->user()->role === 'admin_cabang')
+                                    {{-- Tampilan Form untuk Admin Cabang --}}
+                                    <form action="{{ route('verifikasi.proses', $data->id) }}" method="POST"
+                                        class="inline-flex items-center gap-2">
+                                        @csrf
+                                        <input type="text" name="catatan" placeholder="Alasan jika ditolak..."
+                                            class="px-2 py-1 border border-gray-200 rounded text-[11px] focus:outline-none focus:border-red-500 w-36">
 
-                                    <button type="submit" name="action" value="setujui"
-                                        class="px-3 py-1.5 bg-slate-950 text-white font-bold text-[11px] rounded hover:bg-slate-800 transition cursor-pointer">
-                                        Terima
-                                    </button>
+                                        <button type="submit" name="action" value="setujui"
+                                            class="px-3 py-1.5 bg-slate-950 text-white font-bold text-[11px] rounded hover:bg-slate-800 transition cursor-pointer">
+                                            Terima
+                                        </button>
 
-                                    <button type="submit" name="action" value="tolak"
-                                        class="px-3 py-1.5 bg-red-50 text-red-600 font-bold text-[11px] rounded border border-red-100 hover:bg-red-100 transition cursor-pointer">
-                                        Tolak
-                                    </button>
-                                </form>
+                                        <button type="submit" name="action" value="tolak"
+                                            class="px-3 py-1.5 bg-red-50 text-red-600 font-bold text-[11px] rounded border border-red-100 hover:bg-red-100 transition cursor-pointer">
+                                            Tolak
+                                        </button>
+                                    </form>
+                                @else
+                                    {{-- Tampilan Status untuk Admin Ranting --}}
+                                    @if ($data->status === 'disetujui')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">
+                                            <i class="fa-solid fa-check-circle mr-1"></i> Terverifikasi
+                                        </span>
+                                    @elseif($data->status === 'ditolak')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">
+                                            <i class="fa-solid fa-times-circle mr-1"></i> Ditolak
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 uppercase">
+                                            <i class="fa-solid fa-clock mr-1"></i> Menunggu Verifikasi
+                                        </span>
+                                    @endif
+                                @endif
                             </td>
                         </tr>
                     @empty
