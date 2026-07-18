@@ -28,7 +28,8 @@
             <div class="bg-white p-6 rounded-xl shadow-xs border border-gray-200 space-y-4">
                 <h3
                     class="text-sm font-bold text-slate-900 uppercase border-b border-gray-100 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-id-card"></i> Data Identitas Utama
+                    <i class="fa-solid fa-id-card"></i> Data Identitas Utama <span
+                        class="text-[9px] text-gray-400 font-normal normal-case">(Wajib Diisi)</span>
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -115,18 +116,25 @@
             <div class="bg-white p-6 rounded-xl shadow-xs border border-gray-200 space-y-4">
                 <h3
                     class="text-sm font-bold text-slate-900 uppercase border-b border-gray-100 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-map-marker-alt"></i> Koordinat Google Maps Domisili
+                    <i class="fa-solid fa-map-marker-alt"></i> Koordinat Google Maps Domisili <span
+                        class="text-[9px] text-gray-400 font-normal normal-case">(Opsional)</span>
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Latitude</label>
+                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                            Latitude
+                        </label>
                         <input type="text" name="latitude" value="{{ old('latitude', '-6.175392') }}"
+                            placeholder="Contoh: -6.175..."
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs bg-gray-50 text-gray-500"
                             readonly>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Longitude</label>
+                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                            Longitude
+                        </label>
                         <input type="text" name="longitude" value="{{ old('longitude', '106.827153') }}"
+                            placeholder="Contoh: 106.827..."
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs bg-gray-50 text-gray-500"
                             readonly>
                     </div>
@@ -137,17 +145,21 @@
                     <p class="text-[11px] font-medium">Area Mockup Peta Lokasi Domisili Anggota</p>
                     <p class="text-[9px] text-gray-400">(Sistem otomatis lock koordinat saat pin di-drop)</p>
                 </div>
+                <span class="text-[9px] text-gray-400 font-normal italic normal-case">Note: Pindahkan mark lokasi
+                    berwarna biru
+                    untuk menentukan angka koordinat.</span>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-xs border border-gray-200 space-y-4">
                 <h3
                     class="text-sm font-bold text-slate-900 uppercase border-b border-gray-100 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-folder-open"></i> Upload Dokumen Kelengkapan
+                    <i class="fa-solid fa-folder-open"></i> Upload Dokumen Kelengkapan <span
+                        class="text-[9px] text-gray-400 font-normal normal-case">(Opsional)</span>
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-1">
-                        <label class="block text-xs font-semibold text-gray-700 uppercase">Pas Foto (Berbaju
-                            Sakral)</label>
+                        <label class="block text-xs font-semibold text-gray-700 uppercase">Pas Foto (Berpakaian
+                            Formal)</label>
                         <p class="text-[10px] text-gray-400 mb-2">Format JPG/PNG, ukuran maksimal 2MB.</p>
                         <div
                             class="border @error('foto_sakral') border-red-500 @else border-gray-300 @enderror rounded-lg p-3 bg-gray-50 flex items-center gap-3">
@@ -162,7 +174,7 @@
                     <div class="space-y-1">
                         <label class="block text-xs font-semibold text-gray-700 uppercase">Berkas Administrasi Utama
                             (<span class="text-red-600 font-bold">Iks.pdf</span>)</label>
-                        <p class="text-[10px] text-gray-400 mb-2">Wajib mengunggah berkas kompilasi dalam format PDF.
+                        <p class="text-[10px] text-gray-400 mb-2">Unggah berkas kompilasi dalam format PDF.
                         </p>
                         <div
                             class="border @error('berkas_pdf') border-red-500 @else border-gray-300 @enderror rounded-lg p-3 bg-gray-50 flex items-center gap-3">
