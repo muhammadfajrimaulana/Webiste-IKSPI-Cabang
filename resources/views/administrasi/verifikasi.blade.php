@@ -55,7 +55,7 @@
                                 <div class="text-[10px] text-gray-400 mt-0.5">NIK: {{ $data->nik }}</div>
                             </td>
                             <td class="p-4 text-slate-600 font-medium">
-                                Ranting {{ $data->ranting?->nama_ranting ?? 'Tidak Terdaftar' }}
+                                {{ $data->ranting?->nama_ranting ?? 'Tidak Terdaftar' }}
                             </td>
                             <td class="p-4 text-gray-500">
                                 {{ $data->created_at->translatedFormat('d F Y') }}
@@ -73,16 +73,13 @@
                                     <form action="{{ route('verifikasi.proses', $data->id) }}" method="POST"
                                         class="inline-flex items-center gap-2">
                                         @csrf
-                                        <input type="text" name="catatan" placeholder="Alasan jika ditolak..."
-                                            class="px-2 py-1 border border-gray-200 rounded text-[11px] focus:outline-none focus:border-red-500 w-36">
-
                                         <button type="submit" name="action" value="setujui"
-                                            class="px-3 py-1.5 bg-slate-950 text-white font-bold text-[11px] rounded hover:bg-slate-800 transition cursor-pointer">
+                                            class="px-3 py-1.5 bg-green-100 text-green-600 font-bold text-[11px] rounded border border-green-300 hover:bg-green-200 transition cursor-pointer">
                                             Terima
                                         </button>
 
                                         <button type="submit" name="action" value="tolak"
-                                            class="px-3 py-1.5 bg-red-50 text-red-600 font-bold text-[11px] rounded border border-red-100 hover:bg-red-100 transition cursor-pointer">
+                                            class="px-3 py-1.5 bg-red-100 text-red-600 font-bold text-[11px] rounded border border-red-300 hover:bg-red-200 transition cursor-pointer">
                                             Tolak
                                         </button>
                                     </form>

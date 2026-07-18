@@ -53,8 +53,16 @@
                         <div class="space-y-1">
                             <x-nav-link route="pendaftaran.index" icon="fa-solid fa-file-signature" color="yellow">Flow
                                 A: Input Data Baru</x-nav-link>
-                            <x-nav-link route="verifikasi.index" icon="fa-solid fa-user-check" color="yellow">Flow B:
-                                Verifikasi Pengurus</x-nav-link>
+                            <x-nav-link route="verifikasi.index" icon="fa-solid fa-user-check" color="yellow">
+                                Flow B: Verifikasi Pengurus
+
+                                @if (isset($badgeData) && $badgeData['count'] > 0)
+                                    <span
+                                        class="absolute top-2 right-1 {{ $badgeData['color'] }} text-white text-[9px] px-1.5 py-0.5 rounded-full font-black {{ $badgeData['color'] == 'bg-red-600' ? 'animate-pulse' : '' }} shadow-md">
+                                        {{ $badgeData['count'] }}
+                                    </span>
+                                @endif
+                            </x-nav-link>
                             <x-nav-link route="output.index" icon="fa-solid fa-file-invoice" color="yellow">Flow C:
                                 Output Laporan</x-nav-link>
                         </div>

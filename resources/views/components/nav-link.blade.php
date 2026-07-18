@@ -16,11 +16,12 @@
 @endphp
 
 <a href="{{ Route::has($route) ? route($route) : '#' }}"
-    class="flex items-center space-x-3 px-3 py-2 text-[11px] font-semibold rounded-lg transition duration-200 group
+    class="relative flex items-center space-x-3 px-3 py-2 text-[11px] font-semibold rounded-lg transition duration-200 group
     {{ request()->routeIs($route) ? $activeClass : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100' }}">
 
     <i
         class="{{ $icon }} text-sm w-5 text-center {{ request()->routeIs($route) ? 'text-white' : 'text-slate-500 ' . $iconHoverClass . ' transition' }}"></i>
 
-    <span>{{ $slot }}</span>
+    {{-- Bungkus slot agar tidak berantakan --}}
+    <span class="flex-grow">{{ $slot }}</span>
 </a>
