@@ -27,7 +27,7 @@
                 <p class="text-xs text-gray-500 mt-1">Daftar nomor anggota resmi yang telah diterbitkan sistem. Anda
                     dapat mengatur tanggal pengesahan di sini.</p>
             </div>
-            <a href="{{ route('output.cetak') }}" target="_blank"
+            <a href="{{ route('output.cetak', ['ranting_id' => request('ranting_id')]) }}" target="_blank"
                 class="px-4 py-2 bg-yellow-600 text-white font-bold text-xs rounded-lg hover:bg-slate-800 shadow-xs transition inline-flex items-center gap-2 cursor-pointer print:hidden">
                 <i class="fa-solid fa-print"></i> Cetak Laporan
             </a>
@@ -41,7 +41,33 @@
                         class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                         <th class="p-4">Nomor Anggota</th>
                         <th class="p-4">Nama Warga</th>
-                        <th class="p-4">Ranting Asal</th>
+                        @if (auth()->user()->role === 'admin_cabang')
+                            <th class="p-4">
+                                <div class="flex items-center gap-1 group">
+                                    <span class="{{ request('ranting_id') ? 'text-red-600' : '' }}">Ranting Asal</span>
+                                    <div class="relative">
+                                        <button onclick="toggleRantingFilter()"
+                                            class="text-slate-400 hover:text-slate-900">
+                                            <i class="fa-solid fa-filter text-[9px]"></i>
+                                        </button>
+
+                                        <!-- Menu Filter Ranting -->
+                                        <div id="filterRantingMenu"
+                                            class="hidden absolute top-full left-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-xl z-20 max-h-60 overflow-y-auto">
+                                            <a href="{{ route('output.index', array_merge(request()->query(), ['ranting_id' => ''])) }}"
+                                                class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Semua
+                                                Ranting</a>
+                                            @foreach ($dataRanting as $ranting)
+                                                <a href="{{ route('output.index', array_merge(request()->query(), ['ranting_id' => $ranting->id])) }}"
+                                                    class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50 {{ request('ranting_id') == $ranting->id ? 'bg-slate-100' : '' }}">
+                                                    {{ $ranting->nama_ranting }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        @endif
                         <th class="p-4">Tingkatan</th>
                         <th class="p-4">Tanggal Pengesahan</th>
                     </tr>
@@ -65,19 +91,29 @@
                                 </span>
                             </td>
                             <td class="p-4">
-                                <form action="{{ route('output.update', $row->id) }}" method="POST"
-                                    class="flex items-center gap-2 print:hidden">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="date" name="tanggal_pengesahan"
-                                        value="{{ $row->tanggal_pengesahan }}" required
-                                        class="px-2 py-1 border border-gray-200 rounded text-[11px] text-slate-700 focus:outline-none focus:border-red-500">
-                                    <button type="submit"
-                                        class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 transition cursor-pointer"
-                                        title="Simpan Tanggal">
-                                        <i class="fa-solid fa-floppy-disk"></i>
-                                    </button>
-                                </form>
+                                @if (auth()->user()->role === 'admin_cabang')
+                                    {{-- Hanya Admin Cabang yang melihat form input ini --}}
+                                    <form action="{{ route('output.update-tanggal', $row->id) }}" method="POST"
+                                        class="flex items-center gap-2 print:hidden">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="date" name="tanggal_pengesahan"
+                                            value="{{ $row->tanggal_pengesahan }}" required
+                                            class="px-2 py-1 border border-gray-200 rounded text-[11px] text-slate-700">
+                                        <button type="submit"
+                                            class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">
+                                            <i class="fa-solid fa-floppy-disk"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    {{-- User lain (Admin Ranting/Anggota) hanya bisa melihat teks --}}
+                                    <span
+                                        class="text-xs font-bold {{ $row->tanggal_pengesahan ? 'text-slate-900' : 'text-gray-400' }}">
+                                        {{ $row->tanggal_pengesahan ? \Carbon\Carbon::parse($row->tanggal_pengesahan)->translatedFormat('d F Y') : 'Belum Disahkan' }}
+                                    </span>
+                                @endif
+
+                                {{-- Tetap tampilkan ini untuk kebutuhan print --}}
                                 <span class="hidden print:inline text-slate-900">
                                     {{ $row->tanggal_pengesahan ? \Carbon\Carbon::parse($row->tanggal_pengesahan)->translatedFormat('d F Y') : 'Belum Disahkan' }}
                                 </span>
@@ -121,6 +157,22 @@
             }
         });
     });
+
+    // Fungsi untuk toggle menu filter Ranting
+    function toggleRantingFilter() {
+        const rantingMenu = document.getElementById('filterRantingMenu');
+        const kategoriMenu = document.getElementById('filterKategoriMenu'); // Pastikan ini ID menu kategori kamu
+
+        rantingMenu.classList.toggle('hidden');
+        kategoriMenu.classList.add('hidden'); // Tutup menu kategori jika sedang buka ranting
+    }
+
+    // Menutup menu jika klik di area mana saja di luar menu
+    window.onclick = function(event) {
+        if (!event.target.matches('.fa-filter')) {
+            document.getElementById('filterRantingMenu').classList.add('hidden');
+        }
+    }
 </script>
 
 </x-dashboard-layout>

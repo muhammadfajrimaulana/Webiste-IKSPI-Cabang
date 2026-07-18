@@ -10,15 +10,23 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class OutputController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        // Query Base
-        $querySiapSah = Pendaftaran::where('status_verifikasi', 'verified')->whereDoesntHave('anggota');
-        $queryAnggota = Anggota::with(['pendaftaran', 'ranting'])->orderBy('created_at', 'desc');
+        $querySiapSah = Pendaftaran::where('status_verifikasi', 'verified')
+            ->whereDoesntHave('anggota');
 
-        // Filter untuk Admin Ranting
+        $queryAnggota = Anggota::with(['pendaftaran', 'ranting'])
+            ->orderBy('created_at', 'desc');
+
+        // Filter Ranting 
+        if ($request->filled('ranting_id')) {
+            $querySiapSah->where('ranting_id', $request->ranting_id);
+            $queryAnggota->where('ranting_id', $request->ranting_id);
+        }
+
+        // Filter khusus untuk Admin Ranting (Override jika user bukan cabang)
         if ($user->role === 'admin_ranting') {
             $querySiapSah->where('ranting_id', $user->ranting_id);
             $queryAnggota->where('ranting_id', $user->ranting_id);
@@ -26,7 +34,11 @@ class OutputController extends Controller
 
         $wargaSiapSah = $querySiapSah->get();
         $anggotaResmi = $queryAnggota->get();
-        $dataRanting = ($user->role === 'admin_cabang') ? Ranting::all() : Ranting::where('id', $user->ranting_id)->get();
+
+        // Data untuk dropdown filter
+        $dataRanting = ($user->role === 'admin_cabang')
+            ? Ranting::all()
+            : Ranting::where('id', $user->ranting_id)->get();
 
         return view('administrasi.output', compact('wargaSiapSah', 'anggotaResmi', 'dataRanting'));
     }
@@ -70,5 +82,23 @@ class OutputController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Pendekar resmi disahkan!');
+    }
+
+    public function updateTanggal(Request $request, $id)
+    {
+        // Cari data anggota berdasarkan ID
+        $anggota = Anggota::findOrFail($id);
+
+        // Validasi
+        $request->validate([
+            'tanggal_pengesahan' => 'required|date',
+        ]);
+
+        // Update tanggal
+        $anggota->update([
+            'tanggal_pengesahan' => $request->tanggal_pengesahan
+        ]);
+
+        return redirect()->back()->with('success', 'Tanggal pengesahan berhasil diperbarui!');
     }
 }

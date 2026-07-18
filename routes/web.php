@@ -81,6 +81,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::get('/administrasi/output', [OutputController::class, 'index'])->name('output.index');
         Route::get('/administrasi/output/cetak', [\App\Http\Controllers\Administrasi\OutputController::class, 'cetakLaporan'])->name('output.cetak');
         Route::patch('/administrasi/output/{id}', [OutputController::class, 'updatePengesahan'])->name('output.update');
+        Route::patch('/administrasi/output/update-tanggal/{id}', [OutputController::class, 'updateTanggal'])->name('output.update-tanggal');
 
         /*
 |--------------------------------------------------------------------------
