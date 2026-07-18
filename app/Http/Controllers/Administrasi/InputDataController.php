@@ -6,12 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
 use App\Models\Ranting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InputDataController extends Controller
 {
     public function create()
     {
-        $rantings = Ranting::all();
+        $user = Auth::user();
+
+        if ($user->ranting_id == null) {
+            // Admin Cabang/Pusat: bisa lihat semua ranting
+            $rantings = Ranting::all();
+        } else {
+            // Admin Ranting: hanya bisa lihat rantingnya sendiri
+            $rantings = Ranting::where('id', $user->ranting_id)->get();
+        }
+
         return view('administrasi.pendaftaran', compact('rantings'));
     }
 
@@ -22,7 +32,7 @@ class InputDataController extends Controller
             'nik'           => 'required|string|size:16',
             'tempat_lahir'  => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
-            'no_hp'         => 'required|string|max:20',
+            'no_hp'         => 'required|numeric|digits_between:10,15',
             'ranting_id'    => 'required|exists:rantings,id',
             'alamat'        => 'required|string',
             'latitude'      => 'nullable|string',

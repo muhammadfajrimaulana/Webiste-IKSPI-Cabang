@@ -58,7 +58,7 @@
 
                                 @if (isset($badgeData) && $badgeData['count'] > 0)
                                     <span
-                                        class="absolute top-2 right-1 {{ $badgeData['color'] }} text-white text-[9px] px-1.5 py-0.5 rounded-full font-black {{ $badgeData['color'] == 'bg-red-600' ? 'animate-pulse' : '' }} shadow-md">
+                                        class="absolute top-2 -right-1.5 {{ $badgeData['color'] }} text-white text-[9px] px-1.5 py-0.5 rounded-full font-black {{ $badgeData['color'] == 'bg-red-600' ? 'animate-pulse' : '' }} shadow-md">
                                         {{ $badgeData['count'] }}
                                     </span>
                                 @endif

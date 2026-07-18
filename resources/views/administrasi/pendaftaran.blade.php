@@ -84,9 +84,10 @@
                     <div>
                         <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">No. HP /
                             WhatsApp</label>
-                        <input type="text" name="no_hp" value="{{ old('no_hp') }}" required
+                        <input type="text" name="no_hp" value="{{ old('no_hp') }}" required maxlength="15"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                             class="w-full px-3 py-2 border @error('no_hp') border-red-500 @else border-gray-300 @enderror rounded-lg text-xs focus:ring-1 focus:ring-red-500 focus:outline-none"
-                            placeholder="Contoh: 0812xxxxxxxx">
+                            placeholder="Contoh: 081234567890">
                         @error('no_hp')
                             <p class="text-[10px] text-red-600 mt-1">{{ $message }}</p>
                         @enderror
@@ -94,16 +95,19 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Ranting Tujuan</label>
+
                         <select name="ranting_id" required
-                            class="w-full px-3 py-2 border @error('ranting_id') border-red-500 @else border-gray-300 @enderror rounded-lg text-xs bg-white focus:ring-1 focus:ring-red-500 focus:outline-none cursor-pointer">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs bg-white focus:ring-1 focus:ring-red-500 focus:outline-none cursor-pointer">
                             <option value="">-- Pilih Ranting --</option>
+
                             @foreach ($rantings as $ranting)
                                 <option value="{{ $ranting->id }}"
-                                    {{ old('ranting_id') == $ranting->id ? 'selected' : '' }}>
+                                    {{ old('ranting_id', auth()->user()->ranting_id) == $ranting->id ? 'selected' : '' }}>
                                     {{ $ranting->nama_ranting }}
                                 </option>
                             @endforeach
                         </select>
+
                         @error('ranting_id')
                             <p class="text-[10px] text-red-600 mt-1">{{ $message }}</p>
                         @enderror
