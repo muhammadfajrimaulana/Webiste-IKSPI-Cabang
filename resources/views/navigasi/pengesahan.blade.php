@@ -168,9 +168,9 @@
                     </table>
                 </div>
             </div>
+        @endif
     </div>
-    @endif
-    </div>
+
     @if (auth()->user()->role === 'anggota')
         <div class="max-w-2xl mx-auto my-8 bg-white p-10 shadow-lg border border-gray-200" id="printableArea">
             <div class="flex justify-between border-b pb-6 mb-6">
@@ -231,11 +231,6 @@
                 class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition">
                 <i class="fa-solid fa-print mr-2"></i> Cetak Dokumen Pengesahan
             </a>
-        </div>
-    @else
-        <div class="p-4 overflow-x-auto bg-white rounded-xl border">
-            <table class="w-full text-left text-sm text-gray-500">
-            </table>
         </div>
     @endif
 

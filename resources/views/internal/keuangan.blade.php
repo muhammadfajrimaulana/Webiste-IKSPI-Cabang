@@ -5,7 +5,7 @@
     <div class="max-w-6xl mx-auto space-y-6">
         @if (session('success'))
             <div id="alert-success"
-                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                class="fixed top-5 right-5 z-50 bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500 shadow-lg">
                 <i class="fa-solid fa-circle-check text-base text-green-500"></i>
                 <span>{{ session('success') }}</span>
             </div>
@@ -13,9 +13,19 @@
 
         @if (session('error'))
             <div id="alert-error"
-                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                class="fixed top-5 right-5 z-50 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500 shadow-lg">
                 <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
                 <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="bg-red-100 text-red-700 p-3 rounded-lg text-[10px] mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -265,17 +275,13 @@
                     </div>
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Kategori</label>
-                        <select name="kategori" onchange="this.form.submit()"
+                        <select name="kategori" required
                             class="w-full pl-3 pr-8 py-2 text-xs font-semibold bg-white border border-gray-200 rounded-lg appearance-none cursor-pointer">
-                            <option value="">Semua Kategori</option>
-                            <option value="Pendaftaran" {{ request('kategori') == 'Pendaftaran' ? 'selected' : '' }}>
-                                Pendaftaran</option>
-                            <option value="Iuran" {{ request('kategori') == 'Iuran' ? 'selected' : '' }}>Iuran
-                            </option>
-                            <option value="Logistik" {{ request('kategori') == 'Logistik' ? 'selected' : '' }}>
-                                Logistik</option>
-                            <option value="Operasional" {{ request('kategori') == 'Operasional' ? 'selected' : '' }}>
-                                Operasional</option>
+                            <option value="">-- Pilih Kategori --</option>
+                            <option value="Pendaftaran">Pendaftaran</option>
+                            <option value="Iuran">Iuran</option>
+                            <option value="Logistik">Logistik</option>
+                            <option value="Operasional">Operasional</option>
                         </select>
                     </div>
                     <div class="space-y-1">

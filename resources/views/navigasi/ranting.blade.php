@@ -5,7 +5,7 @@
     <div class="space-y-6 max-w-6xl mx-auto">
         @if (session('success'))
             <div id="alert-success"
-                class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                class="fixed top-5 right-5 z-50 bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500 shadow-lg">
                 <i class="fa-solid fa-circle-check text-base text-green-500"></i>
                 <span>{{ session('success') }}</span>
             </div>
@@ -13,7 +13,7 @@
 
         @if (session('error'))
             <div id="alert-error"
-                class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500">
+                class="fixed top-5 right-5 z-50 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500 shadow-lg">
                 <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
                 <span>{{ session('error') }}</span>
             </div>

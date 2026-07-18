@@ -67,15 +67,19 @@ class KeuanganController extends Controller
     {
         $user = Auth::user();
 
+        if ($request->has('nominal')) {
+            $nominalBersih = str_replace(['.', ','], '', $request->nominal);
+            $request->merge(['nominal' => $nominalBersih]);
+        }
+
         $request->validate([
             'tanggal' => 'required|date',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'required|string|max:300',
             'tipe' => 'required|in:masuk,keluar',
             'nominal' => 'required|numeric|min:1',
             'kategori' => 'required|string',
         ]);
 
-        // Simpan dengan menyertakan ranting_id secara otomatis
         $data = $request->all();
         $data['ranting_id'] = ($user->role === 'admin_ranting') ? $user->ranting_id : $request->ranting_id;
 
