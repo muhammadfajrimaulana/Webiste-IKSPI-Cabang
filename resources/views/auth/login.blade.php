@@ -44,7 +44,7 @@
             </div>
 
             @if ($errors->any())
-                <div
+                <div id="alert-error"
                     class="bg-red-50 border border-red-200 text-red-600 p-3 rounded-xl text-xs mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     {{ $errors->first() }}
@@ -86,6 +86,24 @@
     </div>
 
     <script>
+        // Menutup alert
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = ['alert-success', 'alert-error'];
+
+            alerts.forEach(id => {
+                const alertElement = document.getElementById(id);
+                if (alertElement) {
+                    setTimeout(() => {
+                        alertElement.style.opacity = '0';
+
+                        setTimeout(() => {
+                            alertElement.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+        });
+
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eye-icon');
