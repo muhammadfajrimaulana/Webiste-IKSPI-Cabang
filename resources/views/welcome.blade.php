@@ -60,12 +60,13 @@
             <!-- Susunan Foto Estetik Melengkung -->
             <div class="relative min-h-[380px] sm:min-h-[460px]">
                 <div class="w-4/5 h-[340px] sm:h-[420px] overflow-hidden rounded-2xl shadow-xl border border-slate-100">
-                    <img src="assets/img/Pendiri.JPG" alt="Pendiri IKSPI"
+                    <img src="{{ asset('assets/img/Pendiri.JPG') }}" alt="Pendiri IKSPI"
                         class="w-full h-full object-cover hover:scale-105 transition duration-500">
                 </div>
                 <div
                     class="absolute right-0 bottom-4 w-1/2 h-[200px] sm:h-[260px] border-4 border-white overflow-hidden rounded-2xl shadow-2xl">
-                    <img src="assets/img/ikspi1.jpg" alt="IKSPI Latihan" class="w-full h-full object-cover">
+                    <img src="{{ asset('assets/img/Komisaris.JPG') }}" alt="Komisaris IKSPI"
+                        class="w-full h-full object-cover">
                 </div>
                 <!-- Floating Badge Ornamen -->
                 <div
