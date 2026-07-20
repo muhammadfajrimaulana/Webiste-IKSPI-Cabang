@@ -1,150 +1,6 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+@extends('web.layout.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKSPI Kera Sakti - Cabang Jakarta Pusat</title>
-    <!-- Tailwind CSS v4 -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.bunny.net/css?family=inter:400,600,700,900" rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-
-<body class="bg-slate-50 text-slate-800 antialiased">
-
-    <!-- TOP BAR -->
-    <div
-        class="hidden sm:flex bg-red-950 text-slate-200 text-xs py-2.5 px-6 justify-between items-center font-medium border-b border-red-900/30">
-        <div class="flex gap-6">
-            <span><i class="fas fa-map-marker-alt mr-2 text-red-500"></i>Jakarta Pusat, Indonesia</span>
-            <span><i class="fas fa-envelope mr-2 text-red-500"></i>info@ikspi.or.id</span>
-        </div>
-        <div class="flex gap-4">
-            <a href="#" class="hover:text-red-400 transition"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="hover:text-red-400 transition"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="hover:text-red-400 transition"><i class="fab fa-youtube"></i></a>
-        </div>
-    </div>
-
-    <!-- NAVBAR (Modern Transparan dengan efek Blur) -->
-    <nav class="bg-white/90 py-4 px-6 sticky top-0 z-50 shadow-md backdrop-blur-md border-b border-slate-100">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3 shrink-0">
-                <img src="assets/img/logo1.png" alt="Logo IKSPI" class="h-10 w-auto object-contain">
-                <h1 class="text-xs md:text-sm font-bold tracking-tight text-slate-800">
-                    <span class="text-red-600 font-black">IKS.PI</span> JAKARTA PUSAT
-                </h1>
-            </div>
-
-            <!-- DESKTOP MENU -->
-            <div class="hidden lg:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-slate-600">
-                <a href="{{ route('landing') }}" class="hover:text-red-600 transition">Beranda</a>
-
-                <!-- Dropdown Profil Desktop -->
-                <div class="relative dropdown-container">
-                    <button onclick="toggleDropdown(event, 'dropdown-profil-desktop')"
-                        class="hover:text-red-600 transition flex items-center gap-1 uppercase font-bold text-xs focus:outline-none cursor-pointer">
-                        Profil <i
-                            class="fas fa-chevron-down text-[10px] opacity-50 transition-transform duration-200"></i>
-                    </button>
-                    <div id="dropdown-profil-desktop"
-                        class="dropdown-menu absolute top-full left-0 mt-4 w-48 bg-white border border-slate-100 shadow-2xl rounded-xl py-2 hidden text-slate-800 z-50">
-                        <a href="{{ route('menu.tentang') }}"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Sejarah</a>
-                        <a href="{{ route('menu.tentang') }}"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Visi
-                            Misi</a>
-                        <a href="{{ route('menu.tentang') }}"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Falsafah</a>
-                        <a href="{{ route('menu.tentang') }}"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Legalitas</a>
-                        <a href="{{ route('menu.tentang') }}"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Panca
-                            prasetya</a>
-                    </div>
-                </div>
-
-                <a href="{{ route('menu.struktur') }}" class="hover:text-red-600 transition">Struktur</a>
-
-                <!-- Dropdown Anggota Desktop -->
-                <div class="relative dropdown-container">
-                    <button onclick="toggleDropdown(event, 'dropdown-anggota-desktop')"
-                        class="hover:text-red-600 transition flex items-center gap-1 uppercase font-bold text-xs focus:outline-none cursor-pointer">
-                        Ranting<i
-                            class="fas fa-chevron-down text-[10px] opacity-50 transition-transform duration-200"></i>
-                    </button>
-                    <div id="dropdown-anggota-desktop"
-                        class="dropdown-menu absolute top-full left-0 mt-4 w-48 bg-white border border-slate-100 shadow-2xl rounded-xl py-2 hidden text-slate-800 z-50">
-                        <a href="#"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Anggota
-                            IKSPI</a>
-                        <a href="#"
-                            class="block px-4 py-2.5 text-xs text-slate-600 hover:bg-red-50 hover:text-red-600 transition rounded-lg mx-1">Lokasi
-                            Ranting</a>
-                    </div>
-                </div>
-
-                <a href="{{ route('menu.media') }}" class="hover:text-red-600 transition">Berita</a>
-                <a href="#galeri" class="hover:text-red-600 transition">Galeri</a>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <a href="/login"
-                    class="bg-red-600 text-white px-5 py-2.5 text-xs font-bold rounded-full hover:bg-slate-900 transition tracking-wider uppercase shadow-md shadow-red-600/20">LOGIN</a>
-                <button id="menu-btn" class="lg:hidden p-2 text-slate-800 focus:outline-none cursor-pointer"><i
-                        class="fas fa-bars text-lg"></i></button>
-            </div>
-        </div>
-
-        <!-- MOBILE MENU -->
-        <div id="mobile-menu"
-            class="hidden lg:hidden mt-3 border-t border-slate-100 pt-3 pb-2 text-xs font-bold uppercase tracking-wider text-slate-600 space-y-1">
-            <a href="{{ route('landing') }}"
-                class="block py-2.5 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition">Beranda</a>
-
-            <div class="dropdown-container">
-                <button onclick="toggleDropdown(event, 'dropdown-profil-mobile')"
-                    class="w-full text-left py-2.5 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition flex justify-between items-center uppercase font-bold text-xs focus:outline-none cursor-pointer">
-                    Profil <i class="fas fa-chevron-down text-[10px] opacity-50 transition-transform duration-200"></i>
-                </button>
-                <div id="dropdown-profil-mobile"
-                    class="dropdown-menu bg-slate-50 rounded-xl mx-2 my-1 py-1 hidden space-y-1">
-                    <a href="{{ route('menu.tentang') }}"
-                        class="block px-4 py-2 text-xs text-slate-600 hover:text-red-600">Sejarah</a>
-                    <a href="{{ route('menu.tentang') }}"
-                        class="block px-4 py-2 text-xs text-slate-600 hover:text-red-600">Visi Misi</a>
-                </div>
-            </div>
-
-            <a href="{{ route('menu.struktur') }}"
-                class="block py-2.5 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition">Struktur</a>
-
-            <div class="dropdown-container">
-                <button onclick="toggleDropdown(event, 'dropdown-anggota-mobile')"
-                    class="w-full text-left py-2.5 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition flex justify-between items-center uppercase font-bold text-xs focus:outline-none cursor-pointer">
-                    Anggota <i class="fas fa-chevron-down text-[10px] opacity-50 transition-transform duration-200"></i>
-                </button>
-                <div id="dropdown-anggota-mobile"
-                    class="dropdown-menu bg-slate-50 rounded-xl mx-2 my-1 py-1 hidden space-y-1">
-                    <a href="#" class="block px-4 py-2 text-xs text-slate-600 hover:text-red-600">Anggota Ranting
-                        1</a>
-                    <a href="#" class="block px-4 py-2 text-xs text-slate-600 hover:text-red-600">Anggota Ranting
-                        2</a>
-                </div>
-            </div>
-
-            <a href="{{ route('menu.media') }}"
-                class="block py-2.5 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition">Berita</a>
-            <a href="#galeri"
-                class="block py-2.5 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition">Galeri</a>
-        </div>
-    </nav>
+@section('content')
     <!-- HERO SECTION (Bersih & Tanpa Kartu) -->
     <header class="w-full relative bg-slate-950">
         <!-- Banner Utama: Padding disesuaikan agar pas langsung ke section berikutnya -->
@@ -164,7 +20,7 @@
                     pendekar di wilayah Jakarta Pusat.
                 </p>
 
-                <a href="#profil"
+                <a href="{{ route('profil.sejarah') }}"
                     class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] py-2.5 px-5 rounded-sm uppercase tracking-wider transition duration-300">
                     Pelajari Selengkapnya
                 </a>
@@ -203,8 +59,7 @@
 
             <!-- Susunan Foto Estetik Melengkung -->
             <div class="relative min-h-[380px] sm:min-h-[460px]">
-                <div
-                    class="w-4/5 h-[340px] sm:h-[420px] overflow-hidden rounded-2xl shadow-xl border border-slate-100">
+                <div class="w-4/5 h-[340px] sm:h-[420px] overflow-hidden rounded-2xl shadow-xl border border-slate-100">
                     <img src="assets/img/Pendiri.JPG" alt="Pendiri IKSPI"
                         class="w-full h-full object-cover hover:scale-105 transition duration-500">
                 </div>
@@ -254,8 +109,8 @@
 
     <!-- SECTION VISI, MISI, FALSAFAH (Kotak Modern - Melengkung & Hover Mengambang) -->
     <section class="relative bg-slate-900 text-white py-24 px-6 overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center opacity-5"
-            style="background-image: url('assets/img/ikspi1.jpg');"></div>
+        <div class="absolute inset-0 bg-cover bg-center opacity-5" style="background-image: url('assets/img/ikspi1.jpg');">
+        </div>
 
         <!-- Ornamen Latar Belakang Estetik -->
         <div class="absolute -top-40 -right-40 w-96 h-96 bg-red-600/10 rounded-full blur-3xl"></div>
@@ -581,8 +436,7 @@
                             <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=150"
                                 class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm">
                             <div>
-                                <span
-                                    class="text-[9px] text-red-600 font-bold uppercase block mb-0.5">Pengumuman</span>
+                                <span class="text-[9px] text-red-600 font-bold uppercase block mb-0.5">Pengumuman</span>
                                 <h4
                                     class="font-bold text-xs text-slate-900 leading-snug group-hover:text-red-600 transition line-clamp-2">
                                     <a href="#">Jadwal Lengkap Latihan Gabungan dan Persiapan Pengesahan Angkatan
@@ -596,119 +450,4 @@
             </div>
         </div>
     </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 text-white py-16 px-6 border-t border-slate-900 text-xs font-light">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-            <div class="md:col-span-2 space-y-4">
-                <h2 class="text-2xl font-black tracking-wider text-white"><span class="text-red-600">IKSPI</span>
-                    JAKPUS</h2>
-                <p class="text-slate-400 max-w-sm leading-relaxed text-sm">
-                    Portal berita dan informasi resmi Ikatan Keluarga Silat Putra Indonesia (IKSPI) Kera Sakti Cabang
-                    Jakarta Pusat.
-                </p>
-                <div class="flex gap-4 pt-2">
-                    <a href="#"
-                        class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center hover:bg-red-600 transition"><i
-                            class="fab fa-facebook-f"></i></a>
-                    <a href="#"
-                        class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center hover:bg-red-600 transition"><i
-                            class="fab fa-instagram"></i></a>
-                    <a href="#"
-                        class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center hover:bg-red-600 transition"><i
-                            class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div>
-                <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-red-600 pl-2">
-                    Quick Links</h4>
-                <ul class="text-slate-400 space-y-2.5">
-                    <li><a href="#profil" class="hover:text-red-500 transition flex items-center gap-1">› Tentang
-                            Cabang</a></li>
-                    <li><a href="#struktur" class="hover:text-red-500 transition flex items-center gap-1">› Struktur
-                            Organisasi</a></li>
-                    <li><a href="#ranting" class="hover:text-red-500 transition flex items-center gap-1">› Daftar
-                            Ranting</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-red-600 pl-2">
-                    Kontak Utama</h4>
-                <p class="text-slate-400 leading-relaxed">
-                    <strong>Alamat Pusat:</strong><br>
-                    Jakarta Pusat, DKI Jakarta, Indonesia.
-                </p>
-            </div>
-        </div>
-        <div class="max-w-6xl mx-auto mt-12 pt-6 border-t border-slate-900 text-center text-slate-500 text-[11px]">
-            <p>Allright Reserved - © 2026 IKSPI Jakarta Pusat Cabang Resmi.</p>
-        </div>
-    </footer>
-
-    <!-- LOGIKA JAVASCRIPT UTAMA -->
-    <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        // Toggle menu utama di Mobile
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Logika Dropdown Universal (Desktop & Mobile)
-        function toggleDropdown(event, id) {
-            event.stopPropagation();
-            const dropdown = document.getElementById(id);
-            const currentIcon = event.currentTarget.querySelector('.fa-chevron-down');
-            const isHidden = dropdown.classList.contains('hidden');
-
-            // Tutup semua dropdown lain terlebih dahulu
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.classList.add('hidden');
-            });
-            document.querySelectorAll('.fa-chevron-down').forEach(icon => {
-                icon.classList.remove('rotate-180');
-            });
-
-            // Jika sebelumnya tertutup, sekarang buka
-            if (isHidden) {
-                dropdown.classList.remove('hidden');
-                if (currentIcon) currentIcon.classList.add('rotate-180');
-            }
-        }
-
-        // Menutup menu dan dropdown otomatis jika klik di luar area resmi komponen
-        window.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
-            }
-            if (!e.target.closest('.dropdown-container')) {
-                document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.add('hidden'));
-                document.querySelectorAll('.fa-chevron-down').forEach(icon => icon.classList.remove('rotate-180'));
-            }
-        });
-    </script>
-
-    <!-- SCRIPT JAVASCRIPT (Taruh di bagian paling bawah sebelum tag </body>) -->
-    <script>
-        const container = document.getElementById('slider-container');
-        const prevBtn = document.getElementById('slide-prev');
-        const nextBtn = document.getElementById('slide-next');
-
-        // Mengatur jarak geser sekali klik mengikuti lebar satu kartu foto
-        const getScrollAmount = () => {
-            return container.firstElementChild ? container.firstElementChild['clientWidth'] + 16 : 300;
-        };
-
-        nextBtn.addEventListener('click', () => {
-            container.scrollLeft += getScrollAmount();
-        });
-
-        prevBtn.addEventListener('click', () => {
-            container.scrollLeft -= getScrollAmount();
-        });
-    </script>
-</body>
-
-</html>
+@endsection

@@ -30,15 +30,55 @@ use App\Http\Controllers\Internal\KeuanganController;
 // Halaman utama (Landing Page)
 Route::get('/', function () {
     return view('welcome');
-})->name('landing');
+})->name('beranda');
+
+// Akses menu navbar website
+Route::get('/web/profil/sejarah', function () {
+    return view('web.profil.sejarah');
+})->name('profil.sejarah');
+Route::get('/web/profil/visi', function () {
+    return view('web.profil.visi');
+})->name('profil.visi');
+Route::get('/web/profil/falsafah', function () {
+    return view('web.profil.falsafah');
+})->name('profil.falsafah');
+Route::get('/web/profil/legalitas', function () {
+    return view('web.profil.legalitas');
+})->name('profil.legalitas');
+Route::get('/web/profil/panca-prasetya', function () {
+    return view('web.profil.panca');
+})->name('profil.panca-prasetya');
+
+Route::get('/web/struktur', function () {
+    return view('web.struktur');
+})->name('web.struktur');
+
+Route::get('/web/ranting/anggota-IKSPI', function () {
+    return view('web.ranting.anggota');
+})->name('ranting.anggota');
+Route::get('/web/ranting/lokasi-ranting', function () {
+    return view('web.ranting.lokasi');
+})->name('ranting.lokasi');
+
+Route::get('/web/berita', function () {
+    return view('web.berita');
+})->name('web.berita');
+Route::get('/web/galeri', function () {
+    return view('web.galeri');
+})->name('web.galeri');
+
+// Akses menu footer website
+Route::get('/anggota/bantuan', function () {
+    return view('anggota.bantuan');
+})->name('bantuan');
 
 // Gerbang (Input Password Pengaman) - Sekarang pindah ke URL /gerbang
 Route::get('/gerbang', [GerbangController::class, 'showGerbangForm'])->name('gerbang.form');
 Route::post('/gerbang', [GerbangController::class, 'checkGerbangPassword'])->name('gerbang.check');
 
 // Alur Login Admin Resmi
-Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.post');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
@@ -173,11 +213,10 @@ Route::middleware(['auth', 'role:anggota'])->group(
     }
 );
 
-
 Route::middleware(['auth', 'role:admin_cabang'])->group(function () {
     /*
 |--------------------------------------------------------------------------
-| 6. RUTE KHUSUS ADMIN CABANG EDIT KONTEN
+| 7. RUTE KHUSUS ADMIN CABANG EDIT KONTEN
 |--------------------------------------------------------------------------
 */
     Route::put('/tentang/update', [TentangController::class, 'update'])->name('menu.tentang.update');
