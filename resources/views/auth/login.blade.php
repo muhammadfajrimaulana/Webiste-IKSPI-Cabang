@@ -1,61 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Pengurus IKSPI - Cabang Jakarta Pusat</title>
+    <title>Login Pengurus - IKSPI Jakarta Pusat</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/logo-ikspi.png') }}" type="image/png">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
 
 <body class="bg-slate-950 min-h-screen flex items-center justify-center p-4">
 
-    <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-6">
-        <div class="text-center space-y-2">
-            <div
-                class="w-12 h-12 bg-red-600 text-white rounded-xl mx-auto flex items-center justify-center text-xl font-bold shadow-lg shadow-red-600/20">
-                <i class="fa-solid fa-user-shield"></i>
+    <!-- Container Utama -->
+    <div
+        class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+
+        <!-- Sisi Kiri: Dekorasi & Branding -->
+        <div
+            class="hidden md:flex flex-1 bg-gradient-to-br from-red-900 to-slate-950 p-12 flex-col justify-between text-white">
+            <div>
+                <img src="{{ asset('assets/img/logo-ikspi.png') }}" alt="Logo" class="w-16 h-16 opacity-90">
+                <h1 class="text-3xl font-black text-yellow-500 mt-6 leading-tight"><span
+                        class="text-white">IKS.PI</span><br>KERA
+                    SAKTI</h1>
+                <p class="text-red-200 mt-2 text-sm font-medium">Cabang Jakarta Pusat</p>
             </div>
-            <h2 class="mt-4 text-center text-lg font-bold text-white uppercase">
-                Form Login
-            </h2>
-            <p class="mt-2 text-center text-xs text-gray-400">
-                Manajemen Administrasi IKSPI Kera Sakti <br>
-                <span class="text-yellow-400 font-semibold">Cabang Jakarta Pusat</span>
-            </p>
+            <div class="text-xs text-red-300/60 font-semibold tracking-widest uppercase">
+                Sistem Administrasi Pengurus
+            </div>
         </div>
 
-        @if ($errors->any())
-            <div
-                class="bg-red-950 border border-red-800 text-red-400 p-3 rounded-lg text-[11px] flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-circle-exclamation text-xs"></i>
-                <span>{{ $errors->first() }}</span>
-            </div>
-        @endif
-
-        <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
-            @csrf
-            <div class="space-y-1.5">
-                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Username</label>
-                <input type="text" name="username" required placeholder="Masukkan username"
-                    class="w-full text-xs bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-red-600 transition">
+        <!-- Sisi Kanan: Form Login -->
+        <div class="flex-1 p-8 md:p-12 bg-white">
+            <div class="mb-8">
+                <h2 class="text-2xl font-black text-slate-900">Selamat Datang</h2>
+                <p class="text-slate-500 text-sm mt-1">Silakan masukkan akun kredensial Anda.</p>
             </div>
 
-            <div class="space-y-1.5">
-                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Password</label>
-                <input type="password" name="password" required placeholder="••••••••"
-                    class="w-full text-xs bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-red-600 transition">
-            </div>
+            @if ($errors->any())
+                <div
+                    class="bg-red-50 border border-red-200 text-red-600 p-3 rounded-xl text-xs mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    {{ $errors->first() }}
+                </div>
+            @endif
 
-            <button type="submit"
-                class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md shadow-red-600/10 cursor-pointer">
-                Masuk Ke Dashboard
-            </button>
-        </form>
+            <form action="{{ route('login.post') }}" method="POST" class="space-y-5">
+                @csrf
+                <div>
+                    <label
+                        class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Username</label>
+                    <input type="text" name="username" required placeholder="username"
+                        class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition">
+                </div>
+
+                <div class="relative">
+                    <label
+                        class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Password</label>
+
+                    <input type="password" id="password" name="password" required placeholder="••••••••"
+                        class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition">
+
+                    <button type="button" onclick="togglePassword()"
+                        class="absolute right-4 top-[34px] text-slate-400 hover:text-red-600 transition">
+                        <i id="eye-icon" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition duration-300 shadow-xl shadow-slate-900/10 cursor-pointer text-sm">
+                    Masuk ke Dashboard
+                </button>
+            </form>
+
+            <p class="mt-8 text-center text-[10px] text-slate-400 uppercase tracking-widest font-semibold">
+                &copy; {{ date('Y') }} IKSPI Cabang Jakarta Pusat
+            </p>
+        </div>
     </div>
 
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>
 
 </html>
