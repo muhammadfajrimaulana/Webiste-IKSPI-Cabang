@@ -87,10 +87,23 @@
                                 <p class="text-[10px] text-gray-400 mt-0.5">Format: PDF • Hak Akses: Resmi Cabang</p>
                             </div>
                         </div>
-                        <a href="{{ asset('storage/' . $legal->legalitas_file) }}" target="_blank"
-                            class="inline-flex items-center space-x-1.5 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition">
-                            <i class="fa-solid fa-arrow-down-to-line"></i> <span>Unduh</span>
-                        </a>
+
+                        <div class="flex items-center space-x-2">
+                            <a href="{{ asset('storage/' . $legal->legalitas_file) }}" target="_blank"
+                                class="inline-flex items-center space-x-1.5 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                                <i class="fa-solid fa-download"></i> <span>Unduh</span>
+                            </a>
+
+                            <form action="{{ route('menu.legalitas.destroy', $legal->id) }}" method="POST"
+                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus file legalitas ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="inline-flex items-center space-x-1.5 px-3 py-2 text-[10px] bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg cursor-pointer transition">
+                                    <i class="fa-solid fa-trash"></i> <span>Hapus</span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 @empty
                     <p class="text-xs text-gray-400 py-4 text-center">Belum ada dokumen legalitas yang diunggah.</p>

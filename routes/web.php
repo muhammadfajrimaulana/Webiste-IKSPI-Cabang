@@ -151,6 +151,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::get('/tentang', [\App\Http\Controllers\Navigasi\TentangController::class, 'index'])->name('menu.tentang');
 
         Route::get('/legalitas', [\App\Http\Controllers\Navigasi\LegalitasController::class, 'index'])->name('menu.legalitas');
+        Route::delete('/legalitas/{id}', [\App\Http\Controllers\Navigasi\LegalitasController::class, 'destroy'])->name('menu.legalitas.destroy');
 
         Route::get('/ranting', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'daftarRanting'])->name('menu.ranting');
         Route::put('/ranting/update/{id}', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'updateRanting'])->name('menu.ranting.update');

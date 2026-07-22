@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Navigasi;
 use App\Http\Controllers\Controller;
 use App\Models\Content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LegalitasController extends Controller
 {
@@ -18,6 +19,11 @@ class LegalitasController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama'    => 'required|string|max:255',
+            'dokumen' => 'required|mimes:pdf|max:2048',
+        ]);
+
         $path = $request->file('dokumen')->store('legalitas', 'public');
 
         Content::create([
@@ -26,5 +32,18 @@ class LegalitasController extends Controller
         ]);
 
         return back()->with('success', 'Dokumen berhasil diunggah!');
+    }
+
+    public function destroy($id)
+    {
+        $legal = Content::findOrFail($id);
+
+        if ($legal->legalitas_file && Storage::disk('public')->exists($legal->legalitas_file)) {
+            Storage::disk('public')->delete($legal->legalitas_file);
+        }
+
+        $legal->delete();
+
+        return back()->with('success', 'Dokumen legalitas berhasil dihapus.');
     }
 }
