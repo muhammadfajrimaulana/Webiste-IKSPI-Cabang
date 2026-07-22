@@ -22,6 +22,7 @@ use App\Http\Controllers\Internal\OperasionalController;
 use App\Http\Controllers\Internal\KeuanganController;
 
 use App\Http\Controllers\Web\WebPostController;
+use App\Http\Controllers\Web\WebGaleriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,9 +64,7 @@ Route::get('/web/ranting/lokasi-ranting', function () {
 })->name('ranting.lokasi');
 
 Route::get('/web/berita', [WebPostController::class, 'index'])->name('web.berita');
-Route::get('/web/galeri', function () {
-    return view('web.galeri');
-})->name('web.galeri');
+Route::get('/web/galeri', [WebGaleriController::class, 'index'])->name('web.galeri');
 
 // Akses menu footer website
 Route::get('/anggota/bantuan', function () {
