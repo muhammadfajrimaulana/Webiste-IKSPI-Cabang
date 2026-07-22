@@ -147,7 +147,7 @@
                                         <td class="px-6 py-4 text-center">
                                             <button type="button"
                                                 onclick="bukaModalEdit({{ json_encode($pengesahan) }})"
-                                                class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-sm rounded-lg hover:bg-blue-700 transition">
+                                                class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-sm text-xs rounded-lg hover:bg-blue-700 transition cursor-pointer">
                                                 Edit
                                             </button>
                                         </td>
@@ -247,7 +247,7 @@
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Nomor Anggota</label>
                         <input type="text" name="nomor_anggota" id="edit_nomor_anggota"
-                            class="w-full mt-1 p-2 text-xs border rounded-lg" readonly disabled>
+                            class="w-full bg-slate-200 mt-1 p-2 text-xs border rounded-lg" readonly disabled>
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Nama Lengkap</label>
@@ -260,8 +260,11 @@
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Tingkatan</label>
-                        <input type="text" name="tingkatan" id="edit_tingkatan"
+                        <select name="tingkatan" id="edit_tingkatan"
                             class="w-full mt-1 p-2 text-xs border rounded-lg">
+                            <option value="Warga">Warga</option>
+                            <option value="Pendekar">Pendekar</option>
+                        </select>
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Status</label>
@@ -274,9 +277,9 @@
 
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" onclick="tutupModal()"
-                        class="px-4 py-2 text-xs font-bold text-gray-600">Batal</button>
+                        class="px-4 py-2 text-xs bg-slate-200 rounded font-bold text-gray-600 cursor-pointer">Batal</button>
                     <button type="submit"
-                        class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg">Simpan
+                        class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg cursor-pointer">Simpan
                     </button>
                 </div>
             </form>

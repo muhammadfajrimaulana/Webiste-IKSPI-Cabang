@@ -54,7 +54,7 @@
                             <x-nav-link route="pendaftaran.index" icon="fa-solid fa-file-signature" color="yellow">Flow
                                 A: Input Data Baru</x-nav-link>
                             <x-nav-link route="verifikasi.index" icon="fa-solid fa-user-check" color="yellow">
-                                Flow B: Verifikasi Pengurus
+                                Flow B: Verifikasi Anggota
 
                                 @if (isset($badgeData) && $badgeData['count'] > 0)
                                     <span

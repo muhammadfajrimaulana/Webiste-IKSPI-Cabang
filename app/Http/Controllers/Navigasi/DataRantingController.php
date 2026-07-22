@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Navigasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ranting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DataRantingController extends Controller
 {
@@ -48,5 +52,18 @@ class DataRantingController extends Controller
         ]);
 
         return redirect()->route('menu.ranting')->with('success', 'Data ranting berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $ranting = Ranting::findOrFail($id);
+
+        DB::transaction(function () use ($ranting) {
+            User::where('ranting_id', $ranting->id)->delete();
+
+            $ranting->delete();
+        });
+
+        return redirect()->back()->with('success', 'Ranting dan akun admin terkait berhasil dihapus.');
     }
 }

@@ -264,23 +264,23 @@
                                     class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
                             </a>
 
+                            <a href="{{ route('verifikasi.index') }}"
+                                class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
+                                <span class="flex items-center space-x-2.5">
+                                    <i
+                                        class="fa-solid fa-user-check text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
+                                    <span>Verifikasi Anggota (Flow B)</span>
+                                </span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </a>
+
                             <a href="{{ route('output.index') }}"
                                 class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
                                 <span class="flex items-center space-x-2.5">
                                     <i
                                         class="fa-solid fa-file-invoice-dollar text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
                                     <span>Cetak Laporan Output (Flow C)</span>
-                                </span>
-                                <i
-                                    class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-                            </a>
-
-                            <a href="#"
-                                class="w-full text-left p-3 text-xs font-semibold bg-gray-50 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg border border-gray-100 transition duration-200 flex items-center justify-between group">
-                                <span class="flex items-center space-x-2.5">
-                                    <i
-                                        class="fa-solid fa-box-open text-slate-400 group-hover:text-red-600 transition w-4 text-center"></i>
-                                    <span>Cek Inventaris & Logistik Atribut</span>
                                 </span>
                                 <i
                                     class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>

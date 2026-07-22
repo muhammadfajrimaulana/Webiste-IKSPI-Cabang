@@ -155,6 +155,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
 
         Route::get('/ranting', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'daftarRanting'])->name('menu.ranting');
         Route::put('/ranting/update/{id}', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'updateRanting'])->name('menu.ranting.update');
+        Route::delete('/ranting/{id}', [\App\Http\Controllers\Navigasi\DataRantingController::class, 'destroy'])->name('menu.ranting.destroy');
 
         Route::get('/struktur', [PengurusController::class, 'index'])->name('menu.struktur');
 

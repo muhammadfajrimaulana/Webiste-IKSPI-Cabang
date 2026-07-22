@@ -216,7 +216,7 @@
                                         <td class="px-6 py-4 text-center">
                                             <button type="button"
                                                 onclick="bukaModalEdit({{ json_encode($ranting) }})"
-                                                class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
+                                                class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition cursor-pointer">
                                                 Edit
                                             </button>
                                         </td>
@@ -236,6 +236,7 @@
         </div>
     </div>
 
+    <!-- MODAL EDIT & HAPUS -->
     <div id="modalEditRanting" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
         <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl p-6">
             <h3 class="text-sm font-bold text-slate-950 mb-4">Edit Data Ranting</h3>
@@ -276,16 +277,30 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-2 mt-6">
-                    <button type="button" onclick="tutupModal()"
-                        class="px-4 py-2 text-xs font-bold text-gray-600">Batal</button>
-                    <button type="submit"
-                        class="px-4 py-2 bg-slate-950 text-white text-xs font-bold rounded-lg">Simpan
+                <!-- Footer Modal (Tombol Hapus di Kiri, Batal & Simpan di Kanan) -->
+                <div class="pt-4 border-t border-gray-100 mt-4 flex items-center justify-between">
+                    <button type="button" onclick="hapusRanting()"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-semibold rounded-lg cursor-pointer transition flex items-center gap-1">
+                        <i class="fa-solid fa-trash"></i> Hapus
                     </button>
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="tutupModal()"
+                            class="px-4 py-2 border border-gray-200 text-[10px] rounded-lg text-gray-600 font-semibold cursor-pointer">Batal</button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-slate-950 text-white text-[10px] font-bold rounded-lg cursor-pointer">Simpan
+                            Perubahan</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Form Global untuk Delete -->
+    <form id="globalDeleteForm" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <script>
         // Menutup alert
@@ -306,25 +321,40 @@
             });
         });
 
+        let currentRantingId = null;
+
         function bukaModalEdit(ranting) {
             const modal = document.getElementById('modalEditRanting');
-            const form = document.getElementById('formEditRanting');
+            const formEdit = document.getElementById('formEditRanting');
 
-            const baseUrl = "{{ route('menu.ranting.update', ':id') }}";
-            form.action = baseUrl.replace(':id', ranting.id);
+            currentRantingId = ranting.id;
 
-            document.getElementById('edit_nama_ranting').value = ranting.nama_ranting;
+            const baseUrlEdit = "{{ route('menu.ranting.update', ':id') }}";
+            formEdit.action = baseUrlEdit.replace(':id', ranting.id);
+
+            document.getElementById('edit_nama_ranting').value = ranting.nama_ranting || '';
             document.getElementById('edit_ketua_ranting').value = ranting.ketua_ranting || '';
             document.getElementById('edit_alamat_ranting').value = ranting.alamat_ranting || '';
             document.getElementById('edit_nama_pelatih').value = ranting.nama_pelatih || '';
             document.getElementById('edit_lokasi_latihan').value = ranting.lokasi_latihan || '';
-            document.getElementById('edit_kontak_ranting').value = ranting.kontak_ranting || '';
+            document.getElementById('edit_kontak_ranting').value = ranting.kontak_ranting || ''; // <-- Ini tadinya terlewat
 
             modal.classList.remove('hidden');
         }
 
         function tutupModal() {
             document.getElementById('modalEditRanting').classList.add('hidden');
+        }
+
+        function hapusRanting() {
+            if (confirm('Yakin ingin menghapus ranting ini? Akun admin ranting terkait juga akan terhapus.')) {
+                const deleteForm = document.getElementById('globalDeleteForm');
+                const baseUrlDelete = "{{ route('menu.ranting.destroy', ':id') }}";
+
+                deleteForm.action = baseUrlDelete.replace(':id', currentRantingId);
+
+                deleteForm.submit();
+            }
         }
     </script>
 
