@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PengurusSeeder::class,
             PostSeeder::class,
             ContactSeeder::class,
+            GallerySeeder::class,
         ]);
     }
 }

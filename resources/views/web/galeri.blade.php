@@ -54,7 +54,7 @@
                     <div
                         class="w-full h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center border-b border-gray-100">
                         @if ($item->tipe === 'gambar')
-                            <img src="{{ asset('storage/' . $item->file_path) }}"
+                            <img src="{{ asset('storage/media/' . $item->file_path) }}"
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <span
                                 class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs text-slate-900 text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm">
