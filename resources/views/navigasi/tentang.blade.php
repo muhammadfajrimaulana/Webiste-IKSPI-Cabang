@@ -2,9 +2,22 @@
     @slot('icon', 'fa-solid fa-info-circle')
     @slot('title', 'Tentang IKSPI Kera Sakti')
 
-    <form action="{{ route('menu.tentang.update') }}" method="POST" class="space-y-6 max-w-6xl mx-auto">
-        @csrf
-        @method('PUT')
+    <div class="max-w-6xl mx-auto space-y-6">
+        @if (session('success'))
+            <div id="alert-success"
+                class="fixed top-5 right-5 z-50 bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500 shadow-lg">
+                <i class="fa-solid fa-circle-check text-base text-green-500"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="alert-error"
+                class="fixed top-5 right-5 z-50 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs flex items-center gap-2 font-medium transition-opacity duration-500 shadow-lg">
+                <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
 
         {{-- Header Section --}}
         <div
@@ -19,72 +32,100 @@
                     Ikatan Keluarga Silat Putra Indonesia
                 </h2>
                 <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-                    Mengenal lebih dekat sejarah luhur, filosofi pergerakan, dan nilai-nilai fundamental perguruan Kera
+                    Mengenal lebih dekat sejarah luhur, filosofi pergerakan, dan nilai-nilai fundamental perguruan
+                    Kera
                     Sakti di wilayah Jakarta Pusat.
                 </p>
             </div>
         </div>
 
-        {{-- Konten Dinamis --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <form action="{{ route('menu.tentang.update') }}" method="POST">
+            @csrf
+            @method('PUT')
 
-            {{-- Visi --}}
-            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs space-y-3">
-                <div
-                    class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 text-sm shadow-xs">
-                    <i class="fa-solid fa-eye"></i>
+            {{-- Konten Dinamis --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                {{-- Visi --}}
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs space-y-3">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 text-sm shadow-xs">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Visi Perguruan</h3>
+
+                    @if (auth()->user()->role === 'admin_cabang')
+                        <textarea name="visi" rows="4"
+                            class="w-full text-xs text-gray-600 border border-gray-200 rounded p-2 focus:ring-1 focus:ring-red-500 outline-none">{{ $content->visi ?? '' }}</textarea>
+                    @else
+                        <p class="text-xs text-gray-500 leading-relaxed">{{ $content->visi ?? 'Belum diisi.' }}</p>
+                    @endif
                 </div>
-                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Visi Perguruan</h3>
 
-                @if (auth()->user()->role === 'admin_cabang')
-                    <textarea name="visi" rows="4"
-                        class="w-full text-xs text-gray-600 border border-gray-200 rounded p-2 focus:ring-1 focus:ring-red-500 outline-none">{{ $content->visi ?? '' }}</textarea>
-                @else
-                    <p class="text-xs text-gray-500 leading-relaxed">{{ $content->visi ?? 'Belum diisi.' }}</p>
-                @endif
-            </div>
+                {{-- Misi --}}
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs space-y-3">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center text-yellow-600 text-sm shadow-xs">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Misi Perguruan</h3>
 
-            {{-- Misi --}}
-            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs space-y-3">
-                <div
-                    class="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center text-yellow-600 text-sm shadow-xs">
-                    <i class="fa-solid fa-bullseye"></i>
+                    @if (auth()->user()->role === 'admin_cabang')
+                        <textarea name="misi" rows="4"
+                            class="w-full text-xs text-gray-600 border border-gray-200 rounded p-2 focus:ring-1 focus:ring-red-500 outline-none">{{ $content->misi ?? '' }}</textarea>
+                    @else
+                        <p class="text-xs text-gray-500 leading-relaxed">{{ $content->misi ?? 'Belum diisi.' }}</p>
+                    @endif
                 </div>
-                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Misi Perguruan</h3>
 
-                @if (auth()->user()->role === 'admin_cabang')
-                    <textarea name="misi" rows="4"
-                        class="w-full text-xs text-gray-600 border border-gray-200 rounded p-2 focus:ring-1 focus:ring-red-500 outline-none">{{ $content->misi ?? '' }}</textarea>
-                @else
-                    <p class="text-xs text-gray-500 leading-relaxed">{{ $content->misi ?? 'Belum diisi.' }}</p>
-                @endif
-            </div>
+                {{-- Sejarah --}}
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs space-y-3">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-800 text-sm shadow-xs">
+                        <i class="fa-solid fa-scroll"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Sejarah Singkat</h3>
 
-            {{-- Sejarah --}}
-            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs space-y-3">
-                <div
-                    class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-800 text-sm shadow-xs">
-                    <i class="fa-solid fa-scroll"></i>
+                    @if (auth()->user()->role === 'admin_cabang')
+                        <textarea name="sejarah" rows="4"
+                            class="w-full text-xs text-gray-600 border border-gray-200 rounded p-2 focus:ring-1 focus:ring-red-500 outline-none">{{ $content->sejarah ?? '' }}</textarea>
+                    @else
+                        <p class="text-xs text-gray-500 leading-relaxed">{{ $content->sejarah ?? 'Belum diisi.' }}</p>
+                    @endif
                 </div>
-                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Sejarah Singkat</h3>
-
-                @if (auth()->user()->role === 'admin_cabang')
-                    <textarea name="sejarah" rows="4"
-                        class="w-full text-xs text-gray-600 border border-gray-200 rounded p-2 focus:ring-1 focus:ring-red-500 outline-none">{{ $content->sejarah ?? '' }}</textarea>
-                @else
-                    <p class="text-xs text-gray-500 leading-relaxed">{{ $content->sejarah ?? 'Belum diisi.' }}</p>
-                @endif
             </div>
-        </div>
 
-        {{-- Tombol Simpan (Hanya untuk Admin Cabang) --}}
-        @if (auth()->user()->role === 'admin_cabang')
-            <div class="flex justify-end pt-4">
-                <button type="submit"
-                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-xs font-bold transition duration-200 shadow-lg shadow-red-600/20">
-                    <i class="fa-solid fa-save mr-1"></i> Simpan Perubahan
-                </button>
-            </div>
-        @endif
-    </form>
+            {{-- Tombol Simpan (Hanya untuk Admin Cabang) --}}
+            @if (auth()->user()->role === 'admin_cabang')
+                <div class="flex justify-end pt-4">
+                    <button type="submit"
+                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-xs font-bold transition duration-200 shadow-lg shadow-red-600/20">
+                        <i class="fa-solid fa-save mr-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            @endif
+        </form>
+
+    </div>
+
+    <script>
+        // Menutup alert
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = ['alert-success', 'alert-error'];
+
+            alerts.forEach(id => {
+                const alertElement = document.getElementById(id);
+                if (alertElement) {
+                    setTimeout(() => {
+                        alertElement.style.opacity = '0';
+
+                        setTimeout(() => {
+                            alertElement.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+
 </x-dashboard-layout>
