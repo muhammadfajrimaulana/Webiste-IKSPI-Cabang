@@ -116,19 +116,34 @@
             @csrf
             <input type="hidden" name="_method" id="formMethod" value="POST">
 
-            <h3 id="modalTitle" class="text-sm font-bold mb-4">Unggah Foto Kegiatan</h3>
+            <h3 id="modalTitle" class="text-sm font-bold mb-4">Unggah Konten Baru</h3>
 
-            <input type="file" name="thumbnail" id="thumbnail" class="w-full border p-2 mb-4 text-xs rounded"
+            <label class="text-xs font-bold text-slate-700 block mb-1">Jenis Konten</label>
+            <select name="tipe" id="tipe" class="w-full border p-2 mb-3 text-xs rounded" required>
+                <option value="berita">Berita / Artikel</option>
+                <option value="gambar">Foto / Galeri</option>
+                <option value="video">Video Kegiatan</option>
+            </select>
+
+            <label class="text-xs font-bold text-slate-700 block mb-1">File Media / Gambar</label>
+            <input type="file" name="file_path" id="file_path" class="w-full border p-2 mb-3 text-xs rounded"
                 accept="image/*">
-            <input type="text" id="judul" name="judul" placeholder="Judul Kegiatan"
+
+            <input type="text" id="judul" name="judul" placeholder="Judul Kegiatan / Berita"
                 class="w-full border p-2 mb-2 text-xs rounded" required>
+
             <input type="text" id="kategori" name="kategori" placeholder="Kategori"
                 class="w-full border p-2 mb-2 text-xs rounded" required>
-            <textarea id="isi" name="isi" placeholder="Deskripsi Singkat" class="w-full border p-2 mb-4 text-xs rounded"></textarea>
+
+            <textarea id="isi" name="isi" placeholder="Deskripsi Singkat / Isi Konten"
+                class="w-full border p-2 mb-4 text-xs rounded" required></textarea>
 
             <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal()" class="text-xs px-3 py-1">Batal</button>
-                <button type="submit" class="bg-red-600 text-white text-xs px-3 py-2 rounded">Simpan</button>
+                <button type="button" onclick="closeModal()"
+                    class="text-xs bg-slate-200 rounded px-3 py-1 cursor-pointer">Batal</button>
+                <button type="submit"
+                    class="bg-red-600 text-white cursor-pointer text-xs px-3 py-2
+                    rounded">Simpan</button>
             </div>
         </form>
     </div>
@@ -153,14 +168,15 @@
         });
 
         // Membuka modal
-        function openModal(action = "{{ route('menu.media.store') }}", method = "POST", judul = "", kategori = "", isi =
-            "") {
+        function openModal(action = "{{ route('menu.media.store') }}", method = "POST", judul = "", tipe = "berita",
+            kategori = "", isi = "") {
             document.getElementById('mediaForm').action = action;
             document.getElementById('formMethod').value = method;
             document.getElementById('judul').value = judul;
+            document.getElementById('tipe').value = tipe;
             document.getElementById('kategori').value = kategori;
             document.getElementById('isi').value = isi;
-            document.getElementById('modalTitle').innerText = method === "PUT" ? "Edit Media" : "Unggah Foto Kegiatan";
+            document.getElementById('modalTitle').innerText = method === "PUT" ? "Edit Konten" : "Unggah Konten Baru";
             document.getElementById('mediaModal').classList.remove('hidden');
         }
 

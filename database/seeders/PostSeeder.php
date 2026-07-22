@@ -16,7 +16,8 @@ class PostSeeder extends Seeder
             [
                 'judul' => 'Latihan Gabungan Jakarta Pusat',
                 'isi' => 'Kegiatan latihan rutin gabungan untuk meningkatkan fisik dan teknik warga.',
-                'thumbnail' => null,
+                'file_path' => 'galleries/default.jpg',
+                'tipe' => 'gambar',
                 'kategori' => 'Kegiatan',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -24,7 +25,8 @@ class PostSeeder extends Seeder
             [
                 'judul' => 'Acara Pengesahan Warga Baru',
                 'isi' => 'Momen sakral pengesahan anggota baru cabang Jakarta Pusat.',
-                'thumbnail' => null,
+                'file_path' => 'galleries/default.mp4',
+                'tipe' => 'video',
                 'kategori' => 'Pengesahan',
                 'created_at' => now(),
                 'updated_at' => now(),

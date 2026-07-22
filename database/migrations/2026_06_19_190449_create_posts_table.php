@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->text('isi');
-            $table->string('thumbnail')->nullable();
-            $table->string('kategori'); // Misal: 'berita', 'pengumuman'
+            $table->string('file_path')->nullable();
+            $table->string('kategori');
+            $table->enum('tipe', ['gambar', 'video'])->default('gambar');
             $table->timestamps();
         });
     }

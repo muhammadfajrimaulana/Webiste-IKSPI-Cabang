@@ -11,10 +11,9 @@ class PostController extends Controller
 {
     public function index()
     {
-        // Mengambil semua konten media, terbaru di atas
         $posts = Post::latest()->get();
-
         $totalMedia = Post::count();
+
         return view('navigasi.media', compact('posts', 'totalMedia'));
     }
 
@@ -22,42 +21,46 @@ class PostController extends Controller
     {
         $request->validate([
             'judul' => 'required|max:255',
-            'isi' => 'required',
+            'tipe' => 'required|in:berita,gambar,video',
             'kategori' => 'required',
-            'thumbnail' => 'image|nullable|max:2048' // Max 2MB
+            'isi' => 'nullable',
+            'file_path' => 'nullable|image|max:2048'
         ]);
 
         $data = $request->all();
 
-        if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('media', 'public');
+        if ($request->hasFile('file_path')) {
+            $data['file_path'] = $request->file('file_path')->store('media', 'public');
         }
 
         Post::create($data);
 
-        return back()->with('success', 'Konten media berhasil diterbitkan!');
+        return back()->with('success', 'Konten berhasil diterbitkan!');
     }
 
     public function update(Request $request, Post $post)
     {
-        $request->validate(['judul' => 'required', 'kategori' => 'required']);
-        $data = $request->except('thumbnail');
+        $request->validate([
+            'judul' => 'required',
+            'tipe' => 'required|in:berita,gambar,video',
+            'kategori' => 'required'
+        ]);
 
-        if ($request->hasFile('thumbnail')) {
-            // Hapus foto lama jika ada
-            if ($post->thumbnail) Storage::disk('public')->delete($post->thumbnail);
-            $data['thumbnail'] = $request->file('thumbnail')->store('media', 'public');
+        $data = $request->except('file_path');
+
+        if ($request->hasFile('file_path')) {
+            if ($post->file_path) Storage::disk('public')->delete($post->file_path);
+            $data['file_path'] = $request->file('file_path')->store('media', 'public');
         }
 
         $post->update($data);
-        return back()->with('success', 'Media berhasil diupdate!');
+        return back()->with('success', 'Konten berhasil diupdate!');
     }
 
     public function destroy(Post $post)
     {
-        // Hapus file gambar dari storage jika ada
-        if ($post->thumbnail) {
-            Storage::disk('public')->delete($post->thumbnail);
+        if ($post->file_path) {
+            Storage::disk('public')->delete($post->file_path);
         }
 
         $post->delete();
