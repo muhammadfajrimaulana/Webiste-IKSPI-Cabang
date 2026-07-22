@@ -91,7 +91,19 @@
                                 <i class="fa-solid fa-user-tie text-sm"></i>
                             </div>
                             <div>
-                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Pelatih Kepala
+                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Ketua Ranting
+                                </p>
+                                <p class="text-sm text-slate-900 font-semibold">{{ $ranting->ketua_ranting ?? '-' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                <i class="fa-solid fa-dumbbell"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Pelatih
                                 </p>
                                 <p class="text-sm text-slate-900 font-semibold">{{ $ranting->nama_pelatih ?? '-' }}</p>
                             </div>
@@ -117,6 +129,7 @@
                             onclick="bukaModalEdit(
             '{{ $ranting->id }}', 
             '{{ addslashes($ranting->nama_ranting) }}', 
+            '{{ addslashes($ranting->ketua_ranting) }}', 
             '{{ addslashes($ranting->nama_pelatih) }}', 
             '{{ addslashes($ranting->lokasi_latihan) }}', 
             '{{ addslashes($ranting->kontak_ranting) }}'
@@ -157,14 +170,26 @@
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="space-y-1">
+                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Ketua
+                            Ranting</label>
+                        <input type="text" name="ketua_ranting"
+                            class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Ranting</label>
+                        <textarea name="alamat_ranting" required
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-950"
+                            placeholder="Masukkan alamat lengkap ranting"></textarea>
+                    </div>
+                    <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nama Pelatih
-                            Kepala</label>
+                        </label>
                         <input type="text" name="nama_pelatih"
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Alamat Lengkap /
-                            GOR Latihan</label>
+                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Lokasi
+                            Latihan</label>
                         <textarea name="lokasi_latihan" required rows="2"
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none"></textarea>
                     </div>
@@ -222,17 +247,30 @@
                         <input type="text" id="edit_kontak" name="kontak_ranting"
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
-                    <div class="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
-                        <button type="button" onclick="tutupModalEdit()"
-                            class="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 font-semibold cursor-pointer">Batal</button>
-                        <button type="submit"
-                            class="px-4 py-2 bg-slate-950 text-white font-bold rounded-lg cursor-pointer">Simpan
-                            Perubahan</button>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                        <!-- Tombol Hapus di sebelah kiri -->
+                        <form action="{{ route('internal.operasional.destroy', $ranting->id) }}" method="POST"
+                            onsubmit="return confirm('Yakin ingin menghapus ranting ini? Akun admin ranting terkait juga akan terhapus.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg cursor-pointer transition">
+                                <i class="fa-solid fa-trash mr-1"></i> Hapus
+                            </button>
+                        </form>
+
+                        <!-- Tombol Batal & Simpan di sebelah kanan -->
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="tutupModalEdit()"
+                                class="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 font-semibold cursor-pointer">Batal</button>
+                            <button type="submit"
+                                class="px-4 py-2 bg-slate-950 text-white font-bold rounded-lg cursor-pointer">Simpan
+                                Perubahan</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-
     </div>
 
     <script>

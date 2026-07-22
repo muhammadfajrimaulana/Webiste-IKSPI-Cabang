@@ -135,6 +135,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::get('/internal/operasional', [OperasionalController::class, 'index'])->name('internal.operasional');
         Route::post('/internal/operasional', [OperasionalController::class, 'store'])->name('internal.operasional.store');
         Route::put('/internal/operasional/{id}', [OperasionalController::class, 'update'])->name('internal.operasional.update');
+        Route::delete('/internal/operasional/{id}', [OperasionalController::class, 'destroy'])->name('internal.operasional.destroy');
 
         Route::get('/internal/keuangan-logistik', [KeuanganController::class, 'index'])->name('internal.keuangan');
         Route::post('/internal/keuangan-logistik', [KeuanganController::class, 'store'])->name('internal.keuangan.store');
