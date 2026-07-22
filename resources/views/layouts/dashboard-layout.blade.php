@@ -137,7 +137,7 @@
 
             <div class="p-4 ml-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
                 <div>
-                    <a href="{{ route('anggota.profile') }}" class="flex items-center space-x-2">
+                    <a href="{{ route('profile') }}" class="flex items-center space-x-2">
                         <div
                             class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase">
                             {{ collect(explode(' ', auth()->user()->nama_pengurus))->map(fn($word) => $word[0])->take(2)->implode('') }}

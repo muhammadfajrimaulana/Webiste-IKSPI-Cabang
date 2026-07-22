@@ -164,6 +164,8 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::get('/pengesahan/cetak', [\App\Http\Controllers\Navigasi\DataPengesahanController::class, 'cetak'])->name('menu.pengesahan.cetak');
 
         Route::get('/kontak', [\App\Http\Controllers\Navigasi\ContactController::class, 'index'])->name('menu.kontak');
+
+        Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     }
 );
 
