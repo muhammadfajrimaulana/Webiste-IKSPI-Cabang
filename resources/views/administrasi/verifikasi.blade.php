@@ -90,12 +90,12 @@
                                     </form>
                                 @else
                                     {{-- Tampilan Status untuk Admin Ranting --}}
-                                    @if ($data->status === 'disetujui')
+                                    @if ($data->status_verifikasi === 'verified')
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">
                                             <i class="fa-solid fa-check-circle mr-1"></i> Terverifikasi
                                         </span>
-                                    @elseif($data->status === 'ditolak')
+                                    @elseif($data->status_verifikasi === 'rejected')
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">
                                             <i class="fa-solid fa-times-circle mr-1"></i> Ditolak

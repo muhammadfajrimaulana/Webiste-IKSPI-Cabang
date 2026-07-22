@@ -19,7 +19,7 @@ class VerifikasiController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $query = Pendaftaran::with('ranting')->where('status_verifikasi', 'pending');
+        $query = Pendaftaran::with('ranting');
 
         if ($user->role === 'admin_ranting') {
             $query->where('ranting_id', $user->ranting_id);
