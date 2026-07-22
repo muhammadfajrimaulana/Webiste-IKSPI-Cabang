@@ -3,13 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Keuangan - IKSPI Cabang Jakarta Pusat</title>
+    <title>Laporan Keuangan {{ $ranting ? '' . $ranting->nama_ranting : 'Semua Ranting' }} IKSPI Cabang
+        Jakarta Pusat</title>
     <style>
+        @page {
+            size: A4;
+            margin: 15mm 15mm 15mm 15mm;
+        }
+
         body {
             font-family: sans-serif;
             font-size: 12px;
             color: #0f172a;
-            padding: 10px;
+            padding: 0;
+            margin: 0;
         }
 
         .kop-surat {
@@ -179,6 +186,18 @@
             font-weight: bold;
             text-transform: uppercase;
         }
+
+        @page {
+            margin: 20mm 15mm 20mm 15mm;
+        }
+
+        .page-number:before {
+            content: counter(page);
+        }
+
+        .total-pages:before {
+            content: counter(pages);
+        }
     </style>
 </head>
 
@@ -198,8 +217,9 @@
                     <p class="alamat">Sekretariat Pengurus Cabang • Email: cabangjakpus@ikspi.org • Kontak: +62
                         812-9696-4998</p>
                 </td>
-                <td style="border: none; width: 15%; font-size: 9px; color: #94a3b8; text-align: center;">
-                    LAPORAN<br>KEUANGAN
+                <td style="border: none; width: 15%; text-align: center; vertical-align: middle;">
+                    <img src="{{ public_path('assets/img/ikspi-jakpus.png') }}"
+                        style="width: 70px; height: auto; max-height: 80px;">
                 </td>
             </tr>
         </table>
@@ -215,15 +235,12 @@
     <div class="info-box">
         <table>
             <tr>
-                <td style="width: 15%; font-weight: bold; color: #64748b;">Ranting:</td>
-                <td style="width: 35%;">{{ $ranting ? $ranting->nama_ranting : 'Semua Ranting / Cabang Utama' }}</td>
-                <td style="width: 15%; font-weight: bold; color: #64748b;">Tanggal Cetak:</td>
-                <td style="width: 35%;">{{ date('d/m/Y H:i') }} WIB</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold; color: #64748b;">Kategori:</td>
-                <td colspan="3" style="text-transform: uppercase; font-weight: bold;">
-                    {{ request('kategori') ?: 'Semua Kategori' }}</td>
+                <td style="width: 12%; font-weight: bold; color: #64748b;">Ranting:</td>
+                <td style="width: 38%;">{{ $ranting ? $ranting->nama_ranting : 'Semua Ranting / Cabang Utama' }}</td>
+                <td style="width: 12%; font-weight: bold; color: #64748b;">Kategori:</td>
+                <td style="width: 38%; text-transform: uppercase; font-weight: bold;">
+                    {{ request('kategori') ?: 'Semua Kategori' }}
+                </td>
             </tr>
         </table>
     </div>
@@ -234,6 +251,7 @@
             <tr>
                 <th class="text-center" style="width: 5%;">No</th>
                 <th style="width: 15%;">Tanggal</th>
+                <th>Kategori</th>
                 <th>Keterangan</th>
                 <th style="width: 15%;">Tipe Transaksi</th>
                 <th class="text-right" style="width: 25%;">Nominal</th>
@@ -244,6 +262,7 @@
                 <tr>
                     <td class="text-center" style="color: #64748b;">{{ $index + 1 }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                    <td style="font-weight: bold;">{{ $item->kategori }}</td>
                     <td style="font-weight: bold;">{{ $item->keterangan }}</td>
                     <td>
                         <span class="{{ $item->tipe == 'masuk' ? 'badge-masuk' : 'badge-keluar' }}">
@@ -302,8 +321,9 @@
                 <td>
                     <p style="color: #64748b; margin: 0;">Mengetahui,</p>
                     <p class="ttd-title" style="margin: 5px 0 0 0;">Ketua Cabang Jakarta Pusat</p>
-                    <div class="ttd-space">Moh Ahlusiyam Ferliansyah</div>
-                    <div style="font-size: 9px; color: #94a3b8; margin-top: 2px;">NIW. PC-IKSPI.2026</div>
+                    <div class="ttd-space">( ........................................ )</div>
+                    <div style="font-size: 9px; color: #94a3b8; margin-top: 2px;">NIW.
+                        ........................................</div>
                 </td>
                 <td>
                     <p style="color: #64748b; margin: 0;">Jakarta Pusat, {{ date('d F Y') }}</p>
@@ -316,6 +336,9 @@
         </table>
     </div>
 
+    <div style="position: fixed; bottom: -10mm; left: 0; right: 0; text-align: center; font-size: 9px; color: #94a3b8;">
+        Halaman <span class="page-number"></span> dari <span class="total-pages"></span>
+    </div>
 </body>
 
 </html>

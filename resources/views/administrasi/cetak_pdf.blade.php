@@ -3,14 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Pengesahan Anggota Cabang</title>
+    <title>Laporan Pengesahan Anggota IKSPI Cabang Jakarta Pusat</title>
     <style>
-        /* Dompdf butuh CSS native murni, jangan pake CDN Tailwind di dalam sini ya nyet */
+        @page {
+            size: A4;
+            margin: 15mm 15mm 15mm 15mm;
+        }
+
         body {
             font-family: sans-serif;
             font-size: 12px;
             color: #0f172a;
-            padding: 10px;
+            padding: 0;
+            margin: 0;
         }
 
         .kop-surat {
@@ -74,8 +79,9 @@
         }
 
         th {
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
+            background-color: #0f172a;
+            color: #ffffff;
+            border: 1px solid #0f172a;
             padding: 8px;
             font-size: 10px;
             font-weight: bold;
@@ -117,6 +123,18 @@
             color: #94a3b8;
             margin-top: 2px;
         }
+
+        @page {
+            margin: 20mm 15mm 20mm 15mm;
+        }
+
+        .page-number:before {
+            content: counter(page);
+        }
+
+        .total-pages:before {
+            content: counter(pages);
+        }
     </style>
 </head>
 
@@ -136,8 +154,9 @@
                         812-9696-4998
                     </p>
                 </td>
-                <td style="border: none; width: 15%; font-size: 9px; color: #94a3b8; text-align: center;">
-                    DOKUMEN<br>KAS/WARGA
+                <td style="border: none; width: 15%; text-align: center; vertical-align: middle;">
+                    <img src="{{ public_path('assets/img/ikspi-jakpus.png') }}"
+                        style="width: 70px; height: auto; max-height: 80px;">
                 </td>
             </tr>
         </table>
@@ -179,12 +198,15 @@
 
     <div class="ttd-container">
         <p style="color: #64748b; margin: 0;">Mengetahui,</p>
-        <p style="font-weight: bold; margin: 5px 0 0 0; text-transform: uppercase;">Ketua Pengurus Cabang</p>
-
-        <div class="ttd-space">Moh Ahlusiyam Ferliansyah</div>
-        <div class="niw">NIW. PC-IKSPI.2026</div>
+        <p class="ttd-title" style="margin: 5px 0 0 0;">Ketua Cabang Jakarta Pusat</p>
+        <div class="ttd-space">( ........................................ )</div>
+        <div style="font-size: 9px; color: #94a3b8; margin-top: 2px;">NIW.
+            ........................................</div>
     </div>
 
+    <div style="position: fixed; bottom: -10mm; left: 0; right: 0; text-align: center; font-size: 9px; color: #94a3b8;">
+        Halaman <span class="page-number"></span> dari <span class="total-pages"></span>
+    </div>
 </body>
 
 </html>

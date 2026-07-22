@@ -146,6 +146,6 @@ class KeuanganController extends Controller
 
         $pdf->setPaper('a4', 'portrait');
 
-        return $pdf->stream('Laporan-Keuangan-' . ($ranting?->nama ?? 'Cabang') . '.pdf');
+        return $pdf->stream('Laporan-Keuangan-' . ($ranting?->nama_ranting ?? 'Semua Ranting Cabang Jakarta Pusat') . '.pdf');
     }
 }
