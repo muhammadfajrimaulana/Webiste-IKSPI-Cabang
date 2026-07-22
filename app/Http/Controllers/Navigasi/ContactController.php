@@ -34,11 +34,27 @@ class ContactController extends Controller
         ]);
 
         if ($request->level === 'ranting') {
-            // Gunakan Auth::user() agar lebih eksplisit
             $data['ranting_id'] = Auth::user()->ranting_id;
         }
 
         Contact::create($data);
         return back()->with('success', 'Kontak berhasil ditambah!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'nomor_wa' => 'required|string|max:20',
+        ]);
+
+        $kontak = Contact::findOrFail($id);
+
+        $kontak->update([
+            'nama' => $request->nama,
+            'nomor_wa' => $request->nomor_wa,
+        ]);
+
+        return redirect()->back()->with('success', 'Kontak berhasil diperbarui.');
     }
 }

@@ -20,16 +20,6 @@ class ContactSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Contoh Kontak Ranting (Asumsi ada ranting_id 1)
-            [
-                'nama' => 'Ketua Ranting A',
-                'jabatan' => 'Ketua Ranting',
-                'nomor_wa' => '628987654321',
-                'level' => 'ranting',
-                'ranting_id' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
         ]);
     }
 }

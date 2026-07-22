@@ -57,11 +57,25 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
             @foreach ($kontakCabang as $c)
                 <div class="relative bg-slate-900 p-5 rounded-xl border border-slate-800 overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <div class="absolute top-14 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                         <i class="fa-solid fa-building-shield text-5xl text-white"></i>
                     </div>
+
                     <div class="relative z-10">
-                        <span class="text-[9px] font-bold text-red-400 uppercase tracking-wider">Pimpinan Cabang</span>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] font-bold text-red-400 uppercase tracking-wider">Pimpinan
+                                Cabang</span>
+
+                            {{-- Tombol Edit khusus untuk Admin Cabang ybs --}}
+                            @if (auth()->user()->role === 'admin_cabang')
+                                <button
+                                    onclick="openEditModal('{{ $c->id }}', '{{ $c->nama }}', '{{ $c->nomor_wa }}')"
+                                    class="text-gray-400 hover:text-white text-xs bg-white/5 hover:bg-white/10 p-1.5 rounded transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            @endif
+                        </div>
+
                         <h4 class="text-sm font-black text-white mt-1">{{ $c->nama }}</h4>
 
                         <a href="https://wa.me/{{ $c->nomor_wa }}" target="_blank"
@@ -102,7 +116,7 @@
                                 <td class="px-6 py-4 text-center">
                                     <a href="https://wa.me/{{ $r->kontak_ranting }}" target="_blank"
                                         class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white text-[9px] font-bold rounded-md hover:bg-red-600 transition-colors">
-                                        <i class="fa-brands fa-whatsapp"></i> CHAT
+                                        <i class="fa-brands fa-whatsapp text-green-400"></i> CHAT
                                     </a>
                                 </td>
                             </tr>
@@ -110,6 +124,41 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Kontak -->
+    <div id="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md text-white shadow-xl">
+            <h3 class="text-base font-bold mb-4">Edit Kontak Pimpinan Cabang</h3>
+
+            <form id="formEditKontak" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="mb-4">
+                    <label class="block text-xs text-gray-400 mb-1">Nama Pimpinan</label>
+                    <input type="text" name="nama" id="editNama" required
+                        class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs text-gray-400 mb-1">Nomor WhatsApp</label>
+                    <input type="text" name="nomor_wa" id="editWa" required
+                        class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500">
+                </div>
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeEditModal()"
+                        class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-lg transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-xs font-bold rounded-lg transition">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -131,6 +180,25 @@
                 }
             });
         });
+
+        function openEditModal(id, nama, nomorWa) {
+            const modal = document.getElementById('editModal');
+            const form = document.getElementById('formEditKontak');
+
+            // Set action route dynamic
+            form.action = `/kontak/update/${id}`;
+
+            // Isi value ke input
+            document.getElementById('editNama').value = nama;
+            document.getElementById('editWa').value = nomorWa;
+
+            // Tampilkan modal
+            modal.classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
     </script>
 
 </x-dashboard-layout>
