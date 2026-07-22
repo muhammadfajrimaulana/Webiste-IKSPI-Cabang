@@ -13,12 +13,14 @@ class ContactController extends Controller
     {
         $user = Auth::user();
 
-        $kontakCabang = Contact::where('level', 'cabang')->get();
+        $kontakCabang = Contact::all();
+        $kontakRanting = \App\Models\Ranting::all();
 
         if ($user->role === 'admin_cabang') {
             $kontakRanting = \App\Models\Ranting::all();
         } else {
-            $kontakRanting = \App\Models\Ranting::where('id', $user->ranting_id)->get();
+            // $kontakRanting = \App\Models\Ranting::where('id', $user->ranting_id)->get();
+            $kontakRanting = \App\Models\Ranting::all();
         }
 
         return view('navigasi.kontak', compact('kontakCabang', 'kontakRanting'));
