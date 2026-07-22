@@ -8,6 +8,7 @@ use App\Models\Ranting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KeuanganController extends Controller
 {
@@ -130,7 +131,6 @@ class KeuanganController extends Controller
     {
         $query = Transaksi::query();
 
-        // Terapkan filter yang sama persis dengan index agar hasil cetak akurat
         if ($request->has('ranting_id') && $request->ranting_id != '') {
             $query->where('ranting_id', $request->ranting_id);
         }
@@ -142,6 +142,10 @@ class KeuanganController extends Controller
         $transaksi = $query->orderBy('tanggal', 'desc')->get();
         $ranting = $request->ranting_id ? Ranting::find($request->ranting_id) : null;
 
-        return view('laporan.cetak', compact('transaksi', 'ranting'));
+        $pdf = Pdf::loadView('internal.cetak-keuangan', compact('transaksi', 'ranting'));
+
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->stream('Laporan-Keuangan-' . ($ranting?->nama ?? 'Cabang') . '.pdf');
     }
 }
