@@ -21,6 +21,8 @@ use App\Http\Controllers\Internal\KeanggotaanController;
 use App\Http\Controllers\Internal\OperasionalController;
 use App\Http\Controllers\Internal\KeuanganController;
 
+use App\Http\Controllers\Web\WebPostController;
+
 /*
 |--------------------------------------------------------------------------
 | 1. ALUR PROTEKSI & AUTENTIKASI (Pintu Masuk Awal)
@@ -60,9 +62,7 @@ Route::get('/web/ranting/lokasi-ranting', function () {
     return view('web.ranting.lokasi');
 })->name('ranting.lokasi');
 
-Route::get('/web/berita', function () {
-    return view('web.berita');
-})->name('web.berita');
+Route::get('/web/berita', [WebPostController::class, 'index'])->name('web.berita');
 Route::get('/web/galeri', function () {
     return view('web.galeri');
 })->name('web.galeri');
