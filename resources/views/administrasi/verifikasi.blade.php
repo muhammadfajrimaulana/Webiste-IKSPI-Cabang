@@ -74,36 +74,51 @@
                             </td>
                             <td class="p-4 text-right">
                                 @if (auth()->user()->role === 'admin_cabang')
-                                    {{-- Tampilan Form untuk Admin Cabang --}}
-                                    <form action="{{ route('verifikasi.proses', $data->id) }}" method="POST"
-                                        class="inline-flex items-center gap-2">
-                                        @csrf
-                                        <button type="submit" name="action" value="setujui"
-                                            class="px-3 py-1.5 bg-green-100 text-green-600 font-bold text-[11px] rounded border border-green-300 hover:bg-green-200 transition cursor-pointer">
-                                            Terima
-                                        </button>
+                                    {{-- Cek apakah statusnya masih pending atau belum diproses --}}
+                                    @if ($data->status_verifikasi === 'pending')
+                                        <form action="{{ route('verifikasi.proses', $data->id) }}" method="POST"
+                                            class="inline-flex items-center gap-2">
+                                            @csrf
+                                            <button type="submit" name="action" value="setujui"
+                                                class="px-3 py-1.5 bg-green-100 text-green-600 font-bold text-[11px] rounded border border-green-300 hover:bg-green-200 transition cursor-pointer">
+                                                Terima
+                                            </button>
 
-                                        <button type="submit" name="action" value="tolak"
-                                            class="px-3 py-1.5 bg-red-100 text-red-600 font-bold text-[11px] rounded border border-red-300 hover:bg-red-200 transition cursor-pointer">
-                                            Tolak
-                                        </button>
-                                    </form>
+                                            <button type="submit" name="action" value="tolak"
+                                                class="px-3 py-1.5 bg-red-100 text-red-600 font-bold text-[11px] rounded border border-red-300 hover:bg-red-200 transition cursor-pointer">
+                                                Tolak
+                                            </button>
+                                        </form>
+                                    @else
+                                        {{-- Jika sudah disetujui / ditolak, tampilkan badge status saja --}}
+                                        @if ($data->status_verifikasi === 'verified')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">
+                                                Terverifikasi
+                                            </span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">
+                                                Ditolak
+                                            </span>
+                                        @endif
+                                    @endif
                                 @else
-                                    {{-- Tampilan Status untuk Admin Ranting --}}
+                                    {{-- Tampilan untuk Admin Ranting --}}
                                     @if ($data->status_verifikasi === 'verified')
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">
-                                            <i class="fa-solid fa-check-circle mr-1"></i> Terverifikasi
+                                            Terverifikasi
                                         </span>
                                     @elseif($data->status_verifikasi === 'rejected')
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">
-                                            <i class="fa-solid fa-times-circle mr-1"></i> Ditolak
+                                            Ditolak
                                         </span>
                                     @else
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 uppercase">
-                                            <i class="fa-solid fa-clock mr-1"></i> Menunggu Verifikasi
+                                            Menunggu Verifikasi
                                         </span>
                                     @endif
                                 @endif

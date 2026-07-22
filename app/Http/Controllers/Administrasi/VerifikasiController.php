@@ -23,6 +23,8 @@ class VerifikasiController extends Controller
 
         if ($user->role === 'admin_ranting') {
             $query->where('ranting_id', $user->ranting_id);
+        } else {
+            $query->where('status_verifikasi', 'pending');
         }
 
         $antrean = $query->latest()->get();
