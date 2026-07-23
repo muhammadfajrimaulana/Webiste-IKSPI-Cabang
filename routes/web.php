@@ -21,6 +21,7 @@ use App\Http\Controllers\Internal\KeanggotaanController;
 use App\Http\Controllers\Internal\OperasionalController;
 use App\Http\Controllers\Internal\KeuanganController;
 
+use App\Http\Controllers\WebController;
 use App\Http\Controllers\Web\WebPostController;
 use App\Http\Controllers\Web\WebGaleriController;
 
@@ -36,35 +37,19 @@ Route::get('/', function () {
 })->name('beranda');
 
 // Akses menu navbar website
-Route::get('/web/profil/sejarah', function () {
-    return view('web.profil.sejarah');
-})->name('profil.sejarah');
-Route::get('/web/profil/visi', function () {
-    return view('web.profil.visi');
-})->name('profil.visi');
-Route::get('/web/profil/falsafah', function () {
-    return view('web.profil.falsafah');
-})->name('profil.falsafah');
-Route::get('/web/profil/legalitas', function () {
-    return view('web.profil.legalitas');
-})->name('profil.legalitas');
-Route::get('/web/profil/panca-prasetya', function () {
-    return view('web.profil.panca');
-})->name('profil.panca-prasetya');
+Route::get('/web/profil/sejarah', [WebController::class, 'sejarah'])->name('profil.sejarah');
+Route::get('/web/profil/visi', [WebController::class, 'visi'])->name('profil.visi');
+Route::get('/web/profil/falsafah', [WebController::class, 'falsafah'])->name('profil.falsafah');
+Route::get('/web/profil/legalitas', [WebController::class, 'legalitas'])->name('profil.legalitas');
+Route::get('/web/profil/panca-prasetya', [WebController::class, 'panca'])->name('profil.panca-prasetya');
 
-Route::get('/web/struktur', function () {
-    return view('web.struktur');
-})->name('web.struktur');
+Route::get('/web/struktur', [WebController::class, 'struktur'])->name('web.struktur');
 
-Route::get('/web/ranting/anggota-IKSPI', function () {
-    return view('web.ranting.anggota');
-})->name('ranting.anggota');
-Route::get('/web/ranting/lokasi-ranting', function () {
-    return view('web.ranting.lokasi');
-})->name('ranting.lokasi');
+Route::get('/web/ranting/anggota-IKSPI', [WebController::class, 'anggota'])->name('ranting.anggota');
+Route::get('/web/ranting/lokasi-ranting', [WebController::class, 'lokasi'])->name('ranting.lokasi');
 
-Route::get('/web/berita', [WebPostController::class, 'index'])->name('web.berita');
-Route::get('/web/galeri', [WebGaleriController::class, 'index'])->name('web.galeri');
+Route::get('/web/berita', [WebController::class, 'berita'])->name('web.berita');
+Route::get('/web/galeri', [WebController::class, 'galeri'])->name('web.galeri');
 
 // Akses menu footer website
 Route::get('/anggota/bantuan', function () {
