@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->text('isi');
+            $table->text('isi')->nullable();
             $table->string('file_path')->nullable();
             $table->string('kategori');
-            $table->enum('tipe', ['gambar', 'video'])->default('gambar');
+            $table->enum('tipe', ['berita', 'gambar', 'video'])->default('berita');
             $table->timestamps();
         });
     }

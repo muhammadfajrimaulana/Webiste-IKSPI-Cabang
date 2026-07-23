@@ -57,55 +57,98 @@
                     @if (auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang')
                         <button onclick="openModal()"
                             class="h-[44px] inline-flex items-center gap-2 bg-red-600 text-white text-[10px] font-bold px-5 rounded-xl hover:bg-red-700 transition shadow-sm shadow-red-200">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> UNGGAH MEDIA
+                            <i class="fa-solid fa-cloud-arrow-up"></i> UPLOAD MEDIA
                         </button>
                     @endif
                 </div>
             </div>
         </div>
 
-        {{-- Grid Galeri --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            @foreach ($posts as $post)
-                <div
-                    class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs flex flex-col group relative">
+        <div x-data="{ activeTab: 'semua' }" class="space-y-6">
 
-                    {{-- Tombol Aksi (Edit & Hapus) --}}
-                    <div class="absolute top-2 right-2 z-10 flex gap-1 opacity-0 group-hover:opacity-100 transition">
-                        <button type="button"
-                            onclick="openModal('{{ route('menu.media.update', $post->id) }}', 'PUT', '{{ addslashes($post->judul) }}', '{{ addslashes($post->kategori) }}', '{{ addslashes($post->isi) }}')"
-                            class="bg-blue-600 text-white p-1.5 rounded-lg text-[10px]">
-                            <i class="fa-solid fa-edit"></i>
-                        </button>
+            {{-- Filter Kategori / Tab Interaktif --}}
+            <div
+                class="flex flex-wrap items-center justify-center sm:justify-start gap-2 border-b border-gray-100 pb-4">
+                <button @click="activeTab = 'semua'"
+                    :class="activeTab === 'semua' ? 'bg-red-600 text-white shadow-md shadow-red-200' :
+                        'bg-white border border-gray-200 text-slate-600 hover:bg-slate-50'"
+                    class="text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2">
+                    <i class="fa-solid fa-border-all"></i> Semua Media
+                </button>
 
-                        <form action="{{ route('menu.media.destroy', $post->id) }}" method="POST">
-                            @csrf @method('DELETE')
-                            <button type="submit" onclick="return confirm('Yakin hapus media ini?')"
-                                class="bg-red-600 text-white p-1.5 rounded-lg text-[10px]">
-                                <i class="fa-solid fa-trash"></i>
+                <button @click="activeTab = 'berita'"
+                    :class="activeTab === 'berita' ? 'bg-red-600 text-white shadow-md shadow-red-200' :
+                        'bg-white border border-gray-200 text-slate-600 hover:bg-slate-50'"
+                    class="text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2">
+                    <i class="fa-solid fa-newspaper"></i> Berita / Artikel
+                </button>
+
+                <button @click="activeTab = 'gambar'"
+                    :class="activeTab === 'gambar' ? 'bg-red-600 text-white shadow-md shadow-red-200' :
+                        'bg-white border border-gray-200 text-slate-600 hover:bg-slate-50'"
+                    class="text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2">
+                    <i class="fa-regular fa-image"></i> Foto / Gambar
+                </button>
+
+                <button @click="activeTab = 'video'"
+                    :class="activeTab === 'video' ? 'bg-red-600 text-white shadow-md shadow-red-200' :
+                        'bg-white border border-gray-200 text-slate-600 hover:bg-slate-50'"
+                    class="text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2">
+                    <i class="fa-solid fa-video"></i> Video Kegiatan
+                </button>
+            </div>
+
+            {{-- Grid Galeri --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                @foreach ($posts as $post)
+                    <div x-show="activeTab === 'semua' || activeTab === '{{ $post->tipe }}'" x-transition
+                        class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs flex flex-col group relative">
+
+                        <div
+                            class="absolute top-2 right-2 z-10 flex gap-1 opacity-0 group-hover:opacity-100 transition duration-200">
+                            {{-- Tombol Edit --}}
+                            <button type="button"
+                                onclick="openModal('{{ route('menu.media.update', $post->id) }}', 'PUT', '{{ addslashes($post->judul) }}', '{{ $post->tipe }}', '{{ addslashes($post->kategori) }}', '{{ addslashes($post->isi) }}')"
+                                class="bg-yellow-600 hover:bg-yellow-700 text-white w-7 h-7 flex items-center justify-center cursor-pointer rounded-lg text-xs shadow-md transition"
+                                title="Edit Konten">
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                        </form>
-                    </div>
 
-                    {{-- Konten Media --}}
-                    <div class="w-full h-40 bg-slate-100 flex items-center justify-center border-b border-gray-100">
-                        @if ($post->thumbnail)
-                            <img src="{{ asset('storage/' . $post->thumbnail) }}" class="w-full h-full object-cover">
-                        @else
-                            <i class="fa-regular fa-image text-gray-400 text-xl"></i>
-                        @endif
-                    </div>
-                    <div class="p-4">
-                        <p class="text-xs font-bold text-slate-900 truncate">{{ $post->judul }}</p>
-                        <div class="flex items-center justify-between mt-2 text-[10px] text-gray-400">
-                            <span><i class="fa-regular fa-calendar mr-1"></i>
-                                {{ $post->created_at->format('M Y') }}</span>
-                            <span class="text-red-600 font-medium capitalize"><i class="fa-solid fa-tags mr-1"></i>
-                                {{ $post->kategori }}</span>
+                            {{-- Tombol Hapus --}}
+                            <form action="{{ route('menu.media.destroy', $post->id) }}" method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus media ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 flex items-center justify-center cursor-pointer rounded-lg text-xs shadow-md transition"
+                                    title="Hapus Konten">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        {{-- Konten Media --}}
+                        <div class="w-full h-40 bg-slate-100 flex items-center justify-center border-b border-gray-100">
+                            @if ($post->file_path)
+                                <img src="{{ asset('storage/' . $post->file_path) }}"
+                                    class="w-full h-full object-cover">
+                            @else
+                                <img src="{{ asset('assets/img/default.png') }}" class="w-full h-full object-cover"
+                                    alt="{{ $post->file_path }}">
+                            @endif
+                        </div>
+                        <div class="p-4">
+                            <p class="text-xs font-bold text-slate-900 truncate">{{ $post->judul }}</p>
+                            <div class="flex items-center justify-between mt-2 text-[10px] text-gray-400">
+                                <span><i class="fa-regular fa-calendar mr-1"></i>
+                                    {{ $post->created_at->format('M Y') }}</span>
+                                <span class="text-red-600 font-medium capitalize"><i class="fa-solid fa-tags mr-1"></i>
+                                    {{ $post->kategori }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
 
@@ -116,7 +159,11 @@
             @csrf
             <input type="hidden" name="_method" id="formMethod" value="POST">
 
-            <h3 id="modalTitle" class="text-sm font-bold mb-4">Unggah Konten Baru</h3>
+            <h3 id="modalTitle"
+                class="font-bold text-slate-950 text-sm uppercase tracking-wide flex items-center gap-1.5 border-b border-gray-100 pb-3 mb-5">
+                <i id="modalIcon" class="fa-solid fa-cloud-arrow-up text-red-600"></i>
+                <span id="modalText">Upload Media</span>
+            </h3>
 
             <label class="text-xs font-bold text-slate-700 block mb-1">Jenis Konten</label>
             <select name="tipe" id="tipe" class="w-full border p-2 mb-3 text-xs rounded" required>
@@ -125,18 +172,27 @@
                 <option value="video">Video Kegiatan</option>
             </select>
 
-            <label class="text-xs font-bold text-slate-700 block mb-1">File Media / Gambar</label>
+            <label class="text-xs font-bold text-slate-700 block mb-1">File Media</label>
             <input type="file" name="file_path" id="file_path" class="w-full border p-2 mb-3 text-xs rounded"
-                accept="image/*">
+                accept="image/*,video/mp4,video/mkv,video/webm">
 
+            <label class="text-xs font-bold text-slate-700 block mb-1">Judul Media</label>
             <input type="text" id="judul" name="judul" placeholder="Judul Kegiatan / Berita"
                 class="w-full border p-2 mb-2 text-xs rounded" required>
 
-            <input type="text" id="kategori" name="kategori" placeholder="Kategori"
-                class="w-full border p-2 mb-2 text-xs rounded" required>
+            <label class="text-xs font-bold text-slate-700 block mb-1">Kategori</label>
+            <select name="kategori" id="kategori" class="w-full border p-2 mb-2 text-xs rounded" required>
+                <option value="" disabled selected>Pilih Kategori</option>
+                <option value="Rapat">Rapat</option>
+                <option value="Kegiatan">Kegiatan</option>
+                <option value="Pengumuman">Pengumuman</option>
+                <option value="Prestasi">Prestasi</option>
+            </select>
 
+            <label class="text-xs font-bold text-slate-700 block mb-1">Isi Konten <span
+                    class="text-[9px] text-gray-400 font-normal normal-case">(Opsional)</span></label>
             <textarea id="isi" name="isi" placeholder="Deskripsi Singkat / Isi Konten"
-                class="w-full border p-2 mb-4 text-xs rounded" required></textarea>
+                class="w-full border p-2 mb-4 text-xs rounded"></textarea>
 
             <div class="flex justify-end gap-2">
                 <button type="button" onclick="closeModal()"
@@ -176,7 +232,16 @@
             document.getElementById('tipe').value = tipe;
             document.getElementById('kategori').value = kategori;
             document.getElementById('isi').value = isi;
-            document.getElementById('modalTitle').innerText = method === "PUT" ? "Edit Konten" : "Unggah Konten Baru";
+
+            // Ubah teks dan icon berdasarkan mode (Tambah / Edit)
+            const isEdit = method === "PUT";
+            document.getElementById('modalText').innerText = isEdit ? "Edit Konten" : "Upload Media";
+
+            // Ganti icon jika diperlukan (opsional, misal edit pakai icon pen)
+            const iconElement = document.getElementById('modalIcon');
+            iconElement.className = isEdit ? "fa-solid fa-pen-to-square text-red-600" :
+                "fa-solid fa-cloud-arrow-up text-red-600";
+
             document.getElementById('mediaModal').classList.remove('hidden');
         }
 

@@ -26,7 +26,7 @@
                 <!-- Kiri: Judul & Deskripsi -->
                 <div class="flex items-center gap-4">
                     <div class="h-12 w-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-id-card-clip"></i>
+                        <i class="fa-solid fa-headset"></i>
                     </div>
                     <div>
                         <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">

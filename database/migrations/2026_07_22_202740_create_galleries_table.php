@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('judul');
             $table->text('deskripsi')->nullable();
             $table->string('file_path');
-            $table->enum('tipe', ['gambar', 'video'])->default('gambar');
+            $table->enum('tipe', ['berita', 'gambar', 'video'])->default('berita');
             $table->string('kategori')->nullable();
             $table->timestamps();
         });

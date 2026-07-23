@@ -10,11 +10,7 @@ class PengurusController extends Controller
 {
     public function index()
     {
-        // Ambil Ketua Cabang dan sertakan anak buahnya (Ranting/Pengurus bawah)
-        $struktur = Pengurus::whereNull('parent_id')
-            ->with('anakBuah')
-            ->orderBy('urutan', 'asc')
-            ->get();
+        $struktur = Pengurus::orderBy('urutan', 'asc')->get();
 
         $totalPengurus = Pengurus::count();
 

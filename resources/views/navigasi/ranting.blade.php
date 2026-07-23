@@ -239,7 +239,8 @@
     <!-- MODAL EDIT & HAPUS -->
     <div id="modalEditRanting" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
         <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl p-6">
-            <h3 class="text-sm font-bold text-slate-950 mb-4">Edit Data Ranting</h3>
+            <h3 class="font-bold text-slate-950 text-sm uppercase tracking-wide border-b border-gray-100 pb-3 mb-5"><i
+                    class="fa-solid fa-pen-to-square text-amber-500 mr-1"></i> Edit Data Ranting</h3>
 
             <form id="formEditRanting" method="POST">
                 @csrf
