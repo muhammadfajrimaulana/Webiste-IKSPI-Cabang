@@ -212,12 +212,12 @@
                             <td class="p-4 flex items-center justify-center gap-1.5">
                                 <button
                                     onclick="bukaModalEditKas({{ $item->id }}, '{{ $item->tanggal }}', '{{ $item->tipe }}', '{{ $item->kategori }}', {{ $item->nominal }}, '{{ $item->keterangan }}')"
-                                    class="text-slate-600 hover:text-slate-900 text-xs p-1.5 rounded-md hover:bg-slate-100 transition cursor-pointer">
+                                    class="text-yellow-600 hover:text-yellow-700 text-xs p-1.5 rounded-md hover:bg-yellow-100 transition cursor-pointer">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
 
                                 <form action="{{ route('internal.keuangan.destroy', $item->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin mau hapus catatan kas ini, nyet?')">
+                                    onsubmit="return confirm('Yakin mau hapus catatan kas ini')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -342,17 +342,18 @@
                             Anggaran</label>
                         <select id="edit_kategori" name="kategori" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
-                            <option value="Pendaftaran">Uang Pendaftaran Anggota</option>
-                            <option value="Iuran">Iuran Bulanan / Kas Rutin</option>
-                            <option value="Logistik">Logistik Atribut / Sabuk / Sakral</option>
-                            <option value="Operasional">Sewa GOR / Operasional Acara</option>
+                            <option value="Pendaftaran">Pendaftaran</option>
+                            <option value="Iuran">Iuran</option>
+                            <option value="Logistik">Logistik</option>
+                            <option value="Operasional">Operasional</option>
                         </select>
                     </div>
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nominal
                             (Rupiah)</label>
-                        <input type="number" id="edit_nominal" name="nominal" required
-                            class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 font-mono focus:outline-none">
+                        <input type="text" id="edit_nominal" name="nominal" required
+                            placeholder="Contoh: 500.000"
+                            class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 font-mono focus:outline-none focus:border-amber-500">
                     </div>
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Keterangan /
@@ -403,17 +404,17 @@
 
         // Modal Edit (Injeksi Data Dinamis)
         function bukaModalEditKas(id, tanggal, tipe, kategori, nominal, keterangan) {
-            // 1. Set action form mengarah ke ID transaksi yang dituju
             document.getElementById('formEditKas').action = "/internal/keuangan-logistik/" + id;
 
-            // 2. Pasang nilai lama ke form input modal edit
             document.getElementById('edit_tanggal').value = tanggal;
             document.getElementById('edit_tipe').value = tipe;
             document.getElementById('edit_kategori').value = kategori;
-            document.getElementById('edit_nominal').value = nominal;
+
+            // Format nominal mentah dari database agar ada titiknya saat masuk modal edit
+            document.getElementById('edit_nominal').value = nominal ? new Intl.NumberFormat('id-ID').format(nominal) : '';
+
             document.getElementById('edit_keterangan').value = keterangan;
 
-            // 3. Tampilkan modal edit
             document.getElementById('modalEditKas').classList.remove('hidden');
         }
 
@@ -427,51 +428,75 @@
             menu.classList.toggle('hidden');
         }
 
-        // Menutup menu jika klik di luar
-        window.onclick = function(event) {
-            if (!event.target.matches('.fa-filter')) {
-                const menu = document.getElementById('filterMenu');
-                if (!menu.classList.contains('hidden')) {
-                    menu.classList.add('hidden');
-                }
-            }
-        }
-
         // Fungsi untuk toggle menu filter Ranting
         function toggleRantingFilter() {
             const rantingMenu = document.getElementById('filterRantingMenu');
-            const kategoriMenu = document.getElementById('filterKategoriMenu'); // Pastikan ini ID menu kategori kamu
+            const kategoriMenu = document.getElementById('filterKategoriMenu');
 
             rantingMenu.classList.toggle('hidden');
-            kategoriMenu.classList.add('hidden'); // Tutup menu kategori jika sedang buka ranting
+            if (kategoriMenu) kategoriMenu.classList.add('hidden');
         }
 
         // Menutup menu jika klik di area mana saja di luar menu
         window.onclick = function(event) {
             if (!event.target.matches('.fa-filter')) {
-                document.getElementById('filterRantingMenu').classList.add('hidden');
-                document.getElementById('filterKategoriMenu').classList.add('hidden');
+                const rantingMenu = document.getElementById('filterRantingMenu');
+                const kategoriMenu = document.getElementById('filterKategoriMenu');
+                if (rantingMenu) rantingMenu.classList.add('hidden');
+                if (kategoriMenu) kategoriMenu.classList.add('hidden');
+
+                const menu = document.getElementById('filterMenu');
+                if (menu && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
             }
         }
 
-        // Fungsi Nominal
+        // --- FITUR FORMAT NOMINAL (INPUT KAS BARU) ---
         const inputNominal = document.getElementById('inputNominal');
+        if (inputNominal) {
+            inputNominal.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                if (value !== "") {
+                    e.target.value = new Intl.NumberFormat('id-ID').format(value);
+                } else {
+                    e.target.value = "";
+                }
+            });
+        }
 
-        inputNominal.addEventListener('input', function(e) {
-            // Hapus karakter selain angka
-            let value = e.target.value.replace(/[^0-9]/g, '');
+        // --- FITUR FORMAT NOMINAL (MODAL EDIT) ---
+        const editNominal = document.getElementById('edit_nominal');
+        if (editNominal) {
+            editNominal.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                if (value !== "") {
+                    e.target.value = new Intl.NumberFormat('id-ID').format(value);
+                } else {
+                    e.target.value = "";
+                }
+            });
+        }
 
-            // Format dengan titik
-            if (value !== "") {
-                e.target.value = new Intl.NumberFormat('id-ID').format(value);
-            } else {
-                e.target.value = "";
-            }
-        });
+        // Bersihkan titik pada nominal tambah kas sebelum form disubmit
+        const formTambah = document.querySelector('form[action*="keuangan-logistik.store"]') || document.querySelector(
+            '#modalKas form');
+        if (formTambah) {
+            formTambah.addEventListener('submit', function() {
+                if (inputNominal) {
+                    inputNominal.value = inputNominal.value.replace(/\./g, '');
+                }
+            });
+        }
 
-        document.querySelector('form').addEventListener('submit', function() {
-            let rawValue = inputNominal.value.replace(/\./g, '');
-            inputNominal.value = rawValue;
-        });
+        // Bersihkan titik pada nominal edit kas sebelum form disubmit ke backend
+        const formEditKas = document.getElementById('formEditKas');
+        if (formEditKas) {
+            formEditKas.addEventListener('submit', function() {
+                if (editNominal) {
+                    editNominal.value = editNominal.value.replace(/\./g, '');
+                }
+            });
+        }
     </script>
 </x-dashboard-layout>
