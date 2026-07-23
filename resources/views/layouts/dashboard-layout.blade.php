@@ -138,9 +138,15 @@
             <div class="p-4 ml-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
                 <div>
                     <a href="{{ route('profile') }}" class="flex items-center space-x-2">
+                        <!-- Foto Profil / Inisial -->
                         <div
-                            class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase">
-                            {{ collect(explode(' ', auth()->user()->nama_pengurus))->map(fn($word) => $word[0])->take(2)->implode('') }}
+                            class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase overflow-hidden shrink-0">
+                            @if (auth()->user()->avatar)
+                                <img src="{{ Str::startsWith(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar) }}"
+                                    alt="{{ auth()->user()->nama_pengurus }}" class="w-full h-full object-cover">
+                            @else
+                                {{ collect(explode(' ', auth()->user()->nama_pengurus))->map(fn($word) => $word[0])->take(2)->implode('') }}
+                            @endif
                         </div>
 
                         <div class="text-xs">

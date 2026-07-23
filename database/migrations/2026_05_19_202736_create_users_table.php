@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $col) {
             $col->id();
+            $col->string('avatar');
             $col->string('nama_pengurus');
             $col->string('username')->unique();
             $col->string('password');

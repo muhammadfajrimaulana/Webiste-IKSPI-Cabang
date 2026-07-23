@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    protected $fillable = ['nama_lengkap', 'nama_pengurus', 'username', 'password', 'role', 'ranting_id',];
+    protected $fillable = ['avatar', 'nama_pengurus', 'username', 'password', 'role', 'ranting_id',];
 
     public function anggota()
     {

@@ -170,6 +170,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
 
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
         Route::get('/profile/edit', [DashboardController::class, 'editProfile'])->name('profile.edit');
+        Route::post('/profile/check-username', [DashboardController::class, 'checkUsername'])->name('profile.check-username');
         Route::put('/profile/update', [DashboardController::class, 'update'])->name('profile.update');
         Route::put('/profile/password', [DashboardController::class, 'updatePassword'])->name('profile.password.update');
     }

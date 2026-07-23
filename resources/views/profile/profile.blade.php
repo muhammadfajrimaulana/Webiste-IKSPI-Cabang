@@ -27,8 +27,13 @@
 
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 relative z-10">
                 <div
-                    class="w-16 h-16 rounded-2xl bg-red-600 text-white flex items-center justify-center text-2xl font-black shadow-md">
-                    {{ strtoupper(substr($user->nama_pengurus, 0, 2)) }}
+                    class="w-16 h-16 rounded-2xl overflow-hidden shadow-md bg-red-600 text-white flex items-center justify-center text-2xl font-black shrink-0">
+                    @if ($user->avatar)
+                        <img src="{{ Str::startsWith($user->avatar, 'http') ? $user->avatar : asset('storage/' . $user->avatar) }}"
+                            alt="{{ $user->nama_pengurus }}" class="w-full h-full object-cover">
+                    @else
+                        {{ strtoupper(substr($user->nama_pengurus, 0, 2)) }}
+                    @endif
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
@@ -73,18 +78,50 @@
                         </div>
                         <div>
                             <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Informasi Profil</h3>
-                            <p class="text-[11px] text-gray-500 font-medium">Perbarui nama lengkap pengurus atau
-                                username Anda.</p>
+                            <p class="text-[11px] text-gray-500 font-medium">Perbarui informasi profil dan foto Anda.
+                            </p>
                         </div>
                     </div>
 
-                    <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
+                    <!-- Tambahkan enctype="multipart/form-data" agar form bisa mengupload file -->
+                    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
+                        class="space-y-4" id="formUpdateProfile">
                         @csrf
                         @method('PUT')
 
+                        <!-- Input Upload Foto Profil -->
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Nama Pengurus /
-                                Lengkap</label>
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Foto Profil</label>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 border border-gray-200 shrink-0">
+                                    @if ($user->avatar)
+                                        <img src="{{ Str::startsWith($user->avatar, 'http') ? $user->avatar : asset('storage/' . $user->avatar) }}"
+                                            alt="Preview" class="w-full h-full object-cover" id="avatarPreview">
+                                    @else
+                                        <div class="w-full h-full bg-red-600 text-white flex items-center justify-center text-sm font-black"
+                                            id="avatarFallback">
+                                            {{ strtoupper(substr($user->nama_pengurus, 0, 2)) }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-1">
+                                    <input type="file" name="avatar" id="avatarInput"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer">
+                                    <span class="text-[9px] text-gray-400 mt-1 block">Format: JPG, JPEG, PNG (Maks.
+                                        2MB)</span>
+                                </div>
+                            </div>
+                            @error('avatar')
+                                <span class="text-[10px] text-red-500 mt-1 block font-medium">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- Nama Pengurus -->
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Nama
+                                Pengurus</label>
                             <input type="text" name="nama_pengurus"
                                 value="{{ old('nama_pengurus', $user->nama_pengurus) }}" required
                                 class="w-full bg-gray-50/50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-red-500 focus:bg-white transition">
@@ -93,19 +130,33 @@
                             @enderror
                         </div>
 
+                        <!-- Username -->
                         <div>
                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Username</label>
-                            <input type="text" name="username" value="{{ old('username', $user->username) }}"
-                                required
+                            <input type="text" name="username" id="username"
+                                value="{{ old('username', $user->username) }}" required
+                                oninput="checkUsernameAvailability()"
                                 class="w-full bg-gray-50/50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-red-500 focus:bg-white transition">
+                            <span id="username_status" class="text-[10px] mt-1 hidden font-medium"></span>
                             @error('username')
                                 <span class="text-[10px] text-red-500 mt-1 block font-medium">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        <!-- Unit Ranting (Readonly) -->
+                        @if ($user->ranting)
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Unit
+                                    Ranting</label>
+                                <input type="text"
+                                    value="{{ old('nama_ranting', $user->ranting->nama_ranting ?? '-') }}" readonly
+                                    class="w-full bg-gray-100 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-500 cursor-not-allowed focus:outline-none">
+                            </div>
+                        @endif
                 </div>
 
                 <div class="flex justify-end pt-6">
-                    <button type="submit"
+                    <button type="submit" id="submitProfileBtn"
                         class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer flex items-center gap-2">
                         <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
                     </button>
@@ -139,7 +190,8 @@
                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Password Saat
                                 Ini</label>
                             <div class="relative">
-                                <input type="password" name="current_password" id="current_password" required
+                                <input type="password" name="current_password" id="current_password"
+                                    placeholder="••••••••" required
                                     class="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-3.5 pr-10 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-red-500 focus:bg-white transition">
                                 <button type="button" onclick="togglePassword('current_password', 'icon_current')"
                                     class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-slate-600 focus:outline-none cursor-pointer">
@@ -156,20 +208,13 @@
                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Password
                                 Baru</label>
                             <div class="relative">
-                                <input type="password" name="password" id="password" required
-                                    oninput="validatePassword()"
+                                <input type="password" name="password" id="password" placeholder="••••••••"
+                                    required oninput="validatePassword()"
                                     class="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-3.5 pr-10 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-red-500 focus:bg-white transition">
                                 <button type="button" onclick="togglePassword('password', 'icon_new')"
                                     class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-slate-600 focus:outline-none cursor-pointer">
                                     <i id="icon_new" class="fa-solid fa-eye-slash text-xs"></i>
                                 </button>
-                            </div>
-                            <!-- Indikator Syarat Password -->
-                            <div id="password_requirements" class="mt-1.5 space-y-1 text-[10px]">
-                                <p id="req_length" class="text-gray-400 flex items-center gap-1 font-medium"><i
-                                        class="fa-solid fa-circle text-[6px]"></i> Minimal 6 karakter</p>
-                                <p id="req_mix" class="text-gray-400 flex items-center gap-1 font-medium"><i
-                                        class="fa-solid fa-circle text-[6px]"></i> Harus mengandung huruf dan angka</p>
                             </div>
                             @error('password')
                                 <span class="text-[10px] text-red-500 mt-1 block font-medium">{{ $message }}</span>
@@ -181,14 +226,21 @@
                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Konfirmasi Password
                                 Baru</label>
                             <div class="relative">
-                                <input type="password" name="password_confirmation" id="password_confirmation" required
-                                    oninput="validatePassword()"
+                                <input type="password" name="password_confirmation" id="password_confirmation"
+                                    placeholder="••••••••" required oninput="validatePassword()"
                                     class="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-3.5 pr-10 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-red-500 focus:bg-white transition">
                                 <button type="button"
                                     onclick="togglePassword('password_confirmation', 'icon_confirm')"
                                     class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-slate-600 focus:outline-none cursor-pointer">
                                     <i id="icon_confirm" class="fa-solid fa-eye-slash text-xs"></i>
                                 </button>
+                            </div>
+                            <!-- Indikator Syarat Password -->
+                            <div id="password_requirements" class="mt-1.5 space-y-1 text-[10px]">
+                                <p id="req_length" class="text-gray-400 flex items-center gap-1 font-medium"><i
+                                        class="fa-solid fa-circle text-[6px]"></i> Minimal 6 karakter</p>
+                                <p id="req_mix" class="text-gray-400 flex items-center gap-1 font-medium"><i
+                                        class="fa-solid fa-circle text-[6px]"></i> Harus mengandung huruf dan angka</p>
                             </div>
                             <span id="match_status" class="text-[10px] mt-1 hidden font-medium"></span>
                         </div>
@@ -220,6 +272,95 @@
                 }
             });
         });
+
+        const currentUsername = "{{ $user->username }}";
+        let typingTimer;
+        const doneTypingInterval = 500;
+
+        function checkUsernameAvailability() {
+            clearTimeout(typingTimer);
+            const usernameInput = document.getElementById('username');
+            const usernameStatus = document.getElementById('username_status');
+            const submitBtn = document.getElementById('submitProfileBtn');
+            const val = usernameInput.value.trim();
+
+            usernameStatus.classList.remove('hidden');
+
+            if (val === '') {
+                usernameStatus.classList.add('hidden');
+                usernameInput.classList.remove('border-red-300', 'border-green-300');
+                return;
+            }
+
+            // Cek format dasar
+            if (val.length < 4) {
+                usernameStatus.innerHTML =
+                    '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Username minimal 4 karakter.';
+                usernameStatus.className = 'text-[10px] mt-1 block font-medium text-amber-500';
+                usernameInput.classList.add('border-red-300');
+                return;
+            }
+
+            const isValidFormat = /^[a-zA-Z0-9_.]+$/.test(val);
+            if (!isValidFormat) {
+                usernameStatus.innerHTML =
+                    '<i class="fa-solid fa-circle-xmark text-red-500"></i> Tidak boleh pakai spasi atau simbol khusus.';
+                usernameStatus.className = 'text-[10px] mt-1 block font-medium text-red-500';
+                usernameInput.classList.add('border-red-300');
+                return;
+            }
+
+            // Jika sama persis dengan username miliknya sendiri sekarang
+            if (val === currentUsername) {
+                usernameStatus.innerHTML =
+                    '<i class="fa-solid fa-circle-check text-green-500"></i> Username Anda saat ini.';
+                usernameStatus.className = 'text-[10px] mt-1 block font-medium text-green-600';
+                usernameInput.classList.remove('border-red-300');
+                usernameInput.classList.add('border-green-300');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Status sedang memeriksa database
+            usernameStatus.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin text-gray-400"></i> Memeriksa ketersediaan...';
+            usernameStatus.className = 'text-[10px] mt-1 block font-medium text-gray-400';
+
+            // Eksekusi AJAX Fetch setelah user selesai mengetik sebentar
+            typingTimer = setTimeout(() => {
+                fetch("{{ route('profile.check-username') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            username: val
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.available) {
+                            usernameStatus.innerHTML =
+                                '<i class="fa-solid fa-circle-check text-green-500"></i> Username tersedia!';
+                            usernameStatus.className = 'text-[10px] mt-1 block font-medium text-green-600';
+                            usernameInput.classList.remove('border-red-300');
+                            usernameInput.classList.add('border-green-300');
+                            submitBtn.disabled = false;
+                        } else {
+                            usernameStatus.innerHTML =
+                                '<i class="fa-solid fa-circle-xmark text-red-500"></i> Username sudah digunakan.';
+                            usernameStatus.className = 'text-[10px] mt-1 block font-medium text-red-500';
+                            usernameInput.classList.remove('border-green-300');
+                            usernameInput.classList.add('border-red-300');
+                            submitBtn.disabled = true;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }, doneTypingInterval);
+        }
 
         // Fungsi untuk toggle lihat/sembunyikan password
         function togglePassword(fieldId, iconId) {
