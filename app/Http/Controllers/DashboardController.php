@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Anggota, Ranting, Pendaftaran, Transaksi};
+use App\Models\{Anggota, Ranting, Pendaftaran, Transaksi, User};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -62,5 +62,43 @@ class DashboardController extends Controller
             'title' => 'Edit Profil ' . ucfirst(str_replace('_', ' ', $user->role)),
             'user'  => $user,
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'nama_pengurus' => 'required|string|max:255',
+            'username'      => 'required|string|max:255|unique:users,username,' . Auth::id(),
+        ]);
+
+        /** @var User $user */
+        $user = User::findOrFail(Auth::id());
+
+        $user->update([
+            'nama_pengurus' => $request->nama_pengurus,
+            'username'      => $request->username,
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password'     => 'required|current_password',
+            'password'             => 'required|string|min:6|confirmed|regex:/[a-z]/i|regex:/[0-9],',
+        ], [
+            'current_password.current_password' => 'Password saat ini tidak sesuai.',
+            'password.confirmed'                => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        /** @var User $user */
+        $user = User::findOrFail(Auth::id());
+
+        $user->update([
+            'password' => bcrypt($request->password),
+        ]);
+
+        return back()->with('success', 'Password berhasil diubah.');
     }
 }

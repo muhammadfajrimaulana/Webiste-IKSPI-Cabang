@@ -169,6 +169,9 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
         Route::put('/kontak/update/{id}', [\App\Http\Controllers\Navigasi\ContactController::class, 'update'])->name('menu.kontak.update');
 
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+        Route::get('/profile/edit', [DashboardController::class, 'editProfile'])->name('profile.edit');
+        Route::put('/profile/update', [DashboardController::class, 'update'])->name('profile.update');
+        Route::put('/profile/password', [DashboardController::class, 'updatePassword'])->name('profile.password.update');
     }
 );
 
