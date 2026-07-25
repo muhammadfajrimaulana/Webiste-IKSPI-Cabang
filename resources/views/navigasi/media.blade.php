@@ -99,56 +99,81 @@
             </div>
 
             {{-- Grid Galeri --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                @foreach ($posts as $post)
-                    <div x-show="activeTab === 'semua' || activeTab === '{{ $post->tipe }}'" x-transition
-                        class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs flex flex-col group relative">
+            @if ($posts->isEmpty())
+                {{-- Tampilan Kosong Jika Belum Ada Data Sama Sekali --}}
+                <div
+                    class="bg-white border border-gray-100 rounded-2xl p-12 text-center shadow-xs w-full col-span-full">
+                    <div
+                        class="h-16 w-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide mb-1">Belum Ada Media / Galeri
+                    </h4>
+                    <p class="text-xs text-gray-400 max-w-sm mx-auto mb-6">
+                        Belum ada berita, foto, atau video kegiatan yang diunggah saat ini. Silakan unggah media baru
+                        melalui tombol di atas.
+                    </p>
+                    @if (auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang')
+                        <button onclick="openModal()"
+                            class="inline-flex items-center gap-2 bg-red-600 text-white text-[10px] font-bold px-5 py-2.5 rounded-xl hover:bg-red-700 transition shadow-sm shadow-red-200 cursor-pointer">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> UPLOAD MEDIA PERTAMA
+                        </button>
+                    @endif
+                </div>
+            @else
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                    @foreach ($posts as $post)
+                        <div x-show="activeTab === 'semua' || activeTab === '{{ $post->tipe }}'" x-transition
+                            class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs flex flex-col group relative">
 
-                        <div
-                            class="absolute top-2 right-2 z-10 flex gap-1 opacity-0 group-hover:opacity-100 transition duration-200">
-                            {{-- Tombol Edit --}}
-                            <button type="button"
-                                onclick="openModal('{{ route('menu.media.update', $post->id) }}', 'PUT', '{{ addslashes($post->judul) }}', '{{ $post->tipe }}', '{{ addslashes($post->kategori) }}', '{{ addslashes($post->isi) }}')"
-                                class="bg-yellow-600 hover:bg-yellow-700 text-white w-7 h-7 flex items-center justify-center cursor-pointer rounded-lg text-xs shadow-md transition"
-                                title="Edit Konten">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-
-                            {{-- Tombol Hapus --}}
-                            <form action="{{ route('menu.media.destroy', $post->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus media ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 flex items-center justify-center cursor-pointer rounded-lg text-xs shadow-md transition"
-                                    title="Hapus Konten">
-                                    <i class="fa-solid fa-trash"></i>
+                            <div
+                                class="absolute top-2 right-2 z-10 flex gap-1 opacity-0 group-hover:opacity-100 transition duration-200">
+                                {{-- Tombol Edit --}}
+                                <button type="button"
+                                    onclick="openModal('{{ route('menu.media.update', $post->id) }}', 'PUT', '{{ addslashes($post->judul) }}', '{{ $post->tipe }}', '{{ addslashes($post->kategori) }}', '{{ addslashes($post->isi) }}')"
+                                    class="bg-yellow-600 hover:bg-yellow-700 text-white w-7 h-7 flex items-center justify-center cursor-pointer rounded-lg text-xs shadow-md transition"
+                                    title="Edit Konten">
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                            </form>
-                        </div>
 
-                        {{-- Konten Media --}}
-                        <div class="w-full h-40 bg-slate-100 flex items-center justify-center border-b border-gray-100">
-                            @if ($post->file_path)
-                                <img src="{{ asset('storage/' . $post->file_path) }}"
-                                    class="w-full h-full object-cover">
-                            @else
-                                <img src="{{ asset('assets/img/default.png') }}" class="w-full h-full object-cover"
-                                    alt="{{ $post->file_path }}">
-                            @endif
-                        </div>
-                        <div class="p-4">
-                            <p class="text-xs font-bold text-slate-900 truncate">{{ $post->judul }}</p>
-                            <div class="flex items-center justify-between mt-2 text-[10px] text-gray-400">
-                                <span><i class="fa-regular fa-calendar mr-1"></i>
-                                    {{ $post->created_at->format('M Y') }}</span>
-                                <span class="text-red-600 font-medium capitalize"><i class="fa-solid fa-tags mr-1"></i>
-                                    {{ $post->kategori }}</span>
+                                {{-- Tombol Hapus --}}
+                                <form action="{{ route('menu.media.destroy', $post->id) }}" method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus media ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 flex items-center justify-center cursor-pointer rounded-lg text-xs shadow-md transition"
+                                        title="Hapus Konten">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            {{-- Konten Media --}}
+                            <div
+                                class="w-full h-40 bg-slate-100 flex items-center justify-center border-b border-gray-100">
+                                @if ($post->file_path)
+                                    <img src="{{ asset('storage/' . $post->file_path) }}"
+                                        class="w-full h-full object-cover">
+                                @else
+                                    <img src="{{ asset('assets/img/default.png') }}" class="w-full h-full object-cover"
+                                        alt="{{ $post->file_path }}">
+                                @endif
+                            </div>
+                            <div class="p-4">
+                                <p class="text-xs font-bold text-slate-900 truncate">{{ $post->judul }}</p>
+                                <div class="flex items-center justify-between mt-2 text-[10px] text-gray-400">
+                                    <span><i class="fa-regular fa-calendar mr-1"></i>
+                                        {{ $post->created_at->format('M Y') }}</span>
+                                    <span class="text-red-600 font-medium capitalize"><i
+                                            class="fa-solid fa-tags mr-1"></i>
+                                        {{ $post->kategori }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 

@@ -16,10 +16,12 @@
         const mobileMenu = document.getElementById('mobile-menu');
 
         // Toggle menu utama di Mobile
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            mobileMenu.classList.toggle('hidden');
-        });
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
 
         // Logika Dropdown Universal (Desktop & Mobile)
         function toggleDropdown(event, id) {
@@ -37,7 +39,7 @@
             });
 
             // Jika sebelumnya tertutup, sekarang buka
-            if (isHidden) {
+            if (isHidden && dropdown) {
                 dropdown.classList.remove('hidden');
                 if (currentIcon) currentIcon.classList.add('rotate-180');
             }
@@ -45,8 +47,10 @@
 
         // Menutup menu dan dropdown otomatis jika klik di luar area resmi komponen
         window.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
+            if (mobileMenu && menuBtn) {
+                if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
             }
             if (!e.target.closest('.dropdown-container')) {
                 document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.add('hidden'));
@@ -54,22 +58,24 @@
             }
         });
 
+        // Slider Galeri (Aman & Kondisional jika elemen tersedia di halaman)
         const container = document.getElementById('slider-container');
         const prevBtn = document.getElementById('slide-prev');
         const nextBtn = document.getElementById('slide-next');
 
-        // Mengatur jarak geser sekali klik mengikuti lebar satu kartu foto
-        const getScrollAmount = () => {
-            return container.firstElementChild ? container.firstElementChild['clientWidth'] + 16 : 300;
-        };
+        if (container && prevBtn && nextBtn) {
+            const getScrollAmount = () => {
+                return container.firstElementChild ? container.firstElementChild.clientWidth + 16 : 300;
+            };
 
-        nextBtn.addEventListener('click', () => {
-            container.scrollLeft += getScrollAmount();
-        });
+            nextBtn.addEventListener('click', () => {
+                container.scrollLeft += getScrollAmount();
+            });
 
-        prevBtn.addEventListener('click', () => {
-            container.scrollLeft -= getScrollAmount();
-        });
+            prevBtn.addEventListener('click', () => {
+                container.scrollLeft -= getScrollAmount();
+            });
+        }
     </script>
 </body>
 

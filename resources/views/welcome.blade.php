@@ -301,36 +301,86 @@
 
 
     <!-- RANTING SECTION (Seksi Wilayah) -->
-    <section id="ranting" class="max-w-6xl mx-auto px-6 py-24">
-        <div class="text-center mb-16">
-            <div class="flex items-center justify-center gap-2 mb-2">
-                <span class="w-6 h-1 bg-red-600 rounded-full"></span>
-                <span class="text-red-600 font-bold text-xs uppercase tracking-wider">Wilayah Latihan</span>
-                <span class="w-6 h-1 bg-red-600 rounded-full"></span>
+    <section id="ranting" class="max-w-7xl mx-auto px-6 py-24">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="h-2 w-2 rounded-full bg-red-600 animate-ping"></span>
+                    <span class="text-red-600 font-bold text-xs uppercase tracking-widest">Wilayah & Zona Latihan</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Daftar Ranting / Tempat Latihan
+                </h2>
             </div>
-            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Daftar Ranting / Tempat Latihan</h2>
+            <p class="text-xs md:text-sm text-slate-500 max-w-sm">
+                Temukan lokasi latihan resmi terdekat di wilayah Anda dan bergabunglah bersama ribuan anggota lainnya.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            @forelse($rantings as $ranting)
+        <!-- Grid Menggunakan 4 Kolom (Menampilkan 4 di atas, 4 di bawah) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @forelse($rantings as $index => $ranting)
                 <div
-                    class="bg-white p-6 rounded-2xl border-l-4 {{ $loop->even ? 'border-slate-900' : 'border-red-600' }} shadow-md shadow-slate-100 hover:-translate-y-1.5 transition duration-300">
-                    <div class="text-red-600 text-lg mb-3">
-                        <i class="fas fa-map-marker-alt"></i>
+                    class="bg-slate-900 text-white p-6 rounded-3xl relative overflow-hidden flex flex-col justify-between group shadow-xl hover:-translate-y-2 transition-all duration-500">
+
+                    <!-- Efek Background Glow Merah Abstrak di dalam Card -->
+                    <div
+                        class="absolute -right-10 -bottom-10 w-32 h-32 bg-red-600/20 rounded-full blur-2xl group-hover:bg-red-600/40 transition-all duration-500 pointer-events-none">
                     </div>
-                    <h4 class="font-black text-base text-slate-900 mb-1">
-                        {{ $ranting->nama_ranting }}
-                    </h4>
-                    <p class="text-xs text-slate-500 mb-2">
-                        Lokasi: {{ $ranting->lokasi_latihan ?? ($ranting->alamat ?? 'Belum ditentukan') }}
-                    </p>
-                    <span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        <i class="fas fa-users mr-1"></i> {{ $ranting->anggota_count ?? 0 }} Anggota
-                    </span>
+
+                    <div>
+                        <!-- Header Kartu: Nomor Urut Estetik & Icon Baru -->
+                        <div class="flex items-center justify-between mb-6">
+                            <span
+                                class="text-2xl font-black text-slate-700 group-hover:text-red-500 transition-colors duration-300">
+                                #{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                            </span>
+                            <div
+                                class="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 shadow-inner">
+                                <i class="fa-solid fa-building-shield text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- Nama Ranting -->
+                        <h3
+                            class="font-extrabold text-base text-white mb-2 tracking-tight group-hover:text-red-400 transition-colors line-clamp-1">
+                            {{ $ranting->nama_ranting }}
+                        </h3>
+
+                        <!-- Alamat / Lokasi -->
+                        <div class="flex items-start gap-2 text-xs text-slate-400 mb-6 leading-relaxed">
+                            <i class="fa-solid fa-map-pin text-red-500 mt-0.5 shrink-0"></i>
+                            <p class="line-clamp-2">
+                                {{ $ranting->lokasi_latihan ?? ($ranting->alamat ?? 'Lokasi latihan belum ditentukan') }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer Card: Total Anggota dengan Badge Glassmorphism -->
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <div
+                            class="inline-flex items-center gap-1.5 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-[11px] font-semibold text-slate-300">
+                            <i class="fa-solid fa-users text-red-500 text-[9px]"></i>
+                            <span>{{ $ranting->anggota_count ?? 0 }} Anggota</span>
+                        </div>
+
+                        <div
+                            class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </div>
+                    </div>
+
                 </div>
             @empty
-                <div class="col-span-3 text-center py-8 text-slate-400 text-xs font-semibold">
-                    Belum ada data ranting atau tempat latihan yang ditambahkan.
+                <div
+                    class="col-span-full bg-white border border-dashed border-slate-300 rounded-3xl p-16 text-center space-y-3 shadow-xs">
+                    <div
+                        class="h-16 w-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto text-2xl">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Belum Ada Ranting</h3>
+                    <p class="text-xs text-slate-400 max-w-sm mx-auto">
+                        Belum ada data ranting atau tempat latihan yang ditambahkan ke dalam sistem saat ini.
+                    </p>
                 </div>
             @endforelse
         </div>
@@ -369,9 +419,15 @@
             @forelse($galeris as $galeri)
                 <div
                     class="w-[80%] sm:w-1/3 md:w-1/4 flex-shrink-0 h-48 sm:h-52 bg-slate-200 overflow-hidden rounded-2xl group shadow-md border border-slate-100 snap-start relative">
-                    <img src="{{ asset('storage/' . $galeri->gambar) }}"
-                        alt="{{ $galeri->judul ?? 'Dokumentasi IKSPI' }}"
-                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+                    @if ($galeri->file_path)
+                        <img src="{{ asset('storage/' . $galeri->file_path) }}"
+                            alt="{{ $galeri->judul ?? 'Dokumentasi IKSPI' }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    @else
+                        <img src="{{ asset('assets/img/default.png') }}" alt="Default Image"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    @endif
 
                     @if (isset($galeri->judul))
                         <div

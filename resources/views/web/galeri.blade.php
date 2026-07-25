@@ -54,8 +54,15 @@
                     <div
                         class="w-full h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center border-b border-gray-100">
                         @if ($item->tipe === 'gambar')
-                            <img src="{{ asset('storage/media/' . $item->file_path) }}"
-                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            @if ($item->file_path)
+                                <img src="{{ asset('storage/' . $item->file_path) }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                    alt="{{ $item->judul }}">
+                            @else
+                                <img src="{{ asset('assets/img/default.png') }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                    alt="Default Image">
+                            @endif
                             <span
                                 class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs text-slate-900 text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm">
                                 <i class="fa-regular fa-image mr-1 text-red-600"></i> Gambar
@@ -64,7 +71,6 @@
                             {{-- Tampilan Preview Video --}}
                             <div
                                 class="w-full h-full bg-slate-900 flex items-center justify-center relative group-hover:scale-105 transition duration-500">
-                                {{-- Jika file_path berupa URL video atau file lokal, bisa disesuaikan. Ini contoh menggunakan latar/thumbnail dengan tombol play --}}
                                 <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition"></div>
                                 <div
                                     class="h-12 w-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg z-10 group-hover:scale-110 transition">
@@ -93,7 +99,7 @@
                                 {{ $item->judul }}
                             </h3>
                             <p class="text-xs text-gray-500 line-clamp-2">
-                                {{ $item->deskripsi }}
+                                {{ $item->isi }}
                             </p>
                         </div>
                     </div>

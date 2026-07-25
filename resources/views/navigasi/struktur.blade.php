@@ -65,93 +65,116 @@
         </div>
 
         {{-- Konten Struktur Organisasi --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            @foreach ($struktur as $item)
+        @if ($struktur->isEmpty())
+            {{-- Tampilan Kosong Jika Belum Ada Data Pengurus --}}
+            <div class="bg-white border border-gray-100 rounded-2xl p-12 text-center shadow-xs w-full col-span-full">
                 <div
-                    class="bg-white border border-gray-100 rounded-2xl p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group overflow-hidden bg-gradient-to-b from-white to-slate-50/30">
-
-                    {{-- Aksen Garis Top Gradient saat Hover --}}
+                    class="h-16 w-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                    <i class="fa-solid fa-sitemap"></i>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide mb-1">Belum Ada Struktur Organisasi
+                </h4>
+                <p class="text-xs text-gray-400 max-w-sm mx-auto mb-6">
+                    Belum ada data pengurus atau hierarki organisasi yang ditambahkan saat ini. Silakan tambahkan
+                    pengurus baru melalui tombol di atas.
+                </p>
+                @if (auth()->check() && auth()->user()->role === 'admin_cabang')
+                    <button onclick="openModal()"
+                        class="inline-flex items-center gap-2 bg-red-600 text-white text-[10px] font-bold px-5 py-2.5 rounded-xl hover:bg-red-700 transition shadow-sm shadow-red-200 cursor-pointer">
+                        <i class="fa-solid fa-plus"></i> TAMBAH PENGURUS PERTAMA
+                    </button>
+                @endif
+            </div>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                @foreach ($struktur as $item)
                     <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-rose-500 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    </div>
+                        class="bg-white border border-gray-100 rounded-2xl p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group overflow-hidden bg-gradient-to-b from-white to-slate-50/30">
 
-                    <div>
-                        {{-- Header Card: Badge Urutan & Tombol Aksi --}}
-                        <div class="flex items-center justify-between mb-4">
-                            <span
-                                class="inline-flex items-center gap-1.5 text-[10px] bg-red-50 text-red-600 font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-red-100/60 shadow-2xs">
-                                <i class="fa-solid fa-ranking-star text-[9px]"></i> Urutan {{ $item->urutan }}
+                        {{-- Aksen Garis Top Gradient saat Hover --}}
+                        <div
+                            class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-rose-500 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+
+                        <div>
+                            {{-- Header Card: Badge Urutan & Tombol Aksi --}}
+                            <div class="flex items-center justify-between mb-4">
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-[10px] bg-red-50 text-red-600 font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-red-100/60 shadow-2xs">
+                                    <i class="fa-solid fa-ranking-star text-[9px]"></i> Urutan {{ $item->urutan }}
+                                </span>
+
+                                {{-- Tombol Aksi (Muncul Interaktif saat Card di-hover) --}}
+                                @if (auth()->check() && (auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang'))
+                                    <div
+                                        class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+                                        {{-- Tombol Edit --}}
+                                        <button type="button"
+                                            onclick="openModal('{{ route('menu.struktur.update', $item->id) }}', 'PUT', '{{ addslashes($item->nama) }}', '{{ addslashes($item->jabatan) }}', '{{ $item->urutan }}', '{{ $item->parent_id }}')"
+                                            class="bg-amber-500 hover:bg-amber-600 text-white w-8 h-8 flex items-center justify-center rounded-xl text-xs shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                                            title="Edit Pengurus">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+
+                                        {{-- Tombol Hapus --}}
+                                        <form action="{{ route('menu.struktur.destroy', $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus pengurus ini?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-red-600 hover:bg-red-700 text-white w-8 h-8 flex items-center justify-center rounded-xl text-xs shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                                                title="Hapus Pengurus">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Informasi Utama: Avatar & Profil --}}
+                            <div class="flex items-start gap-4 mt-2">
+                                {{-- Avatar Modern dengan Efek Dual-Layer Shadow --}}
+                                <div class="relative shrink-0">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-red-500/20 tracking-wider">
+                                        {{ strtoupper(substr($item->nama, 0, 2)) }}
+                                    </div>
+                                    <span
+                                        class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"
+                                        title="Aktif"></span>
+                                </div>
+
+                                <div class="overflow-hidden">
+                                    <h4 class="font-black text-slate-900 text-xs tracking-tight truncate uppercase"
+                                        title="{{ $item->nama }}">
+                                        {{ $item->nama }}
+                                    </h4>
+                                    <div class="flex items-center gap-1.5 mt-1 text-red-600 font-bold text-[11px]">
+                                        <i class="fa-solid fa-id-badge text-[10px]"></i>
+                                        <span class="truncate"
+                                            title="{{ $item->jabatan }}">{{ $item->jabatan }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Footer Card: Informasi Metadata Hierarki --}}
+                        <div
+                            class="mt-6 pt-3.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-gray-400 font-medium">
+                            <span class="flex items-center gap-1 bg-slate-100/80 px-2.5 py-1 rounded-lg text-slate-600">
+                                <i class="fa-solid fa-sitemap text-[9px]"></i> ID: {{ $item->id }}
                             </span>
 
-                            {{-- Tombol Aksi (Muncul Interaktif saat Card di-hover) --}}
-                            @if (auth()->check() && (auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang'))
-                                <div
-                                    class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
-                                    {{-- Tombol Edit --}}
-                                    <button type="button"
-                                        onclick="openModal('{{ route('menu.struktur.update', $item->id) }}', 'PUT', '{{ addslashes($item->nama) }}', '{{ addslashes($item->jabatan) }}', '{{ $item->urutan }}', '{{ $item->parent_id }}')"
-                                        class="bg-amber-500 hover:bg-amber-600 text-white w-8 h-8 flex items-center justify-center rounded-xl text-xs shadow-sm transition-transform hover:scale-105 cursor-pointer"
-                                        title="Edit Pengurus">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-
-                                    {{-- Tombol Hapus --}}
-                                    <form action="{{ route('menu.struktur.destroy', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus pengurus ini?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white w-8 h-8 flex items-center justify-center rounded-xl text-xs shadow-sm transition-transform hover:scale-105 cursor-pointer"
-                                            title="Hapus Pengurus">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            @endif
-                        </div>
-
-                        {{-- Informasi Utama: Avatar & Profil --}}
-                        <div class="flex items-start gap-4 mt-2">
-                            {{-- Avatar Modern dengan Efek Dual-Layer Shadow --}}
-                            <div class="relative shrink-0">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-red-500/20 tracking-wider">
-                                    {{ strtoupper(substr($item->nama, 0, 2)) }}
-                                </div>
-                                <span
-                                    class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"
-                                    title="Aktif"></span>
-                            </div>
-
-                            <div class="overflow-hidden">
-                                <h4 class="font-black text-slate-900 text-xs tracking-tight truncate uppercase"
-                                    title="{{ $item->nama }}">
-                                    {{ $item->nama }}
-                                </h4>
-                                <div class="flex items-center gap-1.5 mt-1 text-red-600 font-bold text-[11px]">
-                                    <i class="fa-solid fa-id-badge text-[10px]"></i>
-                                    <span class="truncate" title="{{ $item->jabatan }}">{{ $item->jabatan }}</span>
-                                </div>
-                            </div>
+                            <span
+                                class="flex items-center gap-1 {{ $item->parent_id ? 'text-slate-500 bg-slate-50' : 'text-red-700 bg-red-50 font-bold' }} px-2.5 py-1 rounded-lg border border-slate-100/80">
+                                <i
+                                    class="fa-solid {{ $item->parent_id ? 'fa-user-tag' : 'fa-crown text-red-500' }} text-[9px]"></i>
+                                {{ $item->parent_id ? 'Anggota / Staf' : 'Pimpinan Utama' }}
+                            </span>
                         </div>
                     </div>
-
-                    {{-- Footer Card: Informasi Metadata Hierarki --}}
-                    <div
-                        class="mt-6 pt-3.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-gray-400 font-medium">
-                        <span class="flex items-center gap-1 bg-slate-100/80 px-2.5 py-1 rounded-lg text-slate-600">
-                            <i class="fa-solid fa-sitemap text-[9px]"></i> ID: {{ $item->id }}
-                        </span>
-
-                        <span
-                            class="flex items-center gap-1 {{ $item->parent_id ? 'text-slate-500 bg-slate-50' : 'text-red-700 bg-red-50 font-bold' }} px-2.5 py-1 rounded-lg border border-slate-100/80">
-                            <i
-                                class="fa-solid {{ $item->parent_id ? 'fa-user-tag' : 'fa-crown text-red-500' }} text-[9px]"></i>
-                            {{ $item->parent_id ? 'Anggota / Staf' : 'Pimpinan Utama' }}
-                        </span>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 
     {{-- Modal Form Tambah / Edit Pengurus --}}

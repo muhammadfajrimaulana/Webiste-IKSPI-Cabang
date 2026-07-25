@@ -37,7 +37,8 @@
                         <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3">Visi Perguruan</h3>
                         <div
                             class="text-xs text-gray-600 leading-relaxed whitespace-pre-line bg-gray-50 p-4 rounded-xl border border-gray-100">
-                            {{ $content->visi ?? 'Visi belum diatur oleh admin cabang.' }}
+                            Menjadi wadah pembinaan generasi muda yang berkarakter, bermoral luhur, menjunjung tinggi
+                            sportivitas, serta tangguh dalam membela kebenaran dan kedamaian.
                         </div>
                     </div>
                 </div>
@@ -53,7 +54,11 @@
                         <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3">Misi Perguruan</h3>
                         <div
                             class="text-xs text-gray-600 leading-relaxed whitespace-pre-line bg-gray-50 p-4 rounded-xl border border-gray-100">
-                            {{ $content->misi }}
+                            1. Menyelenggarakan pelatihan fisik dan mental yang terstruktur serta profesional bagi seluruh
+                            anggota.
+                            2. Membentuk kader yang memiliki kedisiplinan tinggi dan jiwa korsa yang kuat.
+                            3. Berperan aktif dalam kegiatan sosial dan pengabdian kepada masyarakat di setiap wilayah
+                            ranting.
                         </div>
                     </div>
                 </div>
