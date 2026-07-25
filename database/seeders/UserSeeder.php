@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         // 1. Buat Testing Admin Cabang
         $namaAdminCabang = 'Admin Cabang';
         User::create([
-            'avatar'        => 'default.png',
+            'avatar'        => 'https://ui-avatars.com/api/?name=' . urlencode($namaAdminCabang) . '&background=ba8e23&color=fff',
             'nama_pengurus' => 'Admin Cabang',
             'username'      => 'admin_cabang',
             'password'      => Hash::make('cabang1ksp1'),
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
         foreach ($adminRantingList as $admin) {
             if ($admin['ranting']) {
                 User::updateOrCreate(['username' => $admin['user']], [
-                    'avatar'        => 'default.png',
+                    'avatar'        => 'https://ui-avatars.com/api/?name=' . urlencode($admin['nama']) . '&background=dc2626&color=fff',
                     'nama_pengurus' => $admin['nama'],
                     'password'      => Hash::make('ranting1ksp1'),
                     'role'          => 'admin_ranting',
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
 
         foreach ($anggotas as $anggota) {
             User::create([
-                'avatar'        => 'default.png',
+                'avatar'        => 'https://ui-avatars.com/api/?name=' . urlencode($anggota['nama']) . '&background=475569&color=fff',
                 'nama_pengurus' => $anggota['nama'],
                 'username'      => strtolower(str_replace(' ', '_', $anggota['nama'])),
                 'password'      => Hash::make('anggota1ksp1'),
