@@ -45,12 +45,13 @@ class OperasionalController extends Controller
         ]);
 
         $passwordDefault = 'ikspi123';
+        $username = '';
 
-        DB::transaction(function () use ($request, $passwordDefault) {
+        DB::transaction(function () use ($request, $passwordDefault, &$username) {
             $ranting = Ranting::create([
                 'nama_ranting'   => $request->nama_ranting,
                 'ketua_ranting'  => $request->ketua_ranting,
-                'alamat_ranting'  => $request->alamat_ranting,
+                'alamat_ranting' => $request->alamat_ranting, // Pastikan input ini ada di form jika dipakai
                 'nama_pelatih'   => $request->nama_pelatih,
                 'kontak_ranting' => $request->kontak_ranting,
                 'lokasi_latihan' => $request->lokasi_latihan,
@@ -60,17 +61,31 @@ class OperasionalController extends Controller
             $username = 'admin_' . $slugRanting;
 
             User::create([
+                'avatar'        => null,
                 'nama_pengurus' => 'Admin ' . $request->nama_ranting,
                 'username'      => $username,
                 'password'      => Hash::make($passwordDefault),
                 'role'          => 'admin_ranting',
                 'ranting_id'    => $ranting->id,
             ]);
-
-            $this->msg = 'Ranting ' . $request->nama_ranting . ' berhasil ditambahkan beserta akun loginnya (Username: ' . $username . ', Password: ' . $passwordDefault . ').';
         });
 
-        return redirect()->back()->with('success', $this->msg);
+        return redirect()->back()->with([
+            'success' => 'Ranting ' . $request->nama_ranting . ' berhasil ditambahkan.',
+            'show_credential_modal' => true,
+            'new_ranting' => $request->nama_ranting,
+            'new_username' => $username,
+            'new_password' => $passwordDefault
+        ]);
+    }
+
+    public function cekNamaRanting(Request $request)
+    {
+        $namaRanting = $request->query('nama_ranting');
+
+        $exists = Ranting::where('nama_ranting', $namaRanting)->exists();
+
+        return response()->json(['exists' => $exists]);
     }
 
     protected $msg;

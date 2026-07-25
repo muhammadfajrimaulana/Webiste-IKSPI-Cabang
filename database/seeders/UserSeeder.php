@@ -11,14 +11,14 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $ranting1 = \App\Models\Ranting::where('nama_ranting', 'Ranting Kemayoran')->first();
-        $ranting2 = \App\Models\Ranting::where('nama_ranting', 'Ranting Tanah Abang')->first();
-        $ranting3 = \App\Models\Ranting::where('nama_ranting', 'Ranting Gambir')->first();
-        $ranting4 = \App\Models\Ranting::where('nama_ranting', 'Ranting Sawah Besar')->first();
-        $ranting5 = \App\Models\Ranting::where('nama_ranting', 'Ranting Menteng')->first();
-        $ranting6 = \App\Models\Ranting::where('nama_ranting', 'Ranting Johar Baru')->first();
-        $ranting7 = \App\Models\Ranting::where('nama_ranting', 'Ranting Senen')->first();
-        $ranting8 = \App\Models\Ranting::where('nama_ranting', 'Ranting Cempaka Putih')->first();
+        $ranting1 = \App\Models\Ranting::where('nama_ranting', 'Kemayoran')->first();
+        $ranting2 = \App\Models\Ranting::where('nama_ranting', 'Tanah Abang')->first();
+        $ranting3 = \App\Models\Ranting::where('nama_ranting', 'Gambir')->first();
+        $ranting4 = \App\Models\Ranting::where('nama_ranting', 'Sawah Besar')->first();
+        $ranting5 = \App\Models\Ranting::where('nama_ranting', 'Menteng')->first();
+        $ranting6 = \App\Models\Ranting::where('nama_ranting', 'Johar Baru')->first();
+        $ranting7 = \App\Models\Ranting::where('nama_ranting', 'Senen')->first();
+        $ranting8 = \App\Models\Ranting::where('nama_ranting', 'Cempaka Putih')->first();
 
         // 1. Buat Testing Admin Cabang
         $namaAdminCabang = 'Admin Cabang';

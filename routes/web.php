@@ -121,6 +121,7 @@ Route::middleware(['auth', 'role:admin_cabang,admin_ranting'])->group(
 
         Route::get('/internal/operasional', [OperasionalController::class, 'index'])->name('internal.operasional');
         Route::post('/internal/operasional', [OperasionalController::class, 'store'])->name('internal.operasional.store');
+        Route::get('/internal/operasional/cek-nama', [OperasionalController::class, 'cekNamaRanting'])->name('internal.operasional.cek');
         Route::put('/internal/operasional/{id}', [OperasionalController::class, 'update'])->name('internal.operasional.update');
         Route::delete('/internal/operasional/{id}', [OperasionalController::class, 'destroy'])->name('internal.operasional.destroy');
 

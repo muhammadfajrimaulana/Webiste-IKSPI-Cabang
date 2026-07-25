@@ -164,7 +164,8 @@
                 </div>
                 <form action="{{ route('logout') }}" method="POST" class="p-2">
                     @csrf
-                    <button type="submit"
+                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin mengakhiri sesi?');"
+                        title="Logout"
                         class="w-full text-left px-3 py-2 text-xs font-semibold text-red-400 hover:bg-slate-800 rounded-lg transition flex items-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>

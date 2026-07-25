@@ -152,6 +152,7 @@
             @endforelse
         </div>
 
+        {{-- Modal Tambah Ranting --}}
         <div id="modalRanting"
             class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
             <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl border border-gray-100 space-y-4">
@@ -166,13 +167,21 @@
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nama Ranting
                             (Kecamatan)</label>
-                        <input type="text" name="nama_ranting" required
+
+                        <!-- Input Nama Ranting dengan ID -->
+                        <input type="text" id="inputNamaRanting" name="nama_ranting" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
+
+                        <!-- Pesan Peringatan Realtime -->
+                        <p id="errorNamaRanting" class="text-[11px] text-red-600 font-semibold hidden mt-1">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i> Nama ranting ini sudah terdaftar!
+                        </p>
                     </div>
+
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Ketua
                             Ranting</label>
-                        <input type="text" name="ketua_ranting"
+                        <input type="text" name="ketua_ranting" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="space-y-1">
@@ -182,34 +191,37 @@
                             placeholder="Masukkan alamat lengkap ranting"></textarea>
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nama Pelatih
-                        </label>
-                        <input type="text" name="nama_pelatih"
+                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nama
+                            Pelatih</label>
+                        <input type="text" name="nama_pelatih" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Lokasi
                             Latihan</label>
-                        <textarea name="lokasi_latihan" required rows="2"
+                        <textarea name="lokasi_latihan" rows="2" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none"></textarea>
                     </div>
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nomor HP /
                             WhatsApp</label>
-                        <input type="text" name="kontak_ranting"
+                        <input type="text" name="kontak_ranting" required maxlength="15"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Contoh: 08123456789"
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
                         <button type="button" onclick="tutupModal()"
                             class="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 font-semibold cursor-pointer">Batal</button>
-                        <button type="submit"
-                            class="px-4 py-2 bg-slate-950 text-white font-bold rounded-lg cursor-pointer">Simpan
+
+                        <button type="submit" id="btnSimpanRanting"
+                            class="px-4 py-2 bg-slate-950 text-white font-bold rounded-lg cursor-pointer transition">Simpan
                             Ranting</button>
                     </div>
                 </form>
             </div>
         </div>
 
+        {{-- Modal Edit Ranting --}}
         <div id="modalEditRanting"
             class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
             <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl border border-gray-100 space-y-4">
@@ -230,9 +242,15 @@
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="space-y-1">
+                        <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Ketua
+                            Ranting</label>
+                        <input type="text" id="edit_ketua" name="ketua_ranting" required
+                            class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
+                    </div>
+                    <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nama Pelatih
                             Kepala</label>
-                        <input type="text" id="edit_pelatih" name="nama_pelatih"
+                        <input type="text" id="edit_pelatih" name="nama_pelatih" required
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="space-y-1">
@@ -244,16 +262,17 @@
                     <div class="space-y-1">
                         <label class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Nomor HP /
                             WhatsApp</label>
-                        <input type="text" id="edit_kontak" name="kontak_ranting"
+                        <input type="text" id="edit_kontak" name="kontak_ranting" required maxlength="15"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                             class="w-full border border-gray-300 rounded-lg p-2.5 text-slate-900 focus:outline-none">
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
                         <!-- Tombol Hapus di sebelah kiri -->
-                        <form action="{{ route('internal.operasional.destroy', $ranting->id) }}" method="POST"
-                            onsubmit="return confirm('Yakin ingin menghapus ranting ini? Akun admin ranting terkait juga akan terhapus.');">
+                        <form action="{{ route('internal.operasional.destroy', $ranting->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
+                                onclick="return confirm('Anda yakin ingin menghapus ranting ini? Akun admin ranting terkait juga akan otomatis terhapus pada database.');"
                                 class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg cursor-pointer transition">
                                 <i class="fa-solid fa-trash mr-1"></i> Hapus
                             </button>
@@ -273,23 +292,129 @@
         </div>
     </div>
 
-    <script>
-        // Menutup alert
-        document.addEventListener('DOMContentLoaded', () => {
-            const alerts = ['alert-success', 'alert-error'];
+    <!-- Modal Kredensial Akun Ranting Baru -->
+    @if (session('show_credential_modal'))
+        <div x-data="{ open: true }" x-show="open"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4" x-cloak>
 
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 transform transition-all scale-100">
+                <!-- Header -->
+                <div class="flex items-center gap-3 mb-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                        <i class="fas fa-key text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900">Akun Admin Berhasil Dibuat!</h3>
+                        <p class="text-xs text-slate-500">Simpan informasi akun untuk Ranting <span
+                                class="font-bold text-slate-700">{{ session('new_ranting') }}</span>.</p>
+                    </div>
+                </div>
+
+                <!-- Box Kredensial -->
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-3 mb-6">
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Username
+                            Login</span>
+                        <div
+                            class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200 text-slate-800 font-mono text-sm font-semibold">
+                            <span id="text-username">{{ session('new_username') }}</span>
+                            <button
+                                onclick="navigator.clipboard.writeText('{{ session('new_username') }}'); alert('Username disalin!');"
+                                class="text-slate-400 hover:text-red-600 transition text-xs" title="Salin"
+                                cursor-pointer>
+                                <i class="far fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Password
+                            Default</span>
+                        <div
+                            class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200 text-slate-800 font-mono text-sm font-semibold">
+                            <span id="text-password">{{ session('new_password') }}</span>
+                            <button
+                                onclick="navigator.clipboard.writeText('{{ session('new_password') }}'); alert('Password disalin!');"
+                                class="text-slate-400 hover:text-red-600 transition text-xs" title="Salin"
+                                cursor-pointer>
+                                <i class="far fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-amber-600 italic bg-amber-50 p-2 rounded border border-amber-200">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> Harap copy dan simpan password ini. Sistem
+                        tidak akan
+                        menampilkan password ini lagi setelah Anda menutup modal ini.
+                    </p>
+                </div>
+
+                <!-- Tombol Tutup -->
+                <button @click="open = false"
+                    class="w-full py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition shadow-md shadow-red-600/20 cursor-pointer">
+                    Saya Sudah Menyimpan Data Ini
+                </button>
+            </div>
+        </div>
+    @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menutup alert otomatis
+            const alerts = ['alert-success', 'alert-error'];
             alerts.forEach(id => {
                 const alertElement = document.getElementById(id);
                 if (alertElement) {
                     setTimeout(() => {
                         alertElement.style.opacity = '0';
-
                         setTimeout(() => {
                             alertElement.remove();
                         }, 500);
                     }, 3000);
                 }
             });
+
+            // Realtime Validation Nama Ranting
+            const inputNama = document.getElementById('inputNamaRanting');
+            const errorPesan = document.getElementById('errorNamaRanting');
+            const btnSimpan = document.getElementById('btnSimpanRanting');
+            let timeoutId = null;
+
+            if (inputNama) {
+                inputNama.addEventListener('input', function() {
+                    clearTimeout(timeoutId);
+                    let nama = this.value.trim();
+
+                    if (nama === '') {
+                        errorPesan.classList.add('hidden');
+                        inputNama.classList.remove('border-red-500');
+                        btnSimpan.disabled = false;
+                        btnSimpan.classList.remove('opacity-50', 'cursor-not-allowed');
+                        return;
+                    }
+
+                    timeoutId = setTimeout(() => {
+                        fetch(`{{ route('internal.operasional.cek') }}?nama_ranting=` +
+                                encodeURIComponent(nama))
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.exists) {
+                                    errorPesan.classList.remove('hidden');
+                                    inputNama.classList.add('border-red-500');
+                                    btnSimpan.disabled = true;
+                                    btnSimpan.classList.add('opacity-50', 'cursor-not-allowed');
+                                } else {
+                                    errorPesan.classList.add('hidden');
+                                    inputNama.classList.remove('border-red-500');
+                                    btnSimpan.disabled = false;
+                                    btnSimpan.classList.remove('opacity-50',
+                                        'cursor-not-allowed');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }, 300);
+                });
+            }
         });
 
         // Modal Tambah
@@ -302,17 +427,15 @@
         }
 
         // Modal Edit (Injeksi Data Langsung)
-        function bukaModalEdit(id, nama, pelatih, lokasi, kontak) {
-            // 1. Set action form secara dinamis mengarah ke id ranting yang dipilih
+        function bukaModalEdit(id, nama, ketua, pelatih, lokasi, kontak) {
             document.getElementById('formEditRanting').action = "/internal/operasional/" + id;
 
-            // 2. Isi value input modal dengan data lama dari parameter tombol
             document.getElementById('edit_nama').value = nama;
+            document.getElementById('edit_ketua').value = ketua;
             document.getElementById('edit_pelatih').value = pelatih;
             document.getElementById('edit_lokasi').value = lokasi;
             document.getElementById('edit_kontak').value = kontak;
 
-            // 3. Munculkan modal edit
             document.getElementById('modalEditRanting').classList.remove('hidden');
         }
 
