@@ -5,7 +5,7 @@
     <header class="w-full relative bg-slate-950">
         <!-- Banner Utama: Padding disesuaikan agar pas langsung ke section berikutnya -->
         <div class="w-full bg-cover bg-center flex items-center pt-20 pb-20 md:pt-28 md:pb-28 px-5 sm:px-12 md:px-24"
-            style="background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('assets/img/ikspi1.jpg');">
+            style="background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('{{ asset('assets/img/ikspi1.jpg') }}');">
             <div class="max-w-3xl text-left">
                 <span class="text-red-600 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-2 block">Ikatan
                     Keluarga Silat Putra Indonesia</span>
@@ -198,42 +198,69 @@
                 <!-- Ketua -->
                 <div
                     class="bg-white rounded-2xl overflow-hidden shadow-md border-b-4 border-red-600 text-center group hover:-translate-y-2 transition duration-300">
-                    <div class="h-44 bg-gradient-to-br from-slate-800 to-slate-950 relative overflow-hidden">
-                        <i
-                            class="fas fa-user-shield text-5xl text-white/20 absolute inset-0 m-auto h-fit w-fit group-hover:scale-110 transition duration-300"></i>
+                    <div
+                        class="h-44 bg-gradient-to-br from-slate-800 to-slate-950 relative overflow-hidden flex items-center justify-center">
+                        @if (isset($ketua) && $ketua->avatar)
+                            <img src="{{ Str::startsWith($ketua->avatar, 'http') ? $ketua->avatar : asset('storage/' . $ketua->avatar) }}"
+                                alt="{{ $ketua->nama_pengurus ?? 'Ketua Cabang' }}" class="w-full h-full object-cover">
+                        @else
+                            <i
+                                class="fas fa-user-shield text-5xl text-white/20 absolute inset-0 m-auto h-fit w-fit group-hover:scale-110 transition duration-300"></i>
+                        @endif
                     </div>
                     <div class="p-6">
-                        <span class="text-[10px] text-red-600 font-bold uppercase tracking-widest block mb-1">Ketua
-                            Cabang</span>
-                        <h4 class="font-black text-slate-900 text-base">Nama Ketua Cabang</h4>
+                        <span class="text-[10px] text-red-600 font-bold uppercase tracking-widest block mb-1">
+                            {{ $ketua->jabatan ?? 'Ketua Cabang' }}
+                        </span>
+                        <h4 class="font-black text-slate-900 text-base">
+                            {{ $ketua->nama_pengurus ?? 'Belum Ditentukan' }}
+                        </h4>
                     </div>
                 </div>
 
                 <!-- Sekretaris -->
                 <div
                     class="bg-white rounded-2xl overflow-hidden shadow-md border-b-4 border-slate-900 text-center group hover:-translate-y-2 transition duration-300">
-                    <div class="h-44 bg-gradient-to-br from-slate-800 to-slate-950 relative overflow-hidden">
-                        <i
-                            class="fas fa-user-pen text-5xl text-white/20 absolute inset-0 m-auto h-fit w-fit group-hover:scale-110 transition duration-300"></i>
+                    <div
+                        class="h-44 bg-gradient-to-br from-slate-800 to-slate-950 relative overflow-hidden flex items-center justify-center">
+                        @if (isset($sekretaris) && $sekretaris->avatar)
+                            <img src="{{ Str::startsWith($sekretaris->avatar, 'http') ? $sekretaris->avatar : asset('storage/' . $sekretaris->avatar) }}"
+                                alt="{{ $sekretaris->nama_pengurus ?? 'Sekretaris' }}" class="w-full h-full object-cover">
+                        @else
+                            <i
+                                class="fas fa-user-pen text-5xl text-white/20 absolute inset-0 m-auto h-fit w-fit group-hover:scale-110 transition duration-300"></i>
+                        @endif
                     </div>
                     <div class="p-6">
-                        <span
-                            class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block mb-1">Sekretaris</span>
-                        <h4 class="font-black text-slate-900 text-base">Nama Sekretaris</h4>
+                        <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block mb-1">
+                            {{ $sekretaris->jabatan ?? 'Sekretaris' }}
+                        </span>
+                        <h4 class="font-black text-slate-900 text-base">
+                            {{ $sekretaris->nama_pengurus ?? 'Belum Ditentukan' }}
+                        </h4>
                     </div>
                 </div>
 
                 <!-- Bendahara -->
                 <div
                     class="bg-white rounded-2xl overflow-hidden shadow-md border-b-4 border-red-600 text-center group hover:-translate-y-2 transition duration-300">
-                    <div class="h-44 bg-gradient-to-br from-slate-800 to-slate-950 relative overflow-hidden">
-                        <i
-                            class="fas fa-wallet text-5xl text-white/20 absolute inset-0 m-auto h-fit w-fit group-hover:scale-110 transition duration-300"></i>
+                    <div
+                        class="h-44 bg-gradient-to-br from-slate-800 to-slate-950 relative overflow-hidden flex items-center justify-center">
+                        @if (isset($bendahara) && $bendahara->avatar)
+                            <img src="{{ Str::startsWith($bendahara->avatar, 'http') ? $bendahara->avatar : asset('storage/' . $bendahara->avatar) }}"
+                                alt="{{ $bendahara->nama_pengurus ?? 'Bendahara' }}" class="w-full h-full object-cover">
+                        @else
+                            <i
+                                class="fas fa-wallet text-5xl text-white/20 absolute inset-0 m-auto h-fit w-fit group-hover:scale-110 transition duration-300"></i>
+                        @endif
                     </div>
                     <div class="p-6">
-                        <span
-                            class="text-[10px] text-red-600 font-bold uppercase tracking-widest block mb-1">Bendahara</span>
-                        <h4 class="font-black text-slate-900 text-base">Nama Bendahara</h4>
+                        <span class="text-[10px] text-red-600 font-bold uppercase tracking-widest block mb-1">
+                            {{ $bendahara->jabatan ?? 'Bendahara' }}
+                        </span>
+                        <h4 class="font-black text-slate-900 text-base">
+                            {{ $bendahara->nama_pengurus ?? 'Belum Ditentukan' }}
+                        </h4>
                     </div>
                 </div>
 
@@ -283,29 +310,29 @@
             </div>
             <h2 class="text-3xl font-black text-slate-900 tracking-tight">Daftar Ranting / Tempat Latihan</h2>
         </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-
-            <div
-                class="bg-white p-6 rounded-2xl border-l-4 border-red-600 shadow-md shadow-slate-100 hover:-translate-y-1.5 transition duration-300">
-                <div class="text-red-600 text-lg mb-3"><i class="fas fa-map-marker-alt"></i></div>
-                <h4 class="font-black text-base text-slate-900 mb-1">Ranting Gambir</h4>
-                <p class="text-xs text-slate-500">Lokasi: Lapangan Olahraga Hubdam</p>
-            </div>
-
-            <div
-                class="bg-white p-6 rounded-2xl border-l-4 border-slate-900 shadow-md shadow-slate-100 hover:-translate-y-1.5 transition duration-300">
-                <div class="text-red-600 text-lg mb-3"><i class="fas fa-map-marker-alt"></i></div>
-                <h4 class="font-black text-base text-slate-900 mb-1">Ranting Kemayoran</h4>
-                <p class="text-xs text-slate-500">Lokasi: Area Komplek Olahraga Kemayoran</p>
-            </div>
-
-            <div
-                class="bg-white p-6 rounded-2xl border-l-4 border-red-600 shadow-md shadow-slate-100 hover:-translate-y-1.5 transition duration-300">
-                <div class="text-red-600 text-lg mb-3"><i class="fas fa-map-marker-alt"></i></div>
-                <h4 class="font-black text-base text-slate-900 mb-1">Ranting Menteng</h4>
-                <p class="text-xs text-slate-500">Lokasi: Aula Terbuka Taman Menteng</p>
-            </div>
-
+            @forelse($rantings as $ranting)
+                <div
+                    class="bg-white p-6 rounded-2xl border-l-4 {{ $loop->even ? 'border-slate-900' : 'border-red-600' }} shadow-md shadow-slate-100 hover:-translate-y-1.5 transition duration-300">
+                    <div class="text-red-600 text-lg mb-3">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4 class="font-black text-base text-slate-900 mb-1">
+                        {{ $ranting->nama_ranting }}
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-2">
+                        Lokasi: {{ $ranting->lokasi_latihan ?? ($ranting->alamat ?? 'Belum ditentukan') }}
+                    </p>
+                    <span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        <i class="fas fa-users mr-1"></i> {{ $ranting->anggota_count ?? 0 }} Anggota
+                    </span>
+                </div>
+            @empty
+                <div class="col-span-3 text-center py-8 text-slate-400 text-xs font-semibold">
+                    Belum ada data ranting atau tempat latihan yang ditambahkan.
+                </div>
+            @endforelse
         </div>
     </section>
 
@@ -325,11 +352,11 @@
             <!-- Tombol Geser Kiri & Kanan -->
             <div class="flex gap-2">
                 <button id="slide-prev"
-                    class="w-10 h-10 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 flex items-center justify-center transition shadow-sm active:scale-95">
+                    class="w-10 h-10 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer">
                     <i class="fas fa-chevron-left text-sm"></i>
                 </button>
                 <button id="slide-next"
-                    class="w-10 h-10 rounded-full bg-red-600 text-white hover:bg-red-700 flex items-center justify-center transition shadow-md active:scale-95">
+                    class="w-10 h-10 rounded-full bg-red-600 text-white hover:bg-red-700 flex items-center justify-center transition shadow-md active:scale-95 cursor-pointer">
                     <i class="fas fa-chevron-right text-sm"></i>
                 </button>
             </div>
@@ -339,35 +366,26 @@
         <div id="slider-container" class="flex overflow-x-auto gap-4 pb-4 scroll-smooth snap-x snap-mandatory"
             style="scrollbar-width: none; -ms-overflow-style: none;">
 
-            <!-- Foto 1 -->
-            <div
-                class="w-[80%] sm:w-1/3 md:w-1/4 flex-shrink-0 h-48 sm:h-52 bg-slate-200 overflow-hidden rounded-2xl group shadow-md border border-slate-100 snap-start">
-                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
+            @forelse($galeris as $galeri)
+                <div
+                    class="w-[80%] sm:w-1/3 md:w-1/4 flex-shrink-0 h-48 sm:h-52 bg-slate-200 overflow-hidden rounded-2xl group shadow-md border border-slate-100 snap-start relative">
+                    <img src="{{ asset('storage/' . $galeri->gambar) }}"
+                        alt="{{ $galeri->judul ?? 'Dokumentasi IKSPI' }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
 
-            <!-- Foto 2 -->
-            <div
-                class="w-[80%] sm:w-1/3 md:w-1/4 flex-shrink-0 h-48 sm:h-52 bg-slate-200 overflow-hidden rounded-2xl group shadow-md border border-slate-100 snap-start">
-                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-
-            <!-- Foto 3 -->
-            <div
-                class="w-[80%] sm:w-1/3 md:w-1/4 flex-shrink-0 h-48 sm:h-52 bg-slate-200 overflow-hidden rounded-2xl group shadow-md border border-slate-100 snap-start">
-                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-
-            <!-- Foto 4 -->
-            <div
-                class="w-[80%] sm:w-1/3 md:w-1/4 flex-shrink-0 h-48 sm:h-52 bg-slate-200 overflow-hidden rounded-2xl group shadow-md border border-slate-100 snap-start">
-                <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=400"
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-
-            <!-- Anda bisa duplikat struktur di atas jika ingin menambah foto baru -->
+                    @if (isset($galeri->judul))
+                        <div
+                            class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-6 opacity-0 group-hover:opacity-100 transition duration-300">
+                            <p class="text-white text-xs font-semibold truncate">{{ $galeri->judul }}</p>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div
+                    class="w-full text-center py-10 text-slate-400 text-xs font-semibold bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                    Belum ada dokumentasi foto kegiatan yang diunggah.
+                </div>
+            @endforelse
 
         </div>
     </section>
@@ -383,69 +401,72 @@
                         Terkini</span>
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight">Kabar & Kegiatan Cabang</h2>
                 </div>
-                <a href="#"
+                <a href="{{ route('web.berita') ?? '#' }}"
                     class="text-xs font-bold text-red-600 hover:text-slate-900 transition flex items-center gap-1 self-start sm:self-auto">
                     Lihat Semua Berita <i class="fas fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Berita Utama (Kiri / Kolom 2) -->
                 <div class="lg:col-span-2">
-                    <div class="relative rounded-2xl overflow-hidden h-[360px] sm:h-[440px] shadow-lg group">
-                        <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=1200"
-                            class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent">
-                        </div>
-                        <div class="absolute bottom-0 inset-x-0 p-6 md:p-8 flex flex-col items-start justify-end">
-                            <span
-                                class="inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase mb-3">
-                                <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> Berita Utama
-                            </span>
-                            <h3
-                                class="text-xl sm:text-2xl font-black text-white leading-tight mb-2 hover:text-red-400 transition">
-                                <a href="#">Latihan Gabungan Akbar Se-Jakarta Pusat Sukses Menyatukan Ratusan
-                                    Pendekar</a>
-                            </h3>
-                            <div class="flex items-center gap-3 text-[11px] text-slate-300">
-                                <span>05 Juli 2026</span>
-                                <span>•</span>
-                                <span>Humas Jakpus</span>
+                    @if ($beritaUtama)
+                        <div class="relative rounded-2xl overflow-hidden h-[360px] sm:h-[440px] shadow-lg group">
+                            <img src="{{ asset('storage/' . $beritaUtama->gambar) }}" alt="{{ $beritaUtama->judul }}"
+                                class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 inset-x-0 p-6 md:p-8 flex flex-col items-start justify-end">
+                                <span
+                                    class="inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase mb-3">
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> Berita Utama
+                                </span>
+                                <h3
+                                    class="text-xl sm:text-2xl font-black text-white leading-tight mb-2 hover:text-red-400 transition">
+                                    <a
+                                        href="{{ route('berita.show', $beritaUtama->slug ?? $beritaUtama->id) }}">{{ $beritaUtama->judul }}</a>
+                                </h3>
+                                <div class="flex items-center gap-3 text-[11px] text-slate-300">
+                                    <span>{{ $beritaUtama->created_at->translatedFormat('d F Y') }}</span>
+                                    <span>•</span>
+                                    <span>{{ $beritaUtama->author->name ?? 'Humas Cabang' }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div
+                            class="h-[360px] sm:h-[440px] bg-slate-50 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-xs font-semibold">
+                            Belum ada Berita Utama yang diunggah.
+                        </div>
+                    @endif
                 </div>
 
+                <!-- Berita Terbaru (Kanan) -->
                 <div class="flex flex-col gap-5">
                     <h3
                         class="text-xs font-black text-slate-900 uppercase tracking-widest border-b-2 border-red-600 pb-1 self-start">
                         Berita Terbaru
                     </h3>
                     <div class="space-y-4">
-                        <div class="flex gap-3 items-start group">
-                            <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=150"
-                                class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm">
-                            <div>
-                                <span class="text-[9px] text-red-600 font-bold uppercase block mb-0.5">Prestasi</span>
-                                <h4
-                                    class="font-bold text-xs text-slate-900 leading-snug group-hover:text-red-600 transition line-clamp-2">
-                                    <a href="#">Atlet IKSPI Cabang Jakpus Sabet Juara Umum di Kejuaraan Kota</a>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 block mt-1">04 Juli 2026</span>
+                        @forelse($beritaTerbarus as $berita)
+                            <div class="flex gap-3 items-start group">
+                                <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}"
+                                    class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm">
+                                <div>
+                                    <span
+                                        class="text-[9px] text-red-600 font-bold uppercase block mb-0.5">{{ $berita->kategori ?? 'Informasi' }}</span>
+                                    <h4
+                                        class="font-bold text-xs text-slate-900 leading-snug group-hover:text-red-600 transition line-clamp-2">
+                                        <a
+                                            href="{{ route('berita.show', $berita->slug ?? $berita->id) }}">{{ $berita->judul }}</a>
+                                    </h4>
+                                    <span
+                                        class="text-[10px] text-slate-400 block mt-1">{{ $berita->created_at->translatedFormat('d F Y') }}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex gap-3 items-start group">
-                            <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=150"
-                                class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm">
-                            <div>
-                                <span class="text-[9px] text-red-600 font-bold uppercase block mb-0.5">Pengumuman</span>
-                                <h4
-                                    class="font-bold text-xs text-slate-900 leading-snug group-hover:text-red-600 transition line-clamp-2">
-                                    <a href="#">Jadwal Lengkap Latihan Gabungan dan Persiapan Pengesahan Angkatan
-                                        141</a>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 block mt-1">02 Juli 2026</span>
-                            </div>
-                        </div>
+                        @empty
+                            <p class="text-xs text-slate-400 italic">Belum ada berita lainnya.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>

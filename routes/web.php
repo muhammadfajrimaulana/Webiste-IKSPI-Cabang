@@ -35,6 +35,7 @@ use App\Http\Controllers\Web\WebGaleriController;
 Route::get('/', function () {
     return view('welcome');
 })->name('beranda');
+Route::get('/', [WebController::class, 'index'])->name('beranda');
 
 // Akses menu navbar website
 Route::get('/web/profil/sejarah', [WebController::class, 'sejarah'])->name('profil.sejarah');
@@ -49,6 +50,7 @@ Route::get('/web/ranting/anggota-IKSPI', [WebController::class, 'anggota'])->nam
 Route::get('/web/ranting/lokasi-ranting', [WebController::class, 'lokasi'])->name('ranting.lokasi');
 
 Route::get('/web/berita', [WebController::class, 'berita'])->name('web.berita');
+Route::get('/web/berita/{id}', [WebController::class, 'showberita'])->name('berita.show');
 Route::get('/web/galeri', [WebController::class, 'galeri'])->name('web.galeri');
 
 // Akses menu footer website

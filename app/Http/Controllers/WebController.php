@@ -17,7 +17,20 @@ use Illuminate\Support\Facades\Auth;
 
 class WebController extends Controller
 {
+    public function index()
+    {
+        $ketua = Pengurus::where('jabatan', 'LIKE', '%Ketua%')->first();
+        $sekretaris = Pengurus::where('jabatan', 'LIKE', '%Sekretaris%')->first();
+        $bendahara = Pengurus::where('jabatan', 'LIKE', '%Bendahara%')->first();
 
+        $rantings = Ranting::withCount('anggota')->orderBy('nama_ranting', 'asc')->get();
+        $galeris = Gallery::latest()->get();
+        $beritaUtama = Post::latest()->first();
+
+        $beritaTerbarus = Post::latest()->skip(1)->take(2)->get();
+
+        return view('welcome', compact('ketua', 'sekretaris', 'bendahara', 'rantings', 'galeris', 'beritaUtama', 'beritaTerbarus'));
+    }
     public function sejarah()
     {
         $content = Content::first();
@@ -95,6 +108,12 @@ class WebController extends Controller
         $posts = Post::latest()->paginate(9);
 
         return view('web.berita', compact('posts'));
+    }
+    public function showberita($id)
+    {
+        $berita = Post::findOrFail($id);
+
+        return view('web.show-berita', compact('berita'));
     }
     public function galeri()
     {
