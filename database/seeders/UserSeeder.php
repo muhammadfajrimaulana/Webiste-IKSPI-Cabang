@@ -55,22 +55,22 @@ class UserSeeder extends Seeder
             }
         }
 
-        // 3. Buat Testing Anggota
-        $anggotas = [
-            ['nama' => 'Budi', 'ranting_id' => $ranting1->id],
-            ['nama' => 'Siti', 'ranting_id' => $ranting2->id],
-            ['nama' => 'Andi', 'ranting_id' => $ranting3->id],
-        ];
+        // 3. Buat Testing Anggota (OFF)
+        // $anggotas = [
+        //     ['nama' => 'Budi', 'ranting_id' => $ranting1->id],
+        //     ['nama' => 'Siti', 'ranting_id' => $ranting2->id],
+        //     ['nama' => 'Andi', 'ranting_id' => $ranting3->id],
+        // ];
 
-        foreach ($anggotas as $anggota) {
-            User::create([
-                'avatar'        => 'https://ui-avatars.com/api/?name=' . urlencode($anggota['nama']) . '&background=475569&color=fff',
-                'nama_pengurus' => $anggota['nama'],
-                'username'      => strtolower(str_replace(' ', '_', $anggota['nama'])),
-                'password'      => Hash::make('anggota1ksp1'),
-                'role'          => 'anggota',
-                'ranting_id'    => $anggota['ranting_id'],
-            ]);
-        }
+        // foreach ($anggotas as $anggota) {
+        //     User::create([
+        //         'avatar'        => 'https://ui-avatars.com/api/?name=' . urlencode($anggota['nama']) . '&background=475569&color=fff',
+        //         'nama_pengurus' => $anggota['nama'],
+        //         'username'      => strtolower(str_replace(' ', '_', $anggota['nama'])),
+        //         'password'      => Hash::make('anggota1ksp1'),
+        //         'role'          => 'anggota',
+        //         'ranting_id'    => $anggota['ranting_id'],
+        //     ]);
+        // }
     }
 }

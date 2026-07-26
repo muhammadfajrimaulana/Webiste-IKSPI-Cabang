@@ -50,17 +50,18 @@ class VerifikasiController extends Controller
                 $firstName = explode(' ', $pendaftaran->nama_lengkap)[0];
                 $username = strtolower($firstName) . rand(100, 999);
 
-                $newUser = User::create([
-                    'name'          => $pendaftaran->nama_lengkap,
-                    'email'         => $pendaftaran->email,
-                    'username'      => $username,
-                    'nama_pengurus' => $pendaftaran->nama_lengkap,
-                    'password'      => Hash::make('ikspi123'),
-                    'role'          => 'anggota',
-                ]);
+                // Auto membuat akun dengan role anggota (Saat ini di-off kan jadi jangan dihapus!)
+                // $newUser = User::create([
+                //     'name'          => $pendaftaran->nama_lengkap,
+                //     'email'         => $pendaftaran->email,
+                //     'username'      => $username,
+                //     'nama_pengurus' => $pendaftaran->nama_lengkap,
+                //     'password'      => Hash::make('ikspi123'),
+                //     'role'          => 'anggota',
+                // ]);
 
                 Anggota::create([
-                    'user_id'            => $newUser->id,
+                    'user_id'            => null,
                     'pendaftaran_id'     => $pendaftaran->id,
                     'ranting_id'         => $pendaftaran->ranting_id,
                     'nomor_anggota'      => 'IKS-' . date('Y') . '-' . str_pad($pendaftaran->id, 4, '0', STR_PAD_LEFT),
