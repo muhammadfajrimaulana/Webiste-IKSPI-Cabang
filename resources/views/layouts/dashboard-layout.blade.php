@@ -1,27 +1,27 @@
 <x-app-layout :title="$title ?? 'Keanggotaan IKSPI Kera Sakti Cabang Jakpus'">
     <div class="flex h-screen overflow-hidden">
 
-        <aside class="w-64 bg-slate-900 text-white flex flex-col h-full shrink-0">
-            <div class="p-5 bg-slate-950 border-b border-slate-800">
+        <aside class="w-64 bg-[#650000] text-white flex flex-col h-full shrink-0">
+            <div class="p-5 bg-red-950 border-b border-stone-800">
                 <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                    <img src="{{ asset('assets/img/logo-ikspi.png') }}" alt="Logo IKSPI Kera Sakti"
+                    <img src="{{ asset('assets/img/ikspi-jakpus.png') }}" alt="Logo IKSPI Kera Sakti"
                         class="w-10 h-10 object-contain rounded-md filter drop-shadow-md">
 
                     <div>
                         <h1 class="text-sm font-bold tracking-wide">IKSPI KERA SAKTI</h1>
-                        <p class="text-xs text-gray-400">Cabang Jakarta Pusat</p>
+                        <p class="text-xs text-stone-500">Cabang Jakarta Pusat</p>
                     </div>
                 </a>
             </div>
 
-            <nav class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent"
+            <nav class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-stone-800 scrollbar-track-transparent"
                 style="scrollbar-width: thin; scrollbar-color: #1e293b transparent;">
 
                 @if (auth()->user()->role !== 'anggota')
                     {{-- MENU ADMIN (Cabang/Ranting) --}}
                     <div>
                         <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Ringkasan</span>
+                            class="px-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest block mb-2">Ringkasan</span>
                         <div class="space-y-1">
                             <x-nav-link route="dashboard" icon="fa-solid fa-house-chimney">Dashboard</x-nav-link>
                         </div>
@@ -29,7 +29,7 @@
 
                     <div>
                         <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pusat
+                            class="px-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest block mb-2">Pusat
                             Navigasi</span>
                         <div class="space-y-1">
                             <x-nav-link route="menu.tentang" icon="fa-solid fa-info-circle">Tentang IKSPI</x-nav-link>
@@ -48,7 +48,7 @@
 
                     <div>
                         <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Workflow
+                            class="px-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest block mb-2">Workflow
                             Administrasi</span>
                         <div class="space-y-1">
                             <x-nav-link route="pendaftaran.index" icon="fa-solid fa-file-signature" color="yellow">Flow
@@ -70,7 +70,7 @@
 
                     <div>
                         <span
-                            class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Manajemen
+                            class="px-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest block mb-2">Manajemen
                             Internal</span>
                         <div class="space-y-1">
                             <x-nav-link route="internal.keanggotaan" icon="fa-solid fa-users" color="blue">1.
@@ -135,12 +135,12 @@
                 @endif
             </nav>
 
-            <div class="p-4 ml-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
+            <div class="p-4 mx-auto bg-red-950 border-t border-stone-800 flex items-center justify-between">
                 <div>
                     <a href="{{ route('profile') }}" class="flex items-center space-x-2">
                         <!-- Foto Profil / Inisial -->
                         <div
-                            class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold uppercase overflow-hidden shrink-0">
+                            class="w-8 h-8 rounded-full bg-stone-700 flex items-center justify-center text-xs font-bold uppercase overflow-hidden shrink-0">
                             @if (auth()->user()->avatar)
                                 <img src="{{ Str::startsWith(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar) }}"
                                     alt="{{ auth()->user()->nama_pengurus }}" class="w-full h-full object-cover">
@@ -166,7 +166,7 @@
                     @csrf
                     <button type="submit" onclick="return confirm('Apakah Anda yakin ingin mengakhiri sesi?');"
                         title="Logout"
-                        class="w-full text-left px-3 py-2 text-xs font-semibold text-red-400 hover:bg-slate-800 rounded-lg transition flex items-center gap-2 cursor-pointer">
+                        class="w-full text-left px-3 py-2 text-xs font-semibold text-red-400 hover:bg-stone-800 rounded-lg transition flex items-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </form>

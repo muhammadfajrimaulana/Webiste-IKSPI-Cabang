@@ -17,10 +17,10 @@
 
 <a href="{{ Route::has($route) ? route($route) : '#' }}"
     class="relative flex items-center space-x-3 px-3 py-2 text-[11px] font-semibold rounded-lg transition duration-200 group
-    {{ request()->routeIs($route) ? $activeClass : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100' }}">
+    {{ request()->routeIs($route) ? $activeClass : 'text-stone-300 hover:bg-stone-900 hover:text-stone-100' }}">
 
     <i
-        class="{{ $icon }} text-sm w-5 text-center {{ request()->routeIs($route) ? 'text-white' : 'text-slate-500 ' . $iconHoverClass . ' transition' }}"></i>
+        class="{{ $icon }} text-sm w-5 text-center {{ request()->routeIs($route) ? 'text-white' : 'text-stone-300 ' . $iconHoverClass . ' transition' }}"></i>
 
     {{-- Bungkus slot agar tidak berantakan --}}
     <span class="flex-grow">{{ $slot }}</span>

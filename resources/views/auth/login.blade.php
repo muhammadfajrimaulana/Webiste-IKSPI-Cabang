@@ -25,7 +25,7 @@
         <div
             class="hidden md:flex flex-1 bg-gradient-to-br from-red-900 to-slate-950 p-12 flex-col justify-between text-white">
             <div>
-                <img src="{{ asset('assets/img/logo-ikspi.png') }}" alt="Logo" class="w-16 h-16 opacity-90">
+                <img src="{{ asset('assets/img/ikspi-jakpus.png') }}" alt="Logo" class="w-16 h-16 opacity-90">
                 <h1 class="text-3xl font-black text-yellow-500 mt-6 leading-tight"><span
                         class="text-white">IKS.PI</span><br>KERA
                     SAKTI</h1>

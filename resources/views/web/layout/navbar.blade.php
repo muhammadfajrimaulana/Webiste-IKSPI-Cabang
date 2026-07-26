@@ -16,7 +16,7 @@
 <nav class="bg-white/90 py-4 px-6 sticky top-0 z-50 shadow-md backdrop-blur-md border-b border-slate-100">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
         <div class="flex items-center gap-3 shrink-0">
-            <img src="{{ asset('assets/img/logo-ikspi.png') }}" alt="Logo IKSPI" class="h-10 w-auto object-contain">
+            <img src="{{ asset('assets/img/ikspi-jakpus.png') }}" alt="Logo IKSPI" class="h-10 w-auto object-contain">
             <h1 class="text-xs md:text-sm font-bold tracking-tight text-slate-800">
                 <span class="text-red-600 font-black">IKS.PI</span> JAKARTA PUSAT
             </h1>

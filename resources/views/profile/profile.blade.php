@@ -20,7 +20,8 @@
         @endif
 
         <!-- Banner / Header Informasi Utama -->
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-sm p-6 overflow-hidden relative text-white">
+        <div
+            class="relative bg-gradient-to-r from-slate-900 via-red-950 to-slate-900 rounded-2xl border border-slate-800 shadow-sm p-6 overflow-hidden relative text-white">
             <div class="absolute top-0 right-0 p-8 opacity-5">
                 <i class="fa-solid fa-id-badge text-9xl text-white"></i>
             </div>
