@@ -117,7 +117,9 @@
 
                     <table class="w-full text-left text-sm text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
+                            <tr
+                                class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                <th class="px-6 py-3">Pas Foto</th>
                                 <th class="px-6 py-3">Nomor Anggota</th>
                                 <th class="px-6 py-3">Nama Lengkap</th>
                                 @if (auth()->user()->role === 'admin_cabang')
@@ -158,6 +160,11 @@
                         <tbody class="divide-y divide-gray-100">
                             @forelse($dataPengesahan as $pengesahan)
                                 <tr class="bg-white hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4">
+                                        <img src="{{ $pengesahan->pendaftaran?->pas_foto ? (Str::startsWith($pengesahan->pendaftaran->pas_foto, 'http') ? $pengesahan->pendaftaran->pas_foto : asset('storage/' . $pengesahan->pendaftaran->pas_foto)) : asset('images/default.png') }}"
+                                            alt="Pas Foto"
+                                            class="w-13 h-13 rounded object-cover border border-gray-200">
+                                    </td>
                                     <td class="px-6 py-4 font-bold text-red-700">{{ $pengesahan->nomor_anggota }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ $pengesahan->nama_lengkap ?? 'N/A' }}</td>
@@ -278,11 +285,21 @@
                 </button>
             </div>
 
-            <form id="formEditPengesahan" method="POST">
+            <form id="formEditPengesahan" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Ganti Pas Foto
+                            <span class="text-[9px] text-gray-400 font-normal normal-case">(Opsional)</span></label>
+                        <div class="flex items-center gap-3">
+                            <img id="preview_pas_foto" src="" alt="Preview"
+                                class="w-12 h-12 rounded object-cover border border-gray-200 bg-slate-100">
+                            <input type="file" name="pas_foto" id="edit_pas_foto" accept="image/*"
+                                class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
+                        </div>
+                    </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Nomor Anggota</label>
                         <input type="text" name="nomor_anggota" id="edit_nomor_anggota"
@@ -358,7 +375,6 @@
                 rantingMenu.classList.toggle('hidden');
             }
 
-            // Gunakan pengecekan (if) agar tidak error jika elemen kategori tidak ada
             if (kategoriMenu) {
                 kategoriMenu.classList.add('hidden');
             }
@@ -371,18 +387,35 @@
             // Set Action Form (Update Route)
             form.action = '/pengesahan/update/' + pengesahan.id;
 
-            // Isi field form
+            const previewImg = document.getElementById('preview_pas_foto');
+            const pasFoto = pengesahan.pendaftaran ? pengesahan.pendaftaran.pas_foto : pengesahan.pas_foto;
+
+            if (pasFoto) {
+                let fotoUrl = pasFoto.startsWith('http') ?
+                    pasFoto :
+                    '/storage/' + pasFoto;
+                previewImg.src = fotoUrl;
+            } else {
+                previewImg.src = '/profile/default.png';
+            }
+
+            // Kosongkan nilai input file agar tidak error sisa upload sebelumnya
+            document.getElementById('edit_pas_foto').value = '';
+
+            // Isi field form lainnya
             document.getElementById('edit_nomor_anggota').value = pengesahan.nomor_anggota;
             document.getElementById('edit_nama_lengkap').value = pengesahan.nama_lengkap;
             document.getElementById('edit_nama_ranting').value = pengesahan.nama_ranting;
             document.getElementById('edit_tingkatan').value = pengesahan.tingkatan;
             document.getElementById('edit_status').value = pengesahan.status;
+
             modal.classList.remove('hidden');
         }
 
         function tutupModal() {
             document.getElementById('modalEditPengesahan').classList.add('hidden');
         }
+        document.getElementById('modalEditPengesahan').classList.add('hidden');
     </script>
 
 </x-dashboard-layout>

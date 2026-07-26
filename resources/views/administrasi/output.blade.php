@@ -29,8 +29,12 @@
             </div>
             <a href="{{ route('output.cetak', request()->query()) }}" target="_blank"
                 class="px-4 py-2 bg-yellow-600 text-white font-bold text-xs rounded-lg hover:bg-slate-800 shadow-xs transition inline-flex items-center gap-2 cursor-pointer print:hidden">
-                <i class="fa-solid fa-print"></i> Cetak Laporan
-                {{ request('ranting_id') ? 'Ranting Terpilih' : 'Semua Ranting' }}
+                <i class="fa-solid fa-print"></i>
+                @if (auth()->user()->role === 'admin_ranting')
+                    Cetak Laporan
+                @else
+                    Cetak Laporan {{ request('ranting_id') ? 'Ranting Terpilih' : 'Semua Ranting' }}
+                @endif
             </a>
         </div>
 
@@ -40,8 +44,9 @@
                 <thead>
                     <tr
                         class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <th class="p-4">Pas Foto</th>
                         <th class="p-4">Nomor Anggota</th>
-                        <th class="p-4">Nama Warga</th>
+                        <th class="p-4">Nama Lengkap</th>
                         @if (auth()->user()->role === 'admin_cabang')
                             <th class="p-4">
                                 <div class="flex items-center gap-1 group">
@@ -76,6 +81,10 @@
                 <tbody class="divide-y divide-gray-100 text-xs">
                     @forelse($anggotaResmi as $row)
                         <tr class="hover:bg-slate-50/50 transition">
+                            <td class="p-4">
+                                <img src="{{ $row->pendaftaran?->pas_foto ? (Str::startsWith($row->pendaftaran->pas_foto, 'http') ? $row->pendaftaran->pas_foto : asset('storage/' . $row->pendaftaran->pas_foto)) : asset('images/default.png') }}"
+                                    alt="Pas Foto" class="w-13 h-13 rounded object-cover border border-gray-200">
+                            </td>
                             <td class="p-4 font-mono font-bold text-red-600 tracking-wider">
                                 {{ $row->nomor_anggota }}
                             </td>
