@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrasi;
 use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
 use App\Models\Anggota;
+use App\Models\Ranting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VerifikasiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $query = Pendaftaran::with('ranting');
@@ -24,11 +25,22 @@ class VerifikasiController extends Controller
         if ($user->role === 'admin_ranting') {
             $query->where('ranting_id', $user->ranting_id);
         } else {
+            // Jika Admin Cabang, default tampilkan yang pending
             $query->where('status_verifikasi', 'pending');
+
+            if ($request->filled('ranting_id')) {
+                $query->where('ranting_id', $request->ranting_id);
+            }
         }
 
+        // Data untuk dropdown filter
+        $dataRanting = ($user->role === 'admin_cabang')
+            ? Ranting::all()
+            : Ranting::where('id', $user->ranting_id)->get();
+
         $antrean = $query->latest()->get();
-        return view('administrasi.verifikasi', compact('antrean'));
+
+        return view('administrasi.verifikasi', compact('antrean', 'dataRanting'));
     }
 
     public function proses(Request $request, $id)
@@ -62,6 +74,7 @@ class VerifikasiController extends Controller
 
                 Anggota::create([
                     'user_id'            => null,
+                    'pas_foto'           => $pendaftaran->pas_foto,
                     'pendaftaran_id'     => $pendaftaran->id,
                     'ranting_id'         => $pendaftaran->ranting_id,
                     'nomor_anggota'      => 'IKS-' . date('Y') . '-' . str_pad($pendaftaran->id, 4, '0', STR_PAD_LEFT),

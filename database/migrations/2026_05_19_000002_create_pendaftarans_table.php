@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->text('alamat');
             $table->string('status_verifikasi')->default('pending');
-            $table->string('foto')->nullable();
+            $table->string('pas_foto')->nullable()->default('profile/default.png');
             $table->text('berkas_pdf')->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();

@@ -105,6 +105,7 @@
                 <thead>
                     <tr
                         class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <th class="p-4">Pas Foto</th>
                         <th class="p-4">No. Anggota</th>
                         <th class="p-4">Nama Lengkap</th>
                         <th class="p-4">Ranting Latihan</th>
@@ -115,6 +116,10 @@
                 <tbody class="divide-y divide-gray-100 text-xs">
                     @forelse($semuaAnggota as $anggota)
                         <tr class="hover:bg-slate-50/50 transition">
+                            <td class="p-4">
+                                <img src="{{ $anggota->pendaftaran?->pas_foto ? (Str::startsWith($anggota->pendaftaran->pas_foto, 'http') ? $anggota->pendaftaran->pas_foto : asset('storage/' . $anggota->pendaftaran->pas_foto)) : asset('images/default.png') }}"
+                                    alt="Pas Foto" class="w-13 h-13 rounded object-cover border border-gray-200">
+                            </td>
                             <td class="p-4 font-mono font-bold text-slate-900 tracking-wide">
                                 {{ $anggota->nomor_anggota }}
                             </td>

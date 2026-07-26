@@ -191,11 +191,11 @@
                             Formal)</label>
                         <p class="text-[10px] text-gray-400 mb-2">Format JPG/PNG, ukuran maksimal 2MB.</p>
                         <div
-                            class="border @error('foto_sakral') border-red-500 @else border-gray-300 @enderror rounded-lg p-3 bg-gray-50 flex items-center gap-3">
-                            <input type="file" name="foto_sakral" accept="image/*"
+                            class="border @error('pas_foto') border-red-500 @else border-gray-300 @enderror rounded-lg p-3 bg-gray-50 flex items-center gap-3">
+                            <input type="file" name="pas_foto" accept="image/*"
                                 class="text-xs file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer">
                         </div>
-                        @error('foto_sakral')
+                        @error('pas_foto')
                             <p class="text-[10px] text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>

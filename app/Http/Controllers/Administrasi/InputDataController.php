@@ -38,13 +38,13 @@ class InputDataController extends Controller
             'alamat'        => 'required|string',
             'latitude'      => 'nullable|string',
             'longitude'     => 'nullable|string',
-            'foto_sakral'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'pas_foto'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'berkas_pdf'    => 'nullable|mimes:pdf|max:2048',
         ]);
 
-        if ($request->hasFile('foto_sakral')) {
-            $pathFoto = $request->file('foto_sakral')->store('pendaftaran/foto', 'public');
-            $validatedData['foto_sakral'] = $pathFoto;
+        if ($request->hasFile('pas_foto')) {
+            $pathFoto = $request->file('pas_foto')->store('pendaftaran/foto', 'public');
+            $validatedData['pas_foto'] = $pathFoto;
         }
 
         if ($request->hasFile('berkas_pdf')) {

@@ -48,7 +48,7 @@
                                     <span class="{{ request('ranting_id') ? 'text-red-600' : '' }}">Ranting Asal</span>
                                     <div class="relative">
                                         <button onclick="toggleRantingFilter()"
-                                            class="text-slate-400 hover:text-slate-900">
+                                            class="text-slate-400 hover:text-slate-900 cursor-pointer">
                                             <i class="fa-solid fa-filter text-[9px]"></i>
                                         </button>
 
