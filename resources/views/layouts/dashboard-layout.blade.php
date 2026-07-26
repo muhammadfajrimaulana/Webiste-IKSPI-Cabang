@@ -152,8 +152,10 @@
                         <div class="text-xs">
                             <p class="font-semibold block truncate w-32">{{ auth()->user()->nama_pengurus }}</p>
 
-                            <p class="text-gray-400 text-[8px]">
-                                {{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }}
+                            <p class="text-stone-400 text-[8px]">
+                                <span class="font-mono">
+                                    {{ ucwords(str_replace('_', ' ', auth()->user()->role)) }}
+                                </span>
 
                                 @if (auth()->user()->ranting)
                                     ({{ auth()->user()->ranting->nama_ranting }})

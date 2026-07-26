@@ -33,7 +33,7 @@
                         <img src="{{ Str::startsWith($user->avatar, 'http') ? $user->avatar : asset('storage/' . $user->avatar) }}"
                             alt="{{ $user->nama_pengurus }}" class="w-full h-full object-cover">
                     @else
-                        {{ strtoupper(substr($user->nama_pengurus, 0, 2)) }}
+                        {{ collect(explode(' ', $user->nama_pengurus))->map(fn($word) => strtoupper(substr($word, 0, 1)))->take(2)->implode('') }}
                     @endif
                 </div>
                 <div>
@@ -102,7 +102,7 @@
                                     @else
                                         <div class="w-full h-full bg-red-600 text-white flex items-center justify-center text-sm font-black"
                                             id="avatarFallback">
-                                            {{ strtoupper(substr($user->nama_pengurus, 0, 2)) }}
+                                            {{ collect(explode(' ', $user->nama_pengurus))->map(fn($word) => strtoupper(substr($word, 0, 1)))->take(2)->implode('') }}
                                         </div>
                                     @endif
                                 </div>

@@ -164,6 +164,7 @@
                                     </td>
                                     @if (auth()->user()->role === 'admin_cabang')
                                         <td class="px-6 py-4">
+                                            Ranting
                                             {{ $pengesahan->ranting->nama_ranting ?? 'Ranting Tidak Terdaftar' }}</td>
                                     @endif
                                     <td class="px-6 py-4">{{ $pengesahan->tingkatan ?? 'N/A' }}</td>
@@ -235,7 +236,7 @@
                         <div>
                             <p class="text-[9px] font-bold text-gray-400 uppercase">Asal Ranting</p>
                             <p class="text-sm font-bold text-slate-900">
-                                {{ $pengesahan->ranting->nama_ranting ?? '-' }}</p>
+                                Ranting {{ $pengesahan->ranting->nama_ranting ?? 'Tidak Terdaftar' }}</p>
                         </div>
                     </div>
 
@@ -265,9 +266,17 @@
     @endif
 
     <div id="modalEditPengesahan"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-        <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl p-6">
-            <h3 class="text-sm font-bold text-slate-950 mb-4">Edit Data Pengesahan</h3>
+        class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl border border-gray-100 space-y-4">
+
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                <h3 class="font-bold text-slate-950 text-sm uppercase tracking-wide">
+                    <i class="fa-solid fa-pen-to-square text-amber-500 mr-1"></i> Edit Data Pengesahan
+                </h3>
+                <button type="button" onclick="tutupModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
             <form id="formEditPengesahan" method="POST">
                 @csrf
@@ -286,7 +295,8 @@
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Asal Ranting</label>
-                        <textarea name="nama_ranting" id="edit_nama_ranting" class="w-full mt-1 p-2 text-xs border rounded-lg" readonly></textarea>
+                        <input type="text" name="nama_ranting" id="edit_nama_ranting"
+                            class="w-full mt-1 p-2 text-xs border rounded-lg bg-slate-100" readonly>
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Tingkatan</label>
@@ -307,6 +317,7 @@
                     </div>
                 </div>
 
+                <!-- Tombol Aksi -->
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" onclick="tutupModal()"
                         class="px-4 py-2 text-xs bg-slate-200 rounded font-bold text-gray-600 cursor-pointer">Batal</button>
@@ -315,6 +326,7 @@
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 
