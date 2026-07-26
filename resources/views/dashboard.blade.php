@@ -96,7 +96,11 @@
                         <h3 class="text-lg font-bold text-slate-900">{{ $totalAnggota }}</h3>
                         <span class="text-[10px] text-blue-600 font-semibold flex items-center gap-1">
                             <i class="fa-solid fa-user-shield"></i>
-                            {{ auth()->user()->role === 'admin_ranting' ? 'Warga Ranting' : 'Total Cabang' }}
+                            @if (auth()->user()->role === 'admin_ranting')
+                                Ranting {{ auth()->user()->ranting->nama_ranting ?? 'Ranting' }}
+                            @else
+                                Cabang Jakpus
+                            @endif
                         </span>
                     </div>
                     <div
@@ -109,19 +113,20 @@
                     class="bg-white p-5 rounded-xl shadow-xs border border-gray-100 flex items-center justify-between group">
                     <div class="space-y-1">
                         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                            {{ auth()->user()->role === 'admin_ranting' ? 'Nama Ranting' : 'Total Ranting' }}
+                            {{ auth()->user()->role === 'admin_ranting' ? 'Ranting Anda' : 'Total Ranting' }}
                         </p>
-                        <h3 class="text-sm font-bold text-slate-900 truncate">
-                            {{ auth()->user()->role === 'admin_ranting' ? auth()->user()->ranting->nama_ranting : $totalRanting }}
+                        <h3 class="text-base font-extrabold text-slate-900 truncate max-w-[180px]"
+                            title="{{ auth()->user()->role === 'admin_ranting' ? auth()->user()->ranting->nama_ranting ?? '-' : $totalRanting }}">
+                            {{ auth()->user()->role === 'admin_ranting' ? auth()->user()->ranting->nama_ranting ?? '-' : $totalRanting }}
                         </h3>
-                        <span class="text-[10px] text-slate-500 font-medium flex items-center gap-1 mt-2">
-                            <i class="fa-solid fa-location-dot"></i>
-                            {{ auth()->user()->role === 'admin_ranting' ? 'Ranting Aktif' : 'Semua Cabang' }}
+                        <span class="text-[10px] text-red-600 font-semibold flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+                            {{ auth()->user()->role === 'admin_ranting' ? 'Wilayah Aktif' : 'Terdaftar di Cabang' }}
                         </span>
                     </div>
                     <div
                         class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-base transition group-hover:scale-105">
-                        <i class="fa-solid fa-map-location-dot"></i>
+                        <i class="fa-solid fa-building-shield"></i>
                     </div>
                 </div>
 
@@ -133,7 +138,11 @@
                         <span
                             class="text-[10px] text-yellow-600 font-bold flex items-center gap-1 {{ $totalVerifikasi > 0 ? 'animate-pulse' : '' }}">
                             <i class="fa-solid fa-circle-notch {{ $totalVerifikasi > 0 ? 'animate-spin' : '' }}"></i>
-                            {{ $totalVerifikasi > 0 ? 'Perlu Diproses' : 'Selesai' }}
+                            @if (auth()->user()->role === 'admin_cabang')
+                                {{ $totalVerifikasi > 0 ? 'Perlu Diproses' : 'Selesai' }}
+                            @else
+                                {{ $totalVerifikasi > 0 ? 'Status Pending' : 'Selesai' }}
+                            @endif
                         </span>
                     </div>
                     <div
@@ -154,7 +163,7 @@
                             @if (auth()->user()->role === 'admin_ranting')
                                 {{-- Menggunakan relasi ranting user yang login untuk nama yang akurat --}}
                                 <i class="fa-solid fa-building-shield text-red-500"></i>
-                                {{ auth()->user()->ranting->nama_ranting ?? 'Ranting' }}
+                                Ranting {{ auth()->user()->ranting->nama_ranting ?? 'Ranting' }}
                             @else
                                 {{-- Tampilan untuk Admin Cabang --}}
                                 <i class="fa-solid fa-vault text-green-600"></i>
@@ -189,9 +198,10 @@
                             <table class="w-full text-left text-xs text-gray-600">
                                 <thead
                                     class="bg-gray-50 text-gray-700 uppercase font-semibold border-b border-gray-100">
-                                    <tr>
+                                    <tr
+                                        class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                                         <th class="p-3">Tanggal Daftar</th>
-                                        <th class="p-3">Nama Pendaftar</th>
+                                        <th class="p-3">Nama Lengkap</th>
                                         <th class="p-3">Ranting Tujuan</th>
                                         <th class="p-3 text-center">Berkas</th> <!-- Kolom aksi dihapus -->
                                     </tr>
@@ -199,10 +209,10 @@
                                 <tbody class="divide-y divide-gray-100">
                                     @forelse($antreanPendaftaran as $pendaftar)
                                         <tr class="hover:bg-slate-50/40 transition">
-                                            <td class="p-3 font-bold text-slate-900 uppercase">
+                                            <td class="p-3 font-bold text-slate-900">
                                                 {{ $pendaftar->created_at->translatedFormat('d F Y') }}
                                             </td>
-                                            <td class="p-3 font-bold text-slate-900 uppercase">
+                                            <td class="p-3 font-bold text-slate-900">
                                                 {{ $pendaftar->nama_lengkap }}
                                             </td>
                                             <td class="p-3 text-slate-500">
