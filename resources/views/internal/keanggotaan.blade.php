@@ -46,47 +46,55 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            {{-- Kartu Siswa --}}
             <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tingkatan Warga</p>
-                    <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $statWarga }} <span
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tingkatan Siswa</p>
+                    <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $statSiswa ?? 0 }} <span
+                            class="text-xs font-normal text-gray-400">Jiwa</span></h4>
+                </div>
+                <div
+                    class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold">
+                    S</div>
+            </div>
+
+            {{-- Kartu Warga TK 1 --}}
+            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Warga TK 1</p>
+                    <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $statWargaTk1 ?? 0 }} <span
                             class="text-xs font-normal text-gray-400">Jiwa</span></h4>
                 </div>
                 <div
                     class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center text-xs font-bold">
-                    W</div>
+                    W1</div>
             </div>
 
+            {{-- Kartu Warga TK 2 --}}
             <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tingkatan Pendekar</p>
-                    <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $statPendekar }} <span
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Warga TK 2</p>
+                    <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $statWargaTk2 ?? 0 }} <span
+                            class="text-xs font-normal text-gray-400">Jiwa</span></h4>
+                </div>
+                <div
+                    class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center text-xs font-bold">
+                    W2</div>
+            </div>
+
+            {{-- Kartu Warga TK 3 --}}
+            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Warga TK 3</p>
+                    <h4 class="text-xl font-extrabold text-slate-950 mt-1">{{ $statWargaTk3 ?? 0 }} <span
                             class="text-xs font-normal text-gray-400">Jiwa</span></h4>
                 </div>
                 <div
                     class="w-8 h-8 rounded-lg bg-yellow-50 text-yellow-600 flex items-center justify-center text-xs font-bold">
-                    P</div>
+                    W3</div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status Aktif</p>
-                    <h4 class="text-xl font-extrabold text-green-600 mt-1">{{ $statAktif }} <span
-                            class="text-xs font-normal text-gray-400">Jiwa</span></h4>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-xs"><i
-                        class="fa-solid fa-user-check"></i></div>
-            </div>
-
-            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Non-Aktif / Pasif</p>
-                    <h4 class="text-xl font-extrabold text-gray-500 mt-1">{{ $statNonAktif }} <span
-                            class="text-xs font-normal text-gray-400">Jiwa</span></h4>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-gray-50 text-gray-500 flex items-center justify-center text-xs"><i
-                        class="fa-solid fa-user-slash"></i></div>
-            </div>
         </div>
 
         <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">

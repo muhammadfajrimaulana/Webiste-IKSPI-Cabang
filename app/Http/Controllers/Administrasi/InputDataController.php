@@ -55,6 +55,6 @@ class InputDataController extends Controller
 
         Pendaftaran::create($validatedData);
 
-        return redirect()->back()->with('success', 'Data calon warga berhasil di-input! Silakan cek di bagian Flow B (Verifikasi).');
+        return redirect()->back()->with('success', 'Data calon anggota berhasil di-input! Silakan cek di bagian Flow B (Verifikasi).');
     }
 }

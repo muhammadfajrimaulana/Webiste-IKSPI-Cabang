@@ -64,7 +64,7 @@ class VerifikasiController extends Controller
                     'pendaftaran_id'     => $pendaftaran->id,
                     'ranting_id'         => $pendaftaran->ranting_id,
                     'nomor_anggota'      => 'IKS-' . date('Y') . '-' . str_pad($pendaftaran->id, 4, '0', STR_PAD_LEFT),
-                    'tingkatan'          => 'warga',
+                    'tingkatan'          => $pendaftaran->tingkatan,
                     'status_aktif'       => 'aktif',
                     'tanggal_pengesahan' => date('Y-m-d'),
                 ]);

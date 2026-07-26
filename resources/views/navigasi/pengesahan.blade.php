@@ -262,8 +262,10 @@
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Tingkatan</label>
                         <select name="tingkatan" id="edit_tingkatan"
                             class="w-full mt-1 p-2 text-xs border rounded-lg">
-                            <option value="Warga">Warga</option>
-                            <option value="Pendekar">Pendekar</option>
+                            <option value="Siswa">Siswa</option>
+                            <option value="Warga TK 1">Warga TK 1</option>
+                            <option value="Warga TK 2">Warga TK 2</option>
+                            <option value="Warga TK 3">Warga TK 3</option>
                         </select>
                     </div>
                     <div>

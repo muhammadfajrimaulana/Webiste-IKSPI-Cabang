@@ -95,20 +95,35 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Ranting Tujuan</label>
-
                         <select name="ranting_id" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs bg-white focus:ring-1 focus:ring-red-500 focus:outline-none cursor-pointer">
                             <option value="">-- Pilih Ranting --</option>
-
                             @foreach ($rantings as $ranting)
                                 <option value="{{ $ranting->id }}"
                                     {{ old('ranting_id', auth()->user()->ranting_id) == $ranting->id ? 'selected' : '' }}>
-                                    {{ $ranting->nama_ranting }}
+                                    Ranting {{ $ranting->nama_ranting }}
                                 </option>
                             @endforeach
                         </select>
-
                         @error('ranting_id')
+                            <p class="text-[10px] text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Tingkatan</label>
+                        <select name="tingkatan" required
+                            class="w-full px-3 py-2 border @error('tingkatan') border-red-500 @else border-gray-300 @enderror rounded-lg text-xs bg-white focus:ring-1 focus:ring-red-500 focus:outline-none cursor-pointer">
+                            <option value="">-- Pilih Tingkatan --</option>
+                            <option value="Siswa" {{ old('tingkatan') == 'Siswa' ? 'selected' : '' }}>Siswa</option>
+                            <option value="Warga TK 1" {{ old('tingkatan') == 'Warga TK 1' ? 'selected' : '' }}>Warga
+                                TK 1</option>
+                            <option value="Warga TK 2" {{ old('tingkatan') == 'Warga TK 2' ? 'selected' : '' }}>Warga
+                                TK 2</option>
+                            <option value="Warga TK 3" {{ old('tingkatan') == 'Warga TK 3' ? 'selected' : '' }}>Warga
+                                TK 3</option>
+                        </select>
+                        @error('tingkatan')
                             <p class="text-[10px] text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
