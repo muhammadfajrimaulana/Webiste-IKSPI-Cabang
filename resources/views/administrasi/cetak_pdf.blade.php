@@ -144,7 +144,7 @@
         <table class="kop-tabel">
             <tr>
                 <td style="border: none; width: 15%; text-align: center; vertical-align: middle;">
-                    <img src="{{ public_path('assets/img/logo-ikspi.png') }}"
+                    <img src="{{ public_path('assets/img/ikspi-jakpus.png') }}"
                         style="width: 70px; height: auto; max-height: 80px;">
                 </td>
                 <td style="border: none; width: 70%; text-align: center;">
@@ -155,7 +155,7 @@
                     </p>
                 </td>
                 <td style="border: none; width: 15%; text-align: center; vertical-align: middle;">
-                    <img src="{{ public_path('assets/img/ikspi-jakpus.png') }}"
+                    <img src="{{ public_path('assets/img/ikspi.png') }}"
                         style="width: 70px; height: auto; max-height: 80px;">
                 </td>
             </tr>
@@ -172,7 +172,7 @@
             <tr>
                 <th class="text-center" style="width: 5%;">No</th>
                 <th style="width: 25%;">No. Anggota</th>
-                <th>Nama Lengkap Pendekar</th>
+                <th>Nama Lengkap</th>
                 <th style="width: 25%;">Ranting Latihan</th>
                 <th style="width: 20%;">Tanggal Sah</th>
             </tr>
@@ -189,7 +189,7 @@
             @empty
                 <tr>
                     <td colspan="5" class="text-center" style="font-style: italic; color: #64748b; padding: 20px;">
-                        Belum ada data warga/anggota yang resmi disahkan.
+                        {{ request('ranting_id') ? 'Belum ada data anggota resmi untuk ranting yang dipilih.' : 'Belum ada data anggota yang resmi disahkan.' }}
                     </td>
                 </tr>
             @endforelse

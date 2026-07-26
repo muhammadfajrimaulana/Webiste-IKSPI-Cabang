@@ -34,6 +34,7 @@ class InputDataController extends Controller
             'tanggal_lahir' => 'required|date',
             'no_hp'         => 'required|numeric|digits_between:10,15',
             'ranting_id'    => 'required|exists:rantings,id',
+            'tingkatan'     => 'required|string',
             'alamat'        => 'required|string',
             'latitude'      => 'nullable|string',
             'longitude'     => 'nullable|string',

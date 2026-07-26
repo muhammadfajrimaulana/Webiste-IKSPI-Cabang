@@ -111,7 +111,8 @@
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Tingkatan</label>
+                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Tingkatan Status
+                            Anggota</label>
                         <select name="tingkatan" required
                             class="w-full px-3 py-2 border @error('tingkatan') border-red-500 @else border-gray-300 @enderror rounded-lg text-xs bg-white focus:ring-1 focus:ring-red-500 focus:outline-none cursor-pointer">
                             <option value="">-- Pilih Tingkatan --</option>

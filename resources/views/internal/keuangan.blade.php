@@ -33,10 +33,12 @@
 
             <div>
                 <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Pusat Transparansi Kas & Logistik
-                    {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}
+                    {{ auth()->user()->ranting?->nama_ranting ? 'Ranting ' . auth()->user()->ranting->nama_ranting : 'Setiap Ranting' }}
                 </h2>
                 <p class="text-xs text-gray-500 mt-1">Sistem pencatatan arus kas masuk, operasional, dan inventarisasi
-                    logistik {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}.</p>
+                    logistik
+                    {{ auth()->user()->ranting?->nama_ranting ? 'Ranting ' . auth()->user()->ranting->nama_ranting : 'Setiap Ranting' }}.
+                </p>
             </div>
 
             <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3">

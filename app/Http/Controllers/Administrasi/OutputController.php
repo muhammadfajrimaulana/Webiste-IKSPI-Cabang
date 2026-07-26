@@ -43,21 +43,30 @@ class OutputController extends Controller
         return view('administrasi.output', compact('wargaSiapSah', 'anggotaResmi', 'dataRanting'));
     }
 
-    public function cetakLaporan()
+    public function cetakLaporan(Request $request)
     {
         $user = Auth::user();
         $query = Anggota::with(['pendaftaran', 'ranting'])->orderBy('created_at', 'desc');
 
-        // Admin Ranting hanya cetak laporan untuk rantingnya saja
+        if ($request->filled('ranting_id')) {
+            $query->where('ranting_id', $request->ranting_id);
+        }
+
         if ($user->role === 'admin_ranting') {
             $query->where('ranting_id', $user->ranting_id);
         }
 
         $anggotaResmi = $query->get();
+
+        // Tentukan nama file PDF yang dinamis berdasarkan filter/ranting user
+        $namaRantingFile = $request->filled('ranting_id')
+            ? \App\Models\Ranting::find($request->ranting_id)?->nama_ranting ?? 'Cabang'
+            : ($user->ranting?->nama_ranting ?? 'Semua-Ranting');
+
         $pdf = Pdf::loadView('administrasi.cetak_pdf', compact('anggotaResmi'));
         $pdf->setPaper('a4', 'portrait');
 
-        return $pdf->stream('Laporan-Pengesahan-' . ($user->ranting?->nama_ranting ?? 'Cabang') . '.pdf');
+        return $pdf->stream('Laporan-Pengesahan-' . $namaRantingFile . '.pdf');
     }
 
     public function updatePengesahan(Request $request, $id)

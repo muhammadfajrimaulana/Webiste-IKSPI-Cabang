@@ -13,6 +13,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ranting_id');
             $table->string('nama_lengkap');
             $table->string('nik', 16);
+            $table->enum('tingkatan', ['Siswa', 'Warga TK 1', 'Warga TK 2', 'Warga TK 3',])->default('Siswa');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('no_hp');

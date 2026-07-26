@@ -21,15 +21,16 @@
 
         <div class="flex items-center justify-between border-b border-gray-200 pb-4">
             <div>
-                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Buku Induk Anggota Resmi
-                    {{ auth()->user()->ranting?->nama_ranting ?? 'Setiap Ranting' }}
+                <h2 class="text-xl font-bold text-slate-950 uppercase tracking-wide">Data Anggota Resmi
+                    {{ auth()->user()->ranting?->nama_ranting ? 'Ranting ' . auth()->user()->ranting->nama_ranting : 'Setiap Ranting' }}
                 </h2>
-                <p class="text-xs text-gray-500 mt-1">Daftar nomor anggota resmi yang telah diterbitkan sistem. Anda
+                <p class="text-xs text-gray-500 mt-1">Daftar anggota resmi yang telah diterbitkan. Anda
                     dapat mengatur tanggal pengesahan di sini.</p>
             </div>
-            <a href="{{ route('output.cetak', ['ranting_id' => request('ranting_id')]) }}" target="_blank"
+            <a href="{{ route('output.cetak', request()->query()) }}" target="_blank"
                 class="px-4 py-2 bg-yellow-600 text-white font-bold text-xs rounded-lg hover:bg-slate-800 shadow-xs transition inline-flex items-center gap-2 cursor-pointer print:hidden">
                 <i class="fa-solid fa-print"></i> Cetak Laporan
+                {{ request('ranting_id') ? 'Ranting Terpilih' : 'Semua Ranting' }}
             </a>
         </div>
 
@@ -60,7 +61,7 @@
                                             @foreach ($dataRanting as $ranting)
                                                 <a href="{{ route('output.index', array_merge(request()->query(), ['ranting_id' => $ranting->id])) }}"
                                                     class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50 {{ request('ranting_id') == $ranting->id ? 'bg-slate-100' : '' }}">
-                                                    {{ $ranting->nama_ranting }}
+                                                    Ranting {{ $ranting->nama_ranting }}
                                                 </a>
                                             @endforeach
                                         </div>
@@ -81,9 +82,11 @@
                             <td class="p-4 font-bold text-slate-900 uppercase">
                                 {{ $row->pendaftaran->nama_lengkap }}
                             </td>
-                            <td class="p-4 text-gray-600 font-medium">
-                                {{ $row->ranting->nama_ranting }}
-                            </td>
+                            @if (auth()->user()->role === 'admin_cabang')
+                                <td class="p-4 text-gray-600 font-medium">
+                                    Ranting {{ $row->ranting->nama_ranting }}
+                                </td>
+                            @endif
                             <td class="p-4">
                                 <span
                                     class="px-2 py-0.5 bg-slate-100 text-slate-800 text-[10px] font-bold rounded border border-slate-200 uppercase">
@@ -158,13 +161,19 @@
         });
     });
 
-    // Fungsi untuk toggle menu filter Ranting
+    // Toggle filter menu ranting
     function toggleRantingFilter() {
         const rantingMenu = document.getElementById('filterRantingMenu');
-        const kategoriMenu = document.getElementById('filterKategoriMenu'); // Pastikan ini ID menu kategori kamu
+        const kategoriMenu = document.getElementById('filterKategoriMenu');
 
-        rantingMenu.classList.toggle('hidden');
-        kategoriMenu.classList.add('hidden'); // Tutup menu kategori jika sedang buka ranting
+        if (rantingMenu) {
+            rantingMenu.classList.toggle('hidden');
+        }
+
+        // Gunakan pengecekan (if) agar tidak error jika elemen kategori tidak ada
+        if (kategoriMenu) {
+            kategoriMenu.classList.add('hidden');
+        }
     }
 
     // Menutup menu jika klik di area mana saja di luar menu

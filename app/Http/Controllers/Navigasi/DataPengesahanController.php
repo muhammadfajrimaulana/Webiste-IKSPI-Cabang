@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Navigasi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Anggota;
+use App\Models\Ranting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,7 +48,11 @@ class DataPengesahanController extends Controller
             return $item;
         });
 
-        return view('navigasi.pengesahan', compact('dataPengesahan', 'search', 'totalPengesahan'));
+        $dataRanting = ($user->role === 'admin_cabang')
+            ? Ranting::all()
+            : Ranting::where('id', $user->ranting_id)->get();
+
+        return view('navigasi.pengesahan', compact('dataPengesahan', 'search', 'totalPengesahan', 'dataRanting'));
     }
 
     public function updatePengesahan(Request $request, $id)

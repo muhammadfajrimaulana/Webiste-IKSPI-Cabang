@@ -61,8 +61,8 @@
                         <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">
                             {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Pengesahan' : '' }}
                         </h3>
-                        <p class="text-[11px] text-gray-500 font-medium">
-                            {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola pengesahan anggota IKSPI Jakarta Pusat.' : '' }}
+                        <p class="text-[11px] text-gray-500 font-medium">Kelola pengesahan anggota
+                            {{ auth()->user()->ranting ? 'Ranting ' . auth()->user()->ranting->nama_ranting : 'setiap ranting' }}.
                         </p>
                     </div>
                 </div>
@@ -120,7 +120,34 @@
                             <tr>
                                 <th class="px-6 py-3">Nomor Anggota</th>
                                 <th class="px-6 py-3">Nama Lengkap</th>
-                                <th class="px-6 py-3">Ranting</th>
+                                @if (auth()->user()->role === 'admin_cabang')
+                                    <th class="px-6 py-3">
+                                        <div class="flex items-center gap-1 group">
+                                            <span class="{{ request('ranting_id') ? 'text-red-600' : '' }}">Ranting
+                                                Asal</span>
+                                            <div class="relative">
+                                                <button onclick="toggleRantingFilter()"
+                                                    class="text-slate-400 hover:text-slate-900">
+                                                    <i class="fa-solid fa-filter text-[9px]"></i>
+                                                </button>
+
+                                                <!-- Menu Filter Ranting -->
+                                                <div id="filterRantingMenu"
+                                                    class="hidden absolute top-full left-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-xl z-20 max-h-60 overflow-y-auto">
+                                                    <a href="{{ route('output.index', array_merge(request()->query(), ['ranting_id' => ''])) }}"
+                                                        class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50">Semua
+                                                        Ranting</a>
+                                                    @foreach ($dataRanting as $ranting)
+                                                        <a href="{{ route('output.index', array_merge(request()->query(), ['ranting_id' => $ranting->id])) }}"
+                                                            class="block px-4 py-2 text-[10px] font-bold text-slate-700 hover:bg-slate-50 {{ request('ranting_id') == $ranting->id ? 'bg-slate-100' : '' }}">
+                                                            Ranting {{ $ranting->nama_ranting }}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                @endif
                                 <th class="px-6 py-3">Tingkatan</th>
                                 <th class="px-6 py-3">Status</th>
                                 @if (auth()->user()->role !== 'anggota')
@@ -135,7 +162,10 @@
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ $pengesahan->nama_lengkap ?? 'N/A' }}</td>
                                     </td>
-                                    <td class="px-6 py-4">{{ $pengesahan->ranting->nama_ranting ?? 'N/A' }}</td>
+                                    @if (auth()->user()->role === 'admin_cabang')
+                                        <td class="px-6 py-4">
+                                            {{ $pengesahan->ranting->nama_ranting ?? 'Ranting Tidak Terdaftar' }}</td>
+                                    @endif
                                     <td class="px-6 py-4">{{ $pengesahan->tingkatan ?? 'N/A' }}</td>
                                     <td class="px-6 py-4">
                                         <span
@@ -306,6 +336,21 @@
                 }
             });
         });
+
+        // Toggle filter menu ranting
+        function toggleRantingFilter() {
+            const rantingMenu = document.getElementById('filterRantingMenu');
+            const kategoriMenu = document.getElementById('filterKategoriMenu');
+
+            if (rantingMenu) {
+                rantingMenu.classList.toggle('hidden');
+            }
+
+            // Gunakan pengecekan (if) agar tidak error jika elemen kategori tidak ada
+            if (kategoriMenu) {
+                kategoriMenu.classList.add('hidden');
+            }
+        }
 
         function bukaModalEdit(pengesahan) {
             const modal = document.getElementById('modalEditPengesahan');

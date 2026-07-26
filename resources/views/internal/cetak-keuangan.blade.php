@@ -208,7 +208,7 @@
         <table class="kop-tabel">
             <tr>
                 <td style="border: none; width: 15%; text-align: center; vertical-align: middle;">
-                    <img src="{{ public_path('assets/img/logo-ikspi.png') }}"
+                    <img src="{{ public_path('assets/img/ikspi-jakpus.png') }}"
                         style="width: 70px; height: auto; max-height: 80px;">
                 </td>
                 <td style="border: none; width: 70%; text-align: center;">
@@ -218,7 +218,7 @@
                         812-9696-4998</p>
                 </td>
                 <td style="border: none; width: 15%; text-align: center; vertical-align: middle;">
-                    <img src="{{ public_path('assets/img/ikspi-jakpus.png') }}"
+                    <img src="{{ public_path('assets/img/ikspi.png') }}"
                         style="width: 70px; height: auto; max-height: 80px;">
                 </td>
             </tr>

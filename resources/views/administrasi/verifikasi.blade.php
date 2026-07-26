@@ -40,6 +40,7 @@
                         class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                         <th class="p-4">Calon Anggota</th>
                         <th class="p-4">Ranting Latihan</th>
+                        <th class="p-4">Tingkatan Anggota</th>
                         <th class="p-4">Tanggal Daftar</th>
                         <th class="p-4 text-center">Dokumen Kelengkapan</th>
                         <th class="p-4 text-right">
@@ -55,7 +56,10 @@
                                 <div class="text-[10px] text-gray-400 mt-0.5">NIK: {{ $data->nik }}</div>
                             </td>
                             <td class="p-4 text-slate-600 font-medium">
-                                {{ $data->ranting?->nama_ranting ?? 'Tidak Terdaftar' }}
+                                Ranting {{ $data->ranting?->nama_ranting ?? 'Tidak Terdaftar' }}
+                            </td>
+                            <td class="p-4 text-slate-600 font-medium">
+                                {{ $data->tingkatan }}
                             </td>
                             <td class="p-4 text-gray-500">
                                 {{ $data->created_at->translatedFormat('d F Y') }}
