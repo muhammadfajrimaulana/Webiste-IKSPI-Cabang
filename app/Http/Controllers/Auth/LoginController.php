@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Ranting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -46,12 +47,21 @@ class LoginController extends Controller
 
     public function resetPassword(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        // Cari data ranting berdasarkan ID yang dikirim dari tombol
+        $ranting = Ranting::findOrFail($id);
 
+        // Cari akun user yang memiliki ranting_id yang sama dengan ranting tersebut
+        $user = User::where('ranting_id', $ranting->id)->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Akun user untuk ranting ' . $ranting->nama_ranting . ' tidak ditemukan.');
+        }
+
+        // Reset password user
         $user->password = Hash::make('ikspi123');
         $user->save();
 
-        return redirect()->back()->with('success', 'Password untuk akun ' . $user->username . ' berhasil direset menjadi: ikspi123');
+        return redirect()->back()->with('success', 'Password untuk akun Ranting ' . $ranting->nama_ranting . ' (Username: ' . $user->username . ') berhasil direset menjadi: ikspi123');
     }
 
     public function logout(Request $request)
