@@ -1,6 +1,6 @@
 <x-dashboard-layout>
     @slot('icon', 'fa-solid fa-building-shield')
-    @slot('title', 'Flow B: Verifikasi Pengurus')
+    @slot('title', 'Flow B: Verifikasi Calon Anggota')
 
     <div class="max-w-6xl mx-auto space-y-6">
         @if (session('success'))

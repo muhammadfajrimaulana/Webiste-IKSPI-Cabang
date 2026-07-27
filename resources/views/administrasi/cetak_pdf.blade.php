@@ -171,16 +171,44 @@
         <thead>
             <tr>
                 <th class="text-center" style="width: 5%;">No</th>
-                <th style="width: 25%;">No. Anggota</th>
+                <th class="text-center" style="width: 12%;">Pas Foto</th>
+                <th style="width: 20%;">No. Anggota</th>
                 <th>Nama Lengkap</th>
-                <th style="width: 25%;">Ranting Latihan</th>
-                <th style="width: 20%;">Tanggal Sah</th>
+                <th style="width: 20%;">Ranting Latihan</th>
+                <th style="width: 20%;">Tanggal Disahkan</th>
             </tr>
         </thead>
         <tbody>
             @forelse($anggotaResmi as $index => $row)
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
+                    <td class="text-center">
+                        @php
+                            $fotoPath = null;
+                            if ($row->pendaftaran?->pas_foto) {
+                                if (Str::startsWith($row->pendaftaran->pas_foto, 'http')) {
+                                    $fotoPath = $row->pendaftaran->pas_foto;
+                                } else {
+                                    // Menggunakan path fisik server agar terbaca oleh PDF generator
+                                    $localPath = public_path('storage/' . $row->pendaftaran->pas_foto);
+                                    if (file_exists($localPath)) {
+                                        $fotoPath = $localPath;
+                                    }
+                                }
+                            }
+
+                            // Jika tidak ada atau file tidak ditemukan, arahkan ke default
+                            if (
+                                !$fotoPath ||
+                                (is_string($fotoPath) && !Str::startsWith($fotoPath, 'http') && !file_exists($fotoPath))
+                            ) {
+                                $fotoPath = public_path('images/default.png');
+                            }
+                        @endphp
+
+                        <img src="{{ $fotoPath }}" alt="Pas Foto" width="45"
+                            style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    </td>
                     <td class="font-mono" style="color: #dc2626;">{{ $row->nomor_anggota }}</td>
                     <td style="font-weight: bold; text-transform: uppercase;">{{ $row->pendaftaran->nama_lengkap }}</td>
                     <td>{{ $row->ranting->nama_ranting }}</td>
