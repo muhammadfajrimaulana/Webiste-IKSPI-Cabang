@@ -100,9 +100,9 @@
                 <table class="w-full text-left text-sm text-gray-500 border-collapse">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th class="px-6 py-4 font-bold">Ranting ID</th>
+                            <th class="px-6 py-4 font-bold">ID Ranting</th>
                             <th class="px-6 py-4 font-bold">Nama Ranting</th>
-                            <th class="px-6 py-4 font-bold">Ketua</th>
+                            <th class="px-6 py-4 font-bold">Ketua Ranting</th>
                             <th class="px-6 py-4 font-bold text-center">Action</th>
                         </tr>
                     </thead>

@@ -25,7 +25,9 @@
         <div
             class="hidden md:flex flex-1 bg-gradient-to-br from-red-900 to-slate-950 p-12 flex-col justify-between text-white">
             <div>
-                <img src="{{ asset('assets/img/ikspi-jakpus.png') }}" alt="Logo" class="w-16 h-16 opacity-90">
+                <a href="{{ route('beranda') }}">
+                    <img src="{{ asset('assets/img/ikspi-jakpus.png') }}" alt="Logo" class="w-16 h-16 opacity-90">
+                </a>
                 <h1 class="text-3xl font-black text-yellow-500 mt-6 leading-tight"><span
                         class="text-white">IKS.PI</span><br>KERA
                     SAKTI</h1>
@@ -37,47 +39,59 @@
         </div>
 
         <!-- Sisi Kanan: Form Login -->
-        <div class="flex-1 p-8 md:p-12 bg-white">
-            <div class="mb-8">
-                <h2 class="text-2xl font-black text-slate-900">Selamat Datang</h2>
-                <p class="text-slate-500 text-sm mt-1">Silakan masukkan akun kredensial Anda.</p>
-            </div>
-
-            @if ($errors->any())
-                <div id="alert-error"
-                    class="bg-red-50 border border-red-200 text-red-600 p-3 rounded-xl text-xs mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    {{ $errors->first() }}
-                </div>
-            @endif
-
-            <form action="{{ route('login.post') }}" method="POST" class="space-y-5">
-                @csrf
-                <div>
-                    <label
-                        class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Username</label>
-                    <input type="text" name="username" required placeholder="username"
-                        class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition">
+        <div class="flex-1 p-8 md:p-12 bg-white flex flex-col justify-between">
+            <div>
+                <div class="mb-8">
+                    <h2 class="text-2xl font-black text-slate-900">Selamat Datang</h2>
+                    <p class="text-slate-500 text-sm mt-1">Silakan masukkan akun kredensial Anda.</p>
                 </div>
 
-                <div class="relative">
-                    <label
-                        class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Password</label>
+                @if ($errors->any())
+                    <div id="alert-error"
+                        class="bg-red-50 border border-red-200 text-red-600 p-3 rounded-xl text-xs mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ $errors->first() }}
+                    </div>
+                @endif
 
-                    <input type="password" id="password" name="password" required placeholder="••••••••"
-                        class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition">
+                <form action="{{ route('login.post') }}" method="POST" class="space-y-5">
+                    @csrf
+                    <div>
+                        <label
+                            class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Username</label>
+                        <input type="text" name="username" required placeholder="username"
+                            class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition">
+                    </div>
 
-                    <button type="button" onclick="togglePassword()"
-                        class="absolute right-4 top-[34px] text-slate-400 hover:text-red-600 transition">
-                        <i id="eye-icon" class="fa-solid fa-eye"></i>
+                    <div>
+                        <!-- Label & Link Lupa Password Sejajar (Lebih Profesional) -->
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label
+                                class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Password</label>
+                        </div>
+
+                        <div class="relative">
+                            <input type="password" id="password" name="password" required placeholder="••••••••"
+                                class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition">
+
+                            <button type="button" onclick="togglePassword()"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-600 transition">
+                                <i id="eye-icon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <a href="https://wa.me/628xxxxxxxxxx?text=Halo%20Admin%20Cabang,%20saya%20lupa%20password%20akun%20pengurus%20saya."
+                            target="_blank"
+                            class="text-[10px] pt-4 font-semibold text-red-600 hover:text-red-700 transition flex items-center gap-1">
+                            <i class="fa-brands fa-whatsapp"></i> Lupa Password?
+                        </a>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition duration-300 shadow-xl shadow-slate-900/10 cursor-pointer text-sm">
+                        Masuk ke Dashboard
                     </button>
-                </div>
-
-                <button type="submit"
-                    class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition duration-300 shadow-xl shadow-slate-900/10 cursor-pointer text-sm">
-                    Masuk ke Dashboard
-                </button>
-            </form>
+                </form>
+            </div>
 
             <p class="mt-8 text-center text-[10px] text-slate-400 uppercase tracking-widest font-semibold">
                 &copy; {{ date('Y') }} IKSPI Cabang Jakarta Pusat

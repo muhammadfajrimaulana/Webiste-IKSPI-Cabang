@@ -65,6 +65,7 @@ Route::post('/gerbang', [GerbangController::class, 'checkGerbangPassword'])->nam
 // Alur Login Admin Resmi
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.post');
+Route::patch('/ranting/{id}/reset-password', [LoginController::class, 'resetPassword'])->name('admin.ranting.reset-password');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {

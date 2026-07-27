@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -40,6 +42,16 @@ class LoginController extends Controller
         throw ValidationException::withMessages([
             'username' => 'Username atau Password salah. Silakan coba kembali.',
         ]);
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->password = Hash::make('ikspi123');
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password untuk akun ' . $user->username . ' berhasil direset menjadi: ikspi123');
     }
 
     public function logout(Request $request)

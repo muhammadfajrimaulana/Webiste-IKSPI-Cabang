@@ -28,10 +28,10 @@
 
                 <div>
                     <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">
-                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Wilayah' : 'Informasi Latihan' }}
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Manajemen Data Ranting' : 'Informasi Latihan' }}
                     </h3>
                     <p class="text-[10px] text-gray-500 font-medium">
-                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola titik latihan dan data wilayah.' : 'Detail lokasi latihan resmi untuk seluruh anggota' }}
+                        {{ auth()->user()->role === 'admin_ranting' || auth()->user()->role === 'admin_cabang' ? 'Kelola data setiap ranting IKSPI cabang Jakarta Pusat.' : 'Detail lokasi latihan resmi untuk seluruh anggota' }}
                     </p>
                 </div>
             </div>
@@ -185,7 +185,7 @@
                     <table class="w-full text-xs text-left">
                         <thead class="bg-gray-50 text-gray-500 uppercase font-bold border-b border-gray-200">
                             <tr class="text-[10px] text-black font-bold">
-                                <th class="px-6 py-4">Ranting</th>
+                                <th class="px-6 py-4">Nama Ranting</th>
                                 <th class="px-6 py-4">Ketua Ranting</th>
                                 <th class="px-6 py-4">Alamat Ranting</th>
                                 <th class="px-6 py-4">Kontak Ranting</th>
@@ -203,10 +203,17 @@
                                     <td class="px-6 py-4 text-slate-600">{{ $ranting->ketua_ranting ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 text-slate-600">{{ $ranting->alamat_ranting ?? 'N/A' }}</td>
                                     <td class="px-6 py-4">
-                                        <a href="https://wa.me/{{ $ranting->kontak_ranting }}" target="_blank"
-                                            class="text-blue-600 hover:underline">
-                                            {{ $ranting->kontak_ranting ?? 'N/A' }}
-                                        </a>
+                                        @if ($ranting->kontak_ranting)
+                                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $ranting->kontak_ranting) }}"
+                                                target="_blank"
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[10px] hover:bg-emerald-100 font-medium rounded-md transition border border-emerald-200/60"
+                                                title="Chat via WhatsApp">
+                                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                                <span>{{ $ranting->kontak_ranting }}</span>
+                                            </a>
+                                        @else
+                                            <span class="text-gray-400 italic">N/A</span>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-slate-600">{{ $ranting->nama_pelatih ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">
@@ -214,19 +221,35 @@
                                     </td>
                                     @if (auth()->user()->role !== 'anggota')
                                         <td class="px-6 py-4 text-center">
-                                            <button type="button"
-                                                onclick="bukaModalEdit({{ json_encode($ranting) }})"
-                                                class="ml-2 px-3 py-1.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition cursor-pointer">
-                                                Edit
-                                            </button>
+                                            <div class="inline-flex items-center justify-center gap-1.5">
+                                                <!-- Tombol Reset Password -->
+                                                <form
+                                                    action="{{ route('admin.ranting.reset-password', $ranting->id) }}"
+                                                    method="POST" class="inline-block m-0"
+                                                    onsubmit="return confirm('Yakin ingin mereset password untuk ranting {{ $ranting->nama_ranting }}? Password akan diubah ke default.')">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit"
+                                                        class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-bold rounded-lg transition shadow-xs cursor-pointer inline-flex items-center gap-1.5"
+                                                        title="Reset Password">
+                                                        <i class="fa-solid fa-key"></i> Reset
+                                                    </button>
+                                                </form>
+
+                                                <!-- Tombol Edit -->
+                                                <button type="button"
+                                                    onclick="bukaModalEdit({{ json_encode($ranting) }})"
+                                                    class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold rounded-lg transition shadow-xs cursor-pointer inline-flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                                </button>
+                                            </div>
                                         </td>
                                     @endif
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-gray-400">Belum ada data
-                                        ranting.
-                                    </td>
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-400">Belum ada data
+                                        ranting.</td>
                                 </tr>
                             @endforelse
                         </tbody>
