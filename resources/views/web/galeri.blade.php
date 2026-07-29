@@ -59,23 +59,49 @@
                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                     alt="{{ $item->judul }}">
                             @else
-                                <img src="{{ asset('assets/img/default.png') }}"
-                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                                    alt="Default Image">
+                                <div class="w-full h-full flex items-center justify-center text-gray-400 bg-slate-100">
+                                    <i class="fa-regular fa-image text-3xl"></i>
+                                </div>
                             @endif
                             <span
                                 class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs text-slate-900 text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm">
                                 <i class="fa-regular fa-image mr-1 text-red-600"></i> Gambar
                             </span>
                         @else
-                            {{-- Tampilan Preview Video --}}
+                            {{-- Tampilan Preview Video yang Diperbaiki --}}
                             <div
-                                class="w-full h-full bg-slate-900 flex items-center justify-center relative group-hover:scale-105 transition duration-500">
-                                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition"></div>
-                                <div
-                                    class="h-12 w-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg z-10 group-hover:scale-110 transition">
-                                    <i class="fa-solid fa-play text-sm ml-0.5"></i>
-                                </div>
+                                class="w-full h-full bg-slate-900 flex items-center justify-center relative group overflow-hidden">
+                                @if ($item->file_path)
+                                    {{-- Cek apakah file_path berupa link YouTube --}}
+                                    @if (Str::contains($item->file_path, ['youtube.com', 'youtu.be']))
+                                        @php
+                                        // Mengubah link youtube biasa menjadi format embed
+                                        $url = $item->file_path;
+                                        if (Str::contains($url,
+                                        'watch?v=')) {
+                        $url = str_replace('watch?v=', 'embed/',
+                                        $url);
+                                        } elseif (Str::contains($url, 'youtu.be/')) {
+                                        $url = str_replace('youtu.be/', 'youtube.com/embed/', $url);
+                                        }
+                                        @php
+                                        <iframe src="{{ $url }}" class="w-full h-full absolute inset-0 border-0"
+                                            allowfullscreen></iframe>
+                                    @else
+                                        {{-- Jika file video lokal dari storage --}}
+                                        <video class="w-full h-full object-cover" controls>
+                                            <source src="{{ asset('storage/' . $item->file_path) }}" type="video/mp4">
+                                            Browser Anda tidak mendukung tag video.
+                                        </video>
+                                    @endif
+                                @else
+                                    {{-- Jika file_path kosong --}}
+                                    <div class="flex flex-col items-center justify-center text-slate-500 space-y-1">
+                                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                                        <span class="text-[10px]">Video tidak tersedia</span>
+                                    </div>
+                                @endif
+
                                 <span
                                     class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider z-10 shadow-sm">
                                     <i class="fa-solid fa-video mr-1"></i> Video

@@ -28,12 +28,14 @@
 
             {{-- Hero / Berita Utama (Featured News) --}}
             @if (request()->get('page', 1) == 1)
-                <div class="relative bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-slate-800 group">
+                <a href="{{ route('berita.show', $featuredPost->id) }}"
+                    class="block relative bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-slate-800 group cursor-pointer">
                     <div class="absolute inset-0 z-10 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
 
                     <div class="w-full h-[380px] md:h-[450px] bg-slate-800 overflow-hidden relative">
-                        @if ($featuredPost->thumbnail)
-                            <img src="{{ asset('storage/' . $featuredPost->thumbnail) }}"
+                        {{-- Diubah dari thumbnail ke file_path sesuai migration --}}
+                        @if ($featuredPost->file_path)
+                            <img src="{{ asset('storage/' . $featuredPost->file_path) }}"
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-80">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-slate-600">
@@ -68,7 +70,7 @@
                                 {{ $featuredPost->created_at->format('d M Y') }}</span>
                         </div>
                     </div>
-                </div>
+                </a>
             @endif
 
             {{-- Layout Utama: Daftar Berita & Sidebar --}}
@@ -84,11 +86,12 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         @foreach ($regularPosts as $post)
-                            <div
-                                class="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs flex flex-col group hover:shadow-lg hover:border-red-200 transition duration-300">
+                            <a href="{{ route('berita.show', $post->id) }}"
+                                class="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs flex flex-col group hover:shadow-lg hover:border-red-200 transition duration-300 cursor-pointer">
                                 <div class="w-full h-48 bg-slate-100 overflow-hidden relative border-b border-gray-100">
-                                    @if ($post->thumbnail)
-                                        <img src="{{ asset('storage/' . $post->thumbnail) }}"
+                                    {{-- Diubah dari thumbnail ke file_path --}}
+                                    @if ($post->file_path)
+                                        <img src="{{ asset('storage/' . $post->file_path) }}"
                                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center text-gray-400">
@@ -115,7 +118,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
