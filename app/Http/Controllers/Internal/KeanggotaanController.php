@@ -46,19 +46,11 @@ class KeanggotaanController extends Controller
             'title' => '1. Manajemen Keanggotaan',
             'icon' => 'fa-users',
             'semuaAnggota' => $semuaAnggota,
-<<<<<<< Updated upstream
             // Statistik disesuaikan dengan enum tingkatan di database
             'statSiswa' => (clone $statQuery)->where('tingkatan', 'Siswa')->count(),
             'statWargaTk1' => (clone $statQuery)->where('tingkatan', 'Warga TK 1')->count(),
             'statWargaTk2' => (clone $statQuery)->where('tingkatan', 'Warga TK 2')->count(),
             'statWargaTk3' => (clone $statQuery)->where('tingkatan', 'Warga TK 3')->count(),
-=======
-            'statWarga' => (clone $statQuery)->where('tingkatan', 'Warga')->count(),
-            'statPendekar' => (clone $statQuery)->where('tingkatan', 'Pendekar')->count(),
-            'statPendekar2' => (clone $statQuery)->where('tingkatan', 'Pendekar 2')->count(),
-            'statAktif' => (clone $statQuery)->where('status_aktif', 'aktif')->count(),
-            'statNonAktif' => (clone $statQuery)->where('status_aktif', 'non-aktif')->count(),
->>>>>>> Stashed changes
             'search' => $search,
             'rantingId' => $rantingId,
             // Admin Cabang lihat semua ranting, Admin Ranting hanya lihat namanya sendiri
