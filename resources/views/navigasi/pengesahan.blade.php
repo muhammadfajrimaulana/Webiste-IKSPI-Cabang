@@ -117,10 +117,15 @@
 
                     <table class="w-full text-left text-sm text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+<<<<<<< Updated upstream
                             <tr
                                 class="bg-slate-50 border-b border-gray-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                                 <th class="px-6 py-3">Pas Foto</th>
                                 <th class="px-6 py-3">Nomor Anggota</th>
+=======
+                            <tr>
+                                <th class="px-6 py-3">ID Anggota</th>
+>>>>>>> Stashed changes
                                 <th class="px-6 py-3">Nama Lengkap</th>
                                 @if (auth()->user()->role === 'admin_cabang')
                                     <th class="px-6 py-3">
@@ -319,10 +324,16 @@
                         <label class="text-[10px] font-bold text-gray-500 uppercase">Tingkatan</label>
                         <select name="tingkatan" id="edit_tingkatan"
                             class="w-full mt-1 p-2 text-xs border rounded-lg">
+<<<<<<< Updated upstream
                             <option value="Siswa">Siswa</option>
                             <option value="Warga TK 1">Warga TK 1</option>
                             <option value="Warga TK 2">Warga TK 2</option>
                             <option value="Warga TK 3">Warga TK 3</option>
+=======
+                            <option value="Warga">Warga</option>
+                            <option value="Pendekar">Pendekar</option>
+                            <option value="Pendekar2">Pendekar 2</option>
+>>>>>>> Stashed changes
                         </select>
                     </div>
                     <div>
