@@ -14,7 +14,7 @@
                         Direktori Anggota
                     </span>
                     <h1 class="text-3xl font-extrabold tracking-wide uppercase mt-3">
-                        Daftar Anggota / Pendekar
+                        Daftar Anggota IKSPI Kera Sakti
                     </h1>
                     <p class="text-xs text-slate-300 mt-2 leading-relaxed">
                         Database resmi anggota dan warga Ikatan Keluarga Silat Putra Indonesia Kera Sakti yang terdaftar
