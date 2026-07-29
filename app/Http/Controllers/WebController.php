@@ -105,22 +105,24 @@ class WebController extends Controller
     }
     public function berita()
     {
-        $posts = Post::latest()->paginate(9);
+        $posts = Post::where('tipe', 'berita')->latest()->paginate(9);
 
         return view('web.berita', compact('posts'));
     }
+
     public function showberita($id)
     {
         $berita = Post::findOrFail($id);
 
         return view('web.show-berita', compact('berita'));
     }
+
     public function galeri()
     {
-        $gambarList = Gallery::where('tipe', 'gambar')->latest()->get();
-        $videoList = Gallery::where('tipe', 'video')->latest()->get();
+        $gambarList = Post::where('tipe', 'gambar')->latest()->get();
+        $videoList = Post::where('tipe', 'video')->latest()->get();
 
-        $galleries = Gallery::latest()->paginate(12);
+        $galleries = Post::whereIn('tipe', ['gambar', 'video'])->latest()->paginate(12);
 
         return view('web.galeri', compact('galleries', 'gambarList', 'videoList'));
     }
