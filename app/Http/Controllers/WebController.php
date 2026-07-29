@@ -24,10 +24,12 @@ class WebController extends Controller
         $bendahara = Pengurus::where('jabatan', 'LIKE', '%Bendahara%')->first();
 
         $rantings = Ranting::withCount('anggota')->orderBy('nama_ranting', 'asc')->get();
-        $galeris = Gallery::latest()->get();
-        $beritaUtama = Post::latest()->first();
 
-        $beritaTerbarus = Post::latest()->skip(1)->take(2)->get();
+        $galeris = Post::where('tipe', 'gambar')->latest()->get();
+
+        $beritaUtama = Post::where('tipe', '!=', 'gambar')->latest()->first();
+
+        $beritaTerbarus = Post::where('tipe', '!=', 'gambar')->latest()->skip(1)->take(2)->get();
 
         return view('welcome', compact('ketua', 'sekretaris', 'bendahara', 'rantings', 'galeris', 'beritaUtama', 'beritaTerbarus'));
     }

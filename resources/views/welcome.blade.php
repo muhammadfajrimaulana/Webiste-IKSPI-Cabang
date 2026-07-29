@@ -446,7 +446,6 @@
         </div>
     </section>
 
-
     <!-- BERITA SECTION -->
     <section id="berita" class="bg-white py-24 border-t border-slate-100">
         <div class="max-w-6xl mx-auto px-6">
@@ -457,24 +456,25 @@
                         Terkini</span>
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight">Kabar & Kegiatan Cabang</h2>
                 </div>
-                <a href="{{ route('web.berita') ?? '#' }}"
+                <a href="{{ route('web.berita') }}"
                     class="text-xs font-bold text-red-600 hover:text-slate-900 transition flex items-center gap-1 self-start sm:self-auto">
                     Lihat Semua Berita <i class="fas fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Berita Utama (Kiri / Kolom 2) -->
+                <!-- Berita Utama -->
                 <div class="lg:col-span-2">
                     @if ($beritaUtama)
                         <div class="relative rounded-2xl overflow-hidden h-[360px] sm:h-[440px] shadow-lg group">
-                            <img src="{{ asset('storage/' . $beritaUtama->gambar) }}" alt="{{ $beritaUtama->judul }}"
+                            {{-- Diperbarui dari ->gambar ke ->file_path --}}
+                            <img src="{{ asset('storage/' . $beritaUtama->file_path) }}" alt="{{ $beritaUtama->judul }}"
                                 class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent">
                             </div>
                             <div class="absolute bottom-0 inset-x-0 p-6 md:p-8 flex flex-col items-start justify-end">
                                 <span
-                                    class="inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase mb-3">
+                                    class="inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase mb-3 shadow-sm">
                                     <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> Berita Utama
                                 </span>
                                 <h3
@@ -497,7 +497,7 @@
                     @endif
                 </div>
 
-                <!-- Berita Terbaru (Kanan) -->
+                <!-- Berita Terbaru -->
                 <div class="flex flex-col gap-5">
                     <h3
                         class="text-xs font-black text-slate-900 uppercase tracking-widest border-b-2 border-red-600 pb-1 self-start">
@@ -506,7 +506,8 @@
                     <div class="space-y-4">
                         @forelse($beritaTerbarus as $berita)
                             <div class="flex gap-3 items-start group">
-                                <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}"
+                                {{-- Diperbarui dari ->gambar ke ->file_path --}}
+                                <img src="{{ asset('storage/' . $berita->file_path) }}" alt="{{ $berita->judul }}"
                                     class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm">
                                 <div>
                                     <span
@@ -528,4 +529,29 @@
             </div>
         </div>
     </section>
+
+    {{-- Script Tambahan untuk Tombol Geser Slider Galeri --}}
+    @push('scripts')
+        <script>
+            const slider = document.getElementById('slider-container');
+            const prevBtn = document.getElementById('slide-prev');
+            const nextBtn = document.getElementById('slide-next');
+
+            if (slider && prevBtn && nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    slider.scrollBy({
+                        left: 300,
+                        behavior: 'smooth'
+                    });
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    slider.scrollBy({
+                        left: -300,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        </script>
+    @endpush
 @endsection
