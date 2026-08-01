@@ -1,8 +1,20 @@
 <x-app-layout :title="$title ?? 'Keanggotaan IKSPI Kera Sakti Cabang Jakpus'">
-    <div class="flex h-screen overflow-hidden">
+    <!-- Inisialisasi State AlpineJS -->
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen overflow-hidden relative">
 
-        <aside class="w-64 bg-[#650000] text-white flex flex-col h-full shrink-0">
-            <div class="p-5 bg-red-950 border-b border-stone-800">
+        <!-- Overlay Backdrop (Tampil saat sidebar terbuka di HP) -->
+        <div x-show="sidebarOpen" @click="sidebarOpen = false"
+            x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/50 z-40 md:hidden"></div>
+
+        <!-- ASIDE / SIDEBAR -->
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-[#650000] text-white flex flex-col h-full shrink-0 transition-transform duration-300 ease-in-out md:static md:translate-x-0">
+
+            <!-- Header Sidebar -->
+            <div class="p-5 bg-red-950 border-b border-stone-800 flex items-center justify-between">
                 <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
                     <img src="{{ asset('assets/img/ikspi-jakpus.png') }}" alt="Logo IKSPI Kera Sakti"
                         class="w-10 h-10 object-contain rounded-md filter drop-shadow-md">
@@ -12,8 +24,15 @@
                         <p class="text-xs text-stone-500">Cabang Jakarta Pusat</p>
                     </div>
                 </a>
+
+                <!-- Tombol Close Sidebar (Hanya Muncul di HP) -->
+                <button @click="sidebarOpen = false"
+                    class="md:hidden text-stone-400 hover:text-white focus:outline-none p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
 
+            <!-- Menu Navigasi -->
             <nav class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-stone-800 scrollbar-track-transparent"
                 style="scrollbar-width: thin; scrollbar-color: #1e293b transparent;">
 
@@ -135,7 +154,8 @@
                 @endif
             </nav>
 
-            <div class="p-4 mx-auto bg-red-950 border-t border-stone-800 flex items-center justify-between">
+            <!-- Footer Sidebar (User Info & Logout) -->
+            <div class="p-4 mx-auto w-full bg-red-950 border-t border-stone-800 flex items-center justify-between">
                 <div>
                     <a href="{{ route('profile') }}" class="flex items-center space-x-2">
                         <!-- Foto Profil / Inisial -->
@@ -150,7 +170,8 @@
                         </div>
 
                         <div class="text-xs">
-                            <p class="font-semibold block truncate w-32">{{ auth()->user()->nama_pengurus }}</p>
+                            <p class="font-semibold block truncate w-28 md:w-32">{{ auth()->user()->nama_pengurus }}
+                            </p>
 
                             <p class="text-stone-400 text-[8px]">
                                 <span class="font-mono">
@@ -164,36 +185,48 @@
                         </div>
                     </a>
                 </div>
-                <form action="{{ route('logout') }}" method="POST" class="p-2">
+                <form action="{{ route('logout') }}" method="POST" class="p-1">
                     @csrf
                     <button type="submit" onclick="return confirm('Apakah Anda yakin ingin mengakhiri sesi?');"
                         title="Logout"
-                        class="w-full text-left px-3 py-2 text-xs font-semibold text-red-400 hover:bg-stone-800 rounded-lg transition flex items-center gap-2 cursor-pointer">
+                        class="text-left p-2 text-xs font-semibold text-red-400 hover:bg-stone-800 rounded-lg transition flex items-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </form>
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 flex flex-col h-full overflow-hidden min-w-0">
+            <!-- Header Atas -->
             <header
-                class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-xs shrink-0">
-                <div class="flex items-center space-x-2.5">
-                    <span class="text-slate-400 text-xs w-5 text-center">
-                        <i class="fa-solid {{ $icon ?? 'fa-solid fa-folder-tree' }}"></i>
-                    </span>
-                    <span
-                        class="text-xs font-bold text-slate-800 tracking-wide uppercase">{{ $title ?? 'Beranda' }}</span>
+                class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shadow-xs shrink-0">
+                <div class="flex items-center space-x-3">
+                    <!-- Tombol Hamburger (Muncul di layar HP untuk buka sidebar) -->
+                    <button @click="sidebarOpen = true"
+                        class="md:hidden text-slate-600 hover:text-slate-900 focus:outline-none p-1">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+
+                    <div class="flex items-center space-x-2.5">
+                        <span class="text-slate-400 text-xs w-5 text-center">
+                            <i class="fa-solid {{ $icon ?? 'fa-solid fa-folder-tree' }}"></i>
+                        </span>
+                        <span
+                            class="text-xs font-bold text-slate-800 tracking-wide uppercase truncate max-w-[150px] sm:max-w-xs md:max-w-none">{{ $title ?? 'Beranda' }}</span>
+                    </div>
                 </div>
 
                 <div
                     class="text-[11px] text-slate-500 font-semibold bg-slate-50 border border-gray-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
                     <i class="fa-regular fa-calendar-days text-slate-400 text-xs"></i>
-                    <span>{{ date('l, d F Y') }}</span>
+                    <span class="hidden sm:inline">{{ date('l, d F Y') }}</span>
+                    <span class="sm:hidden">{{ date('d/m/Y') }}</span>
                 </div>
             </header>
 
-            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+            <!-- Halaman Utama / Slot Content -->
+            <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-gray-50">
                 {{ $slot }}
             </main>
         </div>
